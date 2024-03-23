@@ -6,6 +6,7 @@ import '@fontsource/montserrat/500.css';
 import '@fontsource/montserrat/700.css';
 import { Typography } from '@mui/material';
 import Button from '@mui/material/Button';
+import Logo from '../../public/logo.png';
 
 function Login(){
     //logica
@@ -21,14 +22,19 @@ function Login(){
                 {/*IMAGEM DA SENHORINHA */}
             </Box>
             <Box component="form" sx={{height:'50vh', width:'50vw',display:'flex', flexDirection:'column', padding:'3em'}}>
+            
+                <Box sx={{display: 'flex', flexDirection:'column', marginLeft:'auto'}}>
+                    <img width={250} src={Logo} alt="logo" />
+                </Box>
+                
                 {/*FORMULARIO */}
-                <Typography sx={{color:'#E64097', fontFamily:'montserrat', fontSize: '36px', fontWeight:'600', marginTop:'5vh'}}>Faça seu Login</Typography>
+                <Typography sx={{color:'#E64097', fontFamily:'montserrat', fontSize: '36px', fontWeight:'600', marginTop:'5vh', textAlign:'center'}}>Faça seu Login</Typography>
 
-                <Box sx={{display:'flex', flexDirection:'column', marginTop:'10vh', width:'20vw', height:'60vh' ,borderStyle:'solid', borderColor:'black', alignItems:'center', padding: '5rem'}}>
-                    <TextField id="outlined-basic" label="Email" variant="outlined" />
+                <Box sx={{display:'flex', flexDirection:'column', margin:'10vh auto 5vh', width:'25vw', height:'60vh' ,borderStyle:'solid', borderColor:'black', padding: '5rem'}}>
+                    <TextField sx={{width:'25vw'}} id="outlined-basic" label="Email" variant="outlined" />
                     <TextField sx={{marginTop:'5vh', width:'25vw'}} id="outlined-basic" label="Senha" variant="outlined" />
 
-                    <Button variant="contained" sx={{marginTop:'5vh'}}>Contained</Button>
+                    <Button variant="contained" sx={{marginTop:'5vh', backgroundColor:'#E64097'}}>Login</Button>
 
                 </Box>
                 
