@@ -7,6 +7,10 @@ import "@fontsource/montserrat/700.css";
 import { Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import Logo from "../../public/logo.png";
+import CapaLogin from "../../public/Senhora.png";
+import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
+import GoogleIcon from "@mui/icons-material/Google";
+import Link from "@mui/material/Link";
 
 function Login() {
   //logica
@@ -19,12 +23,23 @@ function Login() {
           flexDirection: "row",
           width: "100vw",
           height: "100vh",
+          overflowX: "hidden",
         }}
       >
         {/*DIVS FILHAS */}
-        <Box sx={{ display: "flex", flexDirection: "column", width: "50vw" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: "50vw",
+            backgroundImage: `url(${CapaLogin})`, // Defina a imagem de fundo aqui
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
           {/*IMAGEM DA SENHORINHA */}
         </Box>
+
         <Box
           component="form"
           sx={{
@@ -39,7 +54,7 @@ function Login() {
             sx={{
               display: "flex",
               flexDirection: "row",
-              marginLeft: "200px",
+              marginLeft: "240px",
               width: "50vw",
             }}
           >
@@ -63,9 +78,9 @@ function Login() {
             sx={{
               display: "flex",
               flexDirection: "column",
-              margin: "5vh auto 5vh",
+              margin: "2vh auto 5vh",
               width: "20vw",
-              height: "400px",
+              height: "300px",
               padding: "5rem",
               borderRadius: "50px",
               backgroundImage: "linear-gradient(to bottom, #B2FDF6, #FBD3E8)",
@@ -106,9 +121,39 @@ function Login() {
             >
               Login
             </Button>
-          </Box>
 
-          {/*BUTTONS SOCIAL MEDIA */}
+            {/*LINK FORGET PASSWORD */}
+            <Link
+              href="#"
+              sx={{
+                color: "#E64097",
+                fontFamily: "montserrat",
+                marginLeft: "auto",
+                marginTop: "2vh",
+              }}
+            >
+              Esqueci a senha
+            </Link>
+
+            {/*BUTTONS SOCIAL MEDIA */}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                margin: "2vh auto",
+              }}
+            >
+              <Button>
+                <FacebookOutlinedIcon sx={{ fontSize: 40, color: "#4D41DA" }} />
+              </Button>
+
+              <Button>
+                <GoogleIcon
+                  sx={{ fontSize: 40, color: "#FFFFFF", marginLeft: "10px" }}
+                />
+              </Button>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </>
