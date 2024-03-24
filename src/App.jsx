@@ -1,20 +1,19 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Login from './Login/Login';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./Login/Login";
+import LadinPage from "./LadinPage/LadinPage";
 
 //COMPONENTE
 function App() {
-  
-
-  
   return (
     <>
-     <BrowserRouter>
+      <BrowserRouter>
         <Routes>
-          <Route path={"/Login"} element={<Login/>}/>
+          <Route path={"/"} element={<LadinPage />} />
+          <Route path={"/Login"} element={<Login />} />
         </Routes>
-     </BrowserRouter>
+      </BrowserRouter>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
