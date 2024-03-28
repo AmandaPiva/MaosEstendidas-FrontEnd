@@ -309,76 +309,97 @@ function LadinPage() {
         {/*FOOTER */}
         <Box
           sx={{
+            display: "flex",
+            flexDirection: "column",
             backgroundColor: "#E64097",
             width: "100vw",
             height: "50vh",
-            display: "flex",
-            flexDirection: "row",
           }}
         >
-          {/*LADO DIREITO */}
-          <Box sx={{ width: "30vw", marginLeft: "auto", padding: "3em" }}>
-            <Typography
-              sx={{
-                fontSize: "36px",
-                fontWeight: "600",
-                color: "#FFFFFF",
-                fontFamily: "montserrat",
-              }}
-            >
-              Contato
-            </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            {/*LADO DIREITO */}
+            <Box sx={{ width: "30vw", margin: "5vh auto" }}>
+              <Typography
+                sx={{
+                  fontSize: "36px",
+                  fontWeight: "600",
+                  color: "#FFFFFF",
+                  fontFamily: "montserrat",
+                }}
+              >
+                Contato
+              </Typography>
 
-            {/*LINK EMAIL */}
-            <Link
-              href="#"
-              sx={{
-                color: "#FFFFFF",
-                fontFamily: "montserrat",
-                marginTop: "3vh",
-              }}
-            >
-              maos.estendidas@gmail.com
-            </Link>
-          </Box>
-
-          {/*LADO ESQUERDO */}
-          <Box sx={{ width: "30vw", marginRight: "auto", padding: "3em" }}>
-            <Typography
-              sx={{
-                fontSize: "36px",
-                fontWeight: "600",
-                color: "#FFFFFF",
-                fontFamily: "montserrat",
-              }}
-            >
-              Mídias sociais
-            </Typography>
-
-            {/*LINKS SOCIAL MEDIA */}
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              {/*LINK EMAIL */}
               <Link
                 href="#"
                 sx={{
                   color: "#FFFFFF",
                   fontFamily: "montserrat",
                   marginTop: "3vh",
+                  textDecoration: "none",
                 }}
               >
-                @maos.estendidas
-              </Link>
-              <Link
-                href="#"
-                sx={{
-                  color: "#FFFFFF",
-                  fontFamily: "montserrat",
-                  marginTop: "3vh",
-                }}
-              >
-                Maos Estendidas
+                maos.estendidas@gmail.com
               </Link>
             </Box>
+
+            {/*LADO ESQUERDO */}
+            <Box sx={{ width: "30vw", margin: "5vh auto" }}>
+              <Typography
+                sx={{
+                  fontSize: "36px",
+                  fontWeight: "600",
+                  color: "#FFFFFF",
+                  fontFamily: "montserrat",
+                }}
+              >
+                Mídias sociais
+              </Typography>
+
+              {/*LINKS SOCIAL MEDIA */}
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <Link
+                  href="#"
+                  sx={{
+                    color: "#FFFFFF",
+                    fontFamily: "montserrat",
+                    marginTop: "3vh",
+                    textDecoration: "none",
+                  }}
+                >
+                  @maos.estendidas
+                </Link>
+                <Link
+                  href="#"
+                  sx={{
+                    color: "#FFFFFF",
+                    fontFamily: "montserrat",
+                    marginTop: "3vh",
+                    textDecoration: "none",
+                  }}
+                >
+                  Maos Estendidas
+                </Link>
+              </Box>
+            </Box>
           </Box>
+          <Typography
+            sx={{
+              fontFamily: "montserrat",
+              fontSize: "12px",
+              justifyContent: "flex-end",
+              margin: "20vh auto",
+              color: "#FFFFFF",
+            }}
+          >
+            Desenvolvido por maosestendidas team
+          </Typography>
         </Box>
       </Box>
     </>
