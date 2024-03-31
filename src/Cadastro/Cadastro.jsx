@@ -6,9 +6,31 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import IconGoogle from "../../public/googleIcon.png";
+import Pesquisa from "../../public/pesquisa.png";
+import { MarginSharp } from "@mui/icons-material";
 
 function Cadastro() {
+  //MASCARA CNPJ
+  const cnpjMask = (value) => {
+    return value
+      .replace(/\D+/g, "") // não deixa ser digitado nenhuma letra
+      .replace(/(\d{2})(\d)/, "$1.$2") // captura 2 grupos de número o primeiro com 2 digitos e o segundo de com 3 digitos, apos capturar o primeiro grupo ele adiciona um ponto antes do segundo grupo de número
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d)/, "$1/$2") // captura 2 grupos de número o primeiro e o segundo com 3 digitos, separados por /
+      .replace(/(\d{4})(\d)/, "$1-$2")
+      .replace(/(-\d{2})\d+?$/, "$1"); // captura os dois últimos 2 números, com um - antes dos dois números
+  };
+
+  //MASCARA CPF
+  const formatarCPF = (cpf) => {
+    cpf = cpf.replace(/\D/g, ""); // Remove caracteres não numéricos
+
+    // Aplica a máscara
+    cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+
+    return cpf;
+  };
+
   return (
     <>
       <Box
@@ -58,17 +80,26 @@ function Cadastro() {
               sx={{
                 backgroundColor: "#FFFFFF",
                 color: "#231F20",
-                width: "400px",
+                width: "350px",
                 "&:hover": {
                   backgroundColor: "#FFFFFF", // Altere a cor desejada para o efeito hover
                 },
               }}
             >
-              Cadastre com o Google
+              <img
+                width={30}
+                style={{ marginRight: "auto" }}
+                src={Pesquisa}
+                alt="icon"
+              />
+              <Typography sx={{ margin: "auto" }}>
+                Cadastre com o Google
+              </Typography>
             </Button>
           </Box>
         </Box>
 
+        {/*LADO ESQUERDO */}
         <Box
           sx={{
             width: "50vw",
@@ -121,38 +152,42 @@ function Cadastro() {
                 }}
                 id="outlined-basic"
                 label="CPF"
+                placeholder="999.999.999-99"
                 variant="outlined"
               />
 
-              <TextField
-                sx={{
-                  width: "25vw",
-                  backgroundColor: "#FFFFFF",
-                  margin: "2vh auto",
-                }}
-                id="outlined-basic"
-                label="CNPJ"
-                variant="outlined"
-              />
               <Typography
                 sx={{
                   fontSize: "16px",
                   fontWeight: "200",
                   fontFamily: "montserrat",
+                  marginLeft: "60px",
                   color: "#04BFAF",
                 }}
               >
-                Se você for uma ONG ou empresa
+                Se você for uma ONG ou empresa *
               </Typography>
+              <TextField
+                sx={{
+                  width: "25vw",
+                  backgroundColor: "#FFFFFF",
+                  margin: "1vh auto",
+                }}
+                id="outlined-basic"
+                placeholder="99.999.999/9999-99"
+                label="CNPJ"
+                variant="outlined"
+              />
 
               <TextField
                 sx={{
                   width: "25vw",
                   backgroundColor: "#FFFFFF",
-                  margin: "2vh auto",
+                  margin: "3vh auto",
                 }}
                 id="outlined-basic"
                 label="Data de Nascimento"
+                placeholder="DD/MM/AAAA"
                 variant="outlined"
               />
 
@@ -160,7 +195,7 @@ function Cadastro() {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  margin: "2vh 40px",
+                  margin: "2vh 46px",
                 }}
               >
                 <FormControl fullWidth>
