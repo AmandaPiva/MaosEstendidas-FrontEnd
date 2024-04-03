@@ -292,7 +292,7 @@
 
 "@emotion/react@^11.11.4":
   version "11.11.4"
-  resolved "https://registry.yarnpkg.com/@emotion/react/-/react-11.11.4.tgz#3a829cac25c1f00e126408fab7f891f00ecc3c1d"
+  resolved "https://registry.npmjs.org/@emotion/react/-/react-11.11.4.tgz"
   integrity sha512-t8AjMlF0gHpvvxk5mAtCqR4vmxiGHCeJBaQO6gncUSdklELOgtwjerNY2yuJNfwnc6vi16U/+uMF+afIawJ9iw==
   dependencies:
     "@babel/runtime" "^7.18.3"
@@ -322,7 +322,7 @@
 
 "@emotion/styled@^11.11.0":
   version "11.11.0"
-  resolved "https://registry.yarnpkg.com/@emotion/styled/-/styled-11.11.0.tgz#26b75e1b5a1b7a629d7c0a8b708fbf5a9cdce346"
+  resolved "https://registry.npmjs.org/@emotion/styled/-/styled-11.11.0.tgz"
   integrity sha512-hM5Nnvu9P3midq5aaXj4I+lnSfNi7Pmd4EWk1fOZ3pxookaQTNew6bp4JaCBYM4HVFZF9g7UjJmsUmC2JlxOng==
   dependencies:
     "@babel/runtime" "^7.18.3"
@@ -434,7 +434,7 @@
 
 "@esbuild/linux-x64@0.19.12":
   version "0.19.12"
-  resolved "https://registry.npmjs.org/@esbuild/linux-x64/-/linux-x64-0.19.12.tgz"
+  resolved "https://registry.yarnpkg.com/@esbuild/linux-x64/-/linux-x64-0.19.12.tgz#5f37cfdc705aea687dfe5dfbec086a05acfe9c78"
   integrity sha512-B71g1QpxfwBvNrfyJdVDexenDIt1CiDN1TIXLbhOw0KhJzE78KIFGX6OJ9MrtC0oOqMWf+0xop4qEU8JrJTwCg==
 
 "@esbuild/netbsd-x64@0.19.12":
@@ -602,14 +602,14 @@
 
 "@mui/icons-material@^5.15.14":
   version "5.15.14"
-  resolved "https://registry.yarnpkg.com/@mui/icons-material/-/icons-material-5.15.14.tgz#333468c94988d96203946d1cfeb8f4d7e8e7de34"
+  resolved "https://registry.npmjs.org/@mui/icons-material/-/icons-material-5.15.14.tgz"
   integrity sha512-vj/51k7MdFmt+XVw94sl30SCvGx6+wJLsNYjZRgxhS6y3UtnWnypMOsm3Kmg8TN+P0dqwsjy4/fX7B1HufJIhw==
   dependencies:
     "@babel/runtime" "^7.23.9"
 
 "@mui/material@^5.15.14":
   version "5.15.14"
-  resolved "https://registry.yarnpkg.com/@mui/material/-/material-5.15.14.tgz#a40bd5eccfa9fc925535e1f4d70c6cef77fa3a75"
+  resolved "https://registry.npmjs.org/@mui/material/-/material-5.15.14.tgz"
   integrity sha512-kEbRw6fASdQ1SQ7LVdWR5OlWV3y7Y54ZxkLzd6LV5tmz+NpO3MJKZXSfgR0LHMP7meKsPiMm4AuzV0pXDpk/BQ==
   dependencies:
     "@babel/runtime" "^7.23.9"
@@ -746,12 +746,12 @@
 
 "@rollup/rollup-linux-x64-gnu@4.13.0":
   version "4.13.0"
-  resolved "https://registry.npmjs.org/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.13.0.tgz"
+  resolved "https://registry.yarnpkg.com/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.13.0.tgz#f672f6508f090fc73f08ba40ff76c20b57424778"
   integrity sha512-yUD/8wMffnTKuiIsl6xU+4IA8UNhQ/f1sAnQebmE/lyQ8abjsVyDkyRkWop0kdMhKMprpNIhPmYlCxgHrPoXoA==
 
 "@rollup/rollup-linux-x64-musl@4.13.0":
   version "4.13.0"
-  resolved "https://registry.npmjs.org/@rollup/rollup-linux-x64-musl/-/rollup-linux-x64-musl-4.13.0.tgz"
+  resolved "https://registry.yarnpkg.com/@rollup/rollup-linux-x64-musl/-/rollup-linux-x64-musl-4.13.0.tgz#d2f34b1b157f3e7f13925bca3288192a66755a89"
   integrity sha512-9RyNqoFNdF0vu/qqX63fKotBh43fJQeYC98hCaf89DYQpv+xu0D8QFSOS0biA7cGuqJFOc1bJ+m2rhhsKcw1hw==
 
 "@rollup/rollup-win32-arm64-msvc@4.13.0":

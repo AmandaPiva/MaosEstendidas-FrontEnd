@@ -3,6 +3,7 @@ import Login from "./Login/Login";
 import LadinPage from "./LadinPage/LadinPage";
 import Cadastro from "./Cadastro/Cadastro";
 import Endereco from "./Endereco/Endereco";
+import CadastroNecessidade from "./CadastroNecessidade/CadastroNecessidade"
 
 //COMPONENTE
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Route path={"/Login"} element={<Login />} />
           <Route path={"/Cadastro"} element={<Cadastro />} />
           <Route path={"/Endereco"} element={<Endereco />} />
+          <Route path={"/CadastroNecessidade"} element={<CadastroNecessidade />} />
         </Routes>
       </BrowserRouter>
     </>
