@@ -11,7 +11,7 @@ function CadastroNecessidade() {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
+          flexDirection: "column",
           width: "100vw",
           height: "100vh",
           backgroundSize: "cover",
@@ -45,18 +45,23 @@ function CadastroNecessidade() {
 
         <Box
           sx={{
-            width: "50vw",
+            width: "100vw",
             display: "flex",
-            flexDirection: "column",
+            flexDirection: "row",
           }}
         >
           <Box
             sx={{
-              height: "95vh",
-              width: "30vw",
+              height: "65vh",
+              width: "80vw",
               backgroundColor: "#FFFFFF",
               borderRadius: "50px",
               margin: "auto",
+              border: 1,
+              borderColor: "white",
+              boxShadow: `0 0 0 0px rgba(0,0,0,0.1), 
+                0 1px 2px rgba(0,0,0,0.8), 
+                0 2px 3px rgba(0,0,0,0.8)`,
             }}
           >
             <Box
@@ -68,7 +73,7 @@ function CadastroNecessidade() {
             >
               <TextField
                 sx={{
-                  width: "25vw",
+                  width: "60vw",
                   backgroundColor: "#FFFFFF",
                   margin: "2vh auto",
                 }}
@@ -78,13 +83,14 @@ function CadastroNecessidade() {
               />
               <TextField
                 sx={{
-                  width: "25vw",
+                  width: "60vw",
                   backgroundColor: "#FFFFFF",
                   margin: "2vh auto",
                 }}
                 id="outlined-basic"
                 label="Descrição"
                 variant="outlined"
+                multiline rows={5}
               />
 
               <Box
