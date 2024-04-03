@@ -15,222 +15,233 @@ function Endereco() {
         }}
       >
         <Box sx={{ display: "flex", flexDirection: "row" }}>
+          <Box sx={{ marginTop: "5.5vh", marginLeft: "5vw" }}>
+            <Button variant="outlined">Voltar</Button>
+          </Box>
+
           <Typography
             sx={{
               fontSize: "36px",
               fontWeight: "600",
               color: "#E64097",
               fontFamily: "montserrat",
-              margin: "5vh auto",
+              margin: "5vh ",
+              textAlign: "center",
             }}
           >
             Cadastro do endereço
           </Typography>
-
-          <img
-            width={200}
-            src={Logo}
-            alt="logo"
-            style={{
-              borderRadius: "500px",
-              width: "250px",
-              height: "200px",
-            }}
-          />
         </Box>
 
-        <Box sx={{ display: "flex", flexDirection: "column", width: "50vw" }}>
-          <Typography
+        <Box
+          sx={{
+            boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
+            backgroundColor: "#FAFAFA",
+          }}
+        >
+          <Box
             sx={{
-              fontSize: "24px",
-              fontWeight: "600",
-              color: "#04BFAF",
-              paddingLeft: "5vw",
+              display: "flex",
+              flexDirection: "column",
               width: "50vw",
             }}
           >
-            Cadastre automaticamente apenas digitando seu CEP:
-          </Typography>
-
-          <Box sx={{ paddingLeft: "5vw" }}>
-            <TextField
+            <Typography
               sx={{
-                width: "35vw",
-                backgroundColor: "#FFFFFF",
+                fontSize: "24px",
+                fontWeight: "600",
+                color: "#04BFAF",
+                paddingLeft: "5vw",
+                width: "50vw",
                 marginTop: "5vh",
               }}
-              id="outlined-basic"
-              label="CEP"
-              variant="outlined"
-            />
-          </Box>
-
-          <Box
-            sx={{
-              width: "35vw",
-              marginLeft: "5vw",
-            }}
-          >
-            <Button
-              variant="contained"
-              sx={{
-                width: "25vw",
-                margin: "5vh 100px",
-                backgroundColor: "#E64097",
-                "&:hover": {
-                  backgroundColor: "#04BFAF", // Altere a cor desejada para o efeito hover
-                },
-              }}
             >
-              Cadastrar Automático
-            </Button>
-            <Typography
-              sx={{
-                fontFamily: "montserrat",
-                color: "black",
-                fontSize: "24px",
-                fontWeight: "500",
-                textAlign: "center",
-              }}
-            >
-              Ou
+              Cadastre automaticamente apenas digitando seu CEP:
             </Typography>
-          </Box>
-        </Box>
 
-        {/**FORM CADASTRO MANUAL */}
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
-            paddingTop: "2em",
-            paddingBottom: "2em",
-            width: "90vw",
-            margin: "10vh auto",
-            borderRadius: "20px",
-          }}
-        >
-          {/**LADO ESQUERDO */}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              paddingLeft: "5vw",
-            }}
-          >
-            <Typography
-              sx={{
-                fontFamily: "montserrat",
-                fontSize: "18",
-                fontWeight: "500",
-                marginBottom: "10px",
-              }}
-            >
-              Cadastre manualmente
-            </Typography>
-            <TextField
-              sx={{
-                width: "25vw",
-                backgroundColor: "#FFFFFF",
-              }}
-              id="outlined-basic"
-              label="Logradouro"
-              variant="outlined"
-            />
-
-            <TextField
-              sx={{
-                width: "10vw",
-                backgroundColor: "#FFFFFF",
-                marginTop: "2vh",
-              }}
-              id="outlined-basic"
-              type="number"
-              label="Número"
-              variant="outlined"
-            />
-
-            <TextField
-              sx={{
-                width: "25vw",
-                backgroundColor: "#FFFFFF",
-                marginTop: "2vh",
-              }}
-              id="outlined-basic"
-              label="Bairro"
-              variant="outlined"
-            />
-            <TextField
-              sx={{
-                width: "25vw",
-                backgroundColor: "#FFFFFF",
-                marginTop: "2vh",
-              }}
-              id="outlined-basic"
-              label="Cidade"
-              variant="outlined"
-            />
-          </Box>
-          {/**LADO DIREITO */}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              paddingLeft: "5vw",
-            }}
-          >
-            <TextField
-              sx={{
-                width: "25vw",
-                backgroundColor: "#FFFFFF",
-              }}
-              id="outlined-basic"
-              label="CEP"
-              type="number"
-              variant="outlined"
-            />
-            <TextField
-              sx={{
-                width: "25vw",
-                backgroundColor: "#FFFFFF",
-                marginTop: "2vh",
-              }}
-              id="outlined-basic"
-              label="Estado"
-              variant="outlined"
-            />
-
-            {/*BOTOES*/}
-            <Box
-              sx={{ display: "flex", flexDirection: "row", marginTop: "3vh" }}
-            >
-              <Button
-                variant="contained"
+            <Box sx={{ paddingLeft: "5vw" }}>
+              <TextField
                 sx={{
-                  height: "5vh",
-                  width: "8vw",
-                  backgroundColor: "#04BFAF",
-                  "&:hover": {
-                    backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
-                  },
+                  width: "35vw",
+                  backgroundColor: "#FFFFFF",
+                  marginTop: "5vh",
                 }}
-              >
-                Cadastrar
-              </Button>
+                id="outlined-basic"
+                label="CEP"
+                variant="outlined"
+              />
+            </Box>
+
+            <Box
+              sx={{
+                width: "35vw",
+                marginLeft: "5vw",
+              }}
+            >
               <Button
                 variant="contained"
                 sx={{
-                  height: "5vh",
-                  marginLeft: "2vh",
+                  width: "25vw",
+                  margin: "5vh 100px",
                   backgroundColor: "#E64097",
                   "&:hover": {
                     backgroundColor: "#04BFAF", // Altere a cor desejada para o efeito hover
                   },
                 }}
               >
-                Próximos Passos
+                Cadastrar Automático
               </Button>
+              <Typography
+                sx={{
+                  fontFamily: "montserrat",
+                  color: "black",
+                  fontSize: "24px",
+                  fontWeight: "500",
+                  textAlign: "center",
+                }}
+              >
+                Ou
+              </Typography>
+            </Box>
+          </Box>
+
+          {/**FORM CADASTRO MANUAL */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
+              paddingTop: "2em",
+              paddingBottom: "2em",
+              width: "90vw",
+              margin: "10vh auto",
+              borderRadius: "20px",
+              backgroundColor: "#FFFFFF",
+            }}
+          >
+            {/**LADO ESQUERDO */}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                paddingLeft: "5vw",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontFamily: "montserrat",
+                  fontSize: "18",
+                  fontWeight: "500",
+                  marginBottom: "10px",
+                }}
+              >
+                Cadastre manualmente
+              </Typography>
+              <TextField
+                sx={{
+                  width: "25vw",
+                  backgroundColor: "#FFFFFF",
+                }}
+                id="outlined-basic"
+                label="Logradouro"
+                variant="outlined"
+              />
+
+              <TextField
+                sx={{
+                  width: "10vw",
+                  backgroundColor: "#FFFFFF",
+                  marginTop: "2vh",
+                }}
+                id="outlined-basic"
+                type="number"
+                label="Número"
+                variant="outlined"
+              />
+
+              <TextField
+                sx={{
+                  width: "25vw",
+                  backgroundColor: "#FFFFFF",
+                  marginTop: "2vh",
+                }}
+                id="outlined-basic"
+                label="Bairro"
+                variant="outlined"
+              />
+              <TextField
+                sx={{
+                  width: "25vw",
+                  backgroundColor: "#FFFFFF",
+                  marginTop: "2vh",
+                }}
+                id="outlined-basic"
+                label="Cidade"
+                variant="outlined"
+              />
+            </Box>
+            {/**LADO DIREITO */}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                paddingLeft: "5vw",
+              }}
+            >
+              <TextField
+                sx={{
+                  width: "25vw",
+                  backgroundColor: "#FFFFFF",
+                  marginTop: "3.5vh",
+                }}
+                id="outlined-basic"
+                label="CEP"
+                type="number"
+                variant="outlined"
+              />
+              <TextField
+                sx={{
+                  width: "25vw",
+                  backgroundColor: "#FFFFFF",
+                  marginTop: "2vh",
+                }}
+                id="outlined-basic"
+                label="Estado"
+                variant="outlined"
+              />
+
+              {/*BOTOES*/}
+              <Box
+                sx={{ display: "flex", flexDirection: "row", marginTop: "3vh" }}
+              >
+                <Button
+                  variant="contained"
+                  sx={{
+                    height: "5vh",
+                    width: "8vw",
+                    backgroundColor: "#04BFAF",
+                    "&:hover": {
+                      backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
+                    },
+                  }}
+                >
+                  Cadastrar
+                </Button>
+                {/*FAZER VERIFICAÇÃO DE HABILITAR O BOTÃO DE PROXIMOS PASSOS SÓ APÓS CADASTRAR */}
+                <Button
+                  variant="contained"
+                  sx={{
+                    height: "5vh",
+                    marginLeft: "2vh",
+                    backgroundColor: "#E64097",
+                    "&:hover": {
+                      backgroundColor: "#04BFAF", // Altere a cor desejada para o efeito hover
+                    },
+                  }}
+                >
+                  Próximos Passos
+                </Button>
+              </Box>
             </Box>
           </Box>
         </Box>
