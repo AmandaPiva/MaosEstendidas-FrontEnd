@@ -3,8 +3,10 @@ import Login from "./Login/Login";
 import LadinPage from "./LadinPage/LadinPage";
 import Cadastro from "./Cadastro/Cadastro";
 import Endereco from "./Endereco/Endereco";
-import CadastroNecessidade from "./CadastroNecessidade/CadastroNecessidade"
-import SenhaAcesso from "./SenhaAcesso/SenhaAcesso"
+import CadastroNecessidade from "./CadastroNecessidade/CadastroNecessidade";
+import SenhaAcesso from "./SenhaAcesso/SenhaAcesso";
+import ModalCadastroEndereco from "./Components/modalCadastroEndereco";
+import ModalCadastroConcluido from "./Components/modalCadastroConcluido";
 
 //COMPONENTE
 function App() {
@@ -16,8 +18,17 @@ function App() {
           <Route path={"/Login"} element={<Login />} />
           <Route path={"/Cadastro"} element={<Cadastro />} />
           <Route path={"/Endereco"} element={<Endereco />} />
-          <Route path={"/CadastroNecessidade"} element={<CadastroNecessidade />} />
+          <Route
+            path={"/CadastroNecessidade"}
+            element={<CadastroNecessidade />}
+          />
           <Route path={"/SenhaAcesso"} element={<SenhaAcesso />} />
+          <Route path={"/modalEndereco"} element={<ModalCadastroEndereco />} />
+          <Route
+            path={"/modalCadastroConcluido"}
+            element={<ModalCadastroConcluido />}
+          />
+          {/*TESTANDO UM NOVO COMPONENTE QUE SERÁ NOSSO MODAL DE AVISOS  */}
         </Routes>
       </BrowserRouter>
     </>
