@@ -7,6 +7,9 @@ import CadastroNecessidade from "./CadastroNecessidade/CadastroNecessidade";
 import SenhaAcesso from "./SenhaAcesso/SenhaAcesso";
 import ModalCadastroEndereco from "./Components/modalCadastroEndereco";
 import ModalCadastroConcluido from "./Components/modalCadastroConcluido";
+import Header from "./Components/Header";
+import HomeDonatario from "./HomeDonatario/HomeDonatario";
+import CardNecessidade from "./Components/CardsNecessidades";
 
 //COMPONENTE
 function App() {
@@ -22,6 +25,7 @@ function App() {
             path={"/CadastroNecessidade"}
             element={<CadastroNecessidade />}
           />
+          <Route path={"/HomeDonatario"} element={<HomeDonatario />} />
           <Route path={"/SenhaAcesso"} element={<SenhaAcesso />} />
           <Route path={"/modalEndereco"} element={<ModalCadastroEndereco />} />
           <Route
@@ -29,6 +33,9 @@ function App() {
             element={<ModalCadastroConcluido />}
           />
           {/*TESTANDO UM NOVO COMPONENTE QUE SERÁ NOSSO MODAL DE AVISOS  */}
+
+          <Route path={"/Header"} element={<Header />} />
+          <Route path={"/CardNecessidade"} element={<CardNecessidade />} />
         </Routes>
       </BrowserRouter>
     </>
