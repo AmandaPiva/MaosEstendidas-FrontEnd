@@ -10,7 +10,7 @@ import ModalCadastroConcluido from "./Components/modalCadastroConcluido";
 import Header from "./Components/Header";
 import HomeDonatario from "./HomeDonatario/HomeDonatario";
 import CardNecessidade from "./Components/CardsNecessidades";
-
+import Doadores from "./verDoadores/verDoadores";
 //COMPONENTE
 function App() {
   return (
@@ -28,6 +28,8 @@ function App() {
           <Route path={"/HomeDonatario"} element={<HomeDonatario />} />
           <Route path={"/SenhaAcesso"} element={<SenhaAcesso />} />
           <Route path={"/modalEndereco"} element={<ModalCadastroEndereco />} />
+          <Route path={"/verDoadores"} element={<Doadores />} />
+
           <Route
             path={"/modalCadastroConcluido"}
             element={<ModalCadastroConcluido />}
