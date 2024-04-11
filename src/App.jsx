@@ -11,6 +11,7 @@ import Header from "./Components/Header";
 import HomeDonatario from "./HomeDonatario/HomeDonatario";
 import HomeDoador from "./HomeDoador/HomeDoador";
 import CardNecessidade from "./Components/CardsNecessidades";
+import CardDonatarios from "./Components/CardsDonatarios";
 import Doadores from "./verDoadores/verDoadores";
 //COMPONENTE
 function App() {
@@ -40,6 +41,7 @@ function App() {
 
           <Route path={"/Header"} element={<Header />} />
           <Route path={"/CardNecessidade"} element={<CardNecessidade />} />
+          <Route path={"/CardDonatarios"} element={<CardDonatarios />} />
         </Routes>
       </BrowserRouter>
     </>

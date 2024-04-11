@@ -20,29 +20,48 @@ function SenhaAcesso() {
           backgroundPosition: "center",
         }}
       >
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
-          <Typography
-            sx={{
-              fontSize: "36px",
-              fontWeight: "600",
-              color: "#E64097",
-              fontFamily: "montserrat",
-              margin: "5vh auto",
-            }}
-          >
-            Crie uma senha de acesso
-          </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: "100vw",
+            height: "100vh",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Box sx={{ position: "relative", width: "100%", textAlign: "center" }}>
+            <Typography
+              sx={{
+                fontSize: "36px",
+                fontWeight: "600",
+                color: "#E64097",
+                fontFamily: "montserrat",
+                display: "inline-block", // Necessário para centralizar corretamente a frase
+              }}
+            >
+              Crie uma senha de acesso
+            </Typography>
 
-          <img
-            width={200}
-            src={Logo}
-            alt="logo"
-            style={{
-              borderRadius: "500px",
-              width: "250px",
-              height: "200px",
-            }}
-          />
+            <Box
+              sx={{
+                position: "absolute",
+                right: 20,
+                top: "50%",
+                transform: "translateY(-50%)",
+              }}
+            >
+              <img
+                src={Logo}
+                alt="logo"
+                style={{
+                  borderRadius: "500px",
+                  width: "250px",
+                  height: "200px",
+                }}
+              />
+            </Box>
+          </Box>
         </Box>
 
         <Box
