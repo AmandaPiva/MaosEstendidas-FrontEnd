@@ -9,6 +9,7 @@ import ModalCadastroEndereco from "./Components/modalCadastroEndereco";
 import ModalCadastroConcluido from "./Components/modalCadastroConcluido";
 import Header from "./Components/Header";
 import HomeDonatario from "./HomeDonatario/HomeDonatario";
+import HomeDoador from "./HomeDoador/HomeDoador";
 import CardNecessidade from "./Components/CardsNecessidades";
 import Doadores from "./verDoadores/verDoadores";
 //COMPONENTE
@@ -26,6 +27,7 @@ function App() {
             element={<CadastroNecessidade />}
           />
           <Route path={"/HomeDonatario"} element={<HomeDonatario />} />
+          <Route path={"/HomeDoador"} element={<HomeDoador />} />
           <Route path={"/SenhaAcesso"} element={<SenhaAcesso />} />
           <Route path={"/modalEndereco"} element={<ModalCadastroEndereco />} />
           <Route path={"/verDoadores"} element={<Doadores />} />
