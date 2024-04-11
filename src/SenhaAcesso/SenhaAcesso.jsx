@@ -2,6 +2,8 @@ import { Box, Typography } from "@mui/material";
 import Logo from "../../public/logo.png";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 function SenhaAcesso() {
 
@@ -59,9 +61,8 @@ function SenhaAcesso() {
               margin: "auto",
               border: 1,
               borderColor: "white",
-              boxShadow: `0 0 0 0px rgba(0,0,0,0.1), 
-                0 1px 2px rgba(0,0,0,0.8), 
-                0 2px 3px rgba(0,0,0,0.8)`,
+              backgroundImage: "linear-gradient(to bottom, #B2FDF6, #FBD3E8)",
+              boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)", // Adicionando sombra no lado direito e abaixo
             }}
           >
             <Box
@@ -99,24 +100,52 @@ function SenhaAcesso() {
                   margin: "2vh 46px",
                 }}
               >
-              <Button
-                variant="contained"
+                <Button
+                  variant="contained"
+                  sx={{
+                    margin: "5vh auto",
+                    width: "15vw",
+                    backgroundColor: "#04BFAF",
+                    "&:hover": {
+                      backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
+                    },
+                  }}
+                >
+                  Criar
+                </Button>
+              </Box>
+
+              <Box
                 sx={{
-                  margin: "5vh auto",
-                  width: "15vw",
-                  backgroundColor: "#04BFAF",
-                  "&:hover": {
-                    backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
-                  },
+                  color: "#E64097",
+                  fontFamily: "montserrat",
+                  margin: "auto",
+                }} //colocar o link nos termos de uso
+              >
+                Mas antes, leia e aceite nossos termos de uso
+              </Box>
+
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'end',
+                  color: "#E64097",
+                  fontFamily: "montserrat",
+                  margin: "auto"
                 }}
               >
-                Criar
-              </Button>
+                <FormControlLabel
+                  control={<Checkbox />}
+                />
+                Aceito
+              </Box>
+
+
             </Box>
           </Box>
-        </Box>
 
-      </Box>
+        </Box>
       </Box>
     </>
   );
