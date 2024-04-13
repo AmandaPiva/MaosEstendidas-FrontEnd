@@ -14,6 +14,7 @@ import CardNecessidade from "./Components/CardsNecessidades";
 import CardDonatarios from "./Components/CardsDonatarios";
 import Doadores from "./verDoadores/verDoadores";
 import HistoricoDoacoes from "./HitoricoDoacoes/HistoricoDoacoes";
+import EscolhendoDonatario from "./EscolhendoDonatario/EscolhendoDonatario";
 //COMPONENTE
 function App() {
   return (
@@ -34,7 +35,10 @@ function App() {
           <Route path={"/modalEndereco"} element={<ModalCadastroEndereco />} />
           <Route path={"/verDoadores"} element={<Doadores />} />
           <Route path={"/HistoricoDoacoes"} element={<HistoricoDoacoes />} />
-
+          <Route
+            path={"/EscolhendoDonatario"}
+            element={<EscolhendoDonatario />}
+          />
           <Route
             path={"/modalCadastroConcluido"}
             element={<ModalCadastroConcluido />}
