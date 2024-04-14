@@ -5,15 +5,15 @@ import "@fontsource/montserrat/400.css";
 import "@fontsource/montserrat/500.css";
 import "@fontsource/montserrat/700.css";
 import { Typography } from "@mui/material";
-import Logo from "../../public/logo.png";
-import CapaLogin from "../../public/Senhora.png";
+import Logo from "../../../public/logo.png";
+import CapaLogin from "../../../public/Senhora.png";
 import LinkPss from "@mui/material/Link";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import { Link } from "react-router-dom";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import Pesquisa from "../../public/pesquisa.png";
+import Pesquisa from "../../../public/pesquisa.png";
 
 function Login() {
   //logica

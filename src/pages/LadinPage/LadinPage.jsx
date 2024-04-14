@@ -1,10 +1,10 @@
 import Box from "@mui/material/Box";
-import pcdCadeiraRodas from "../../public/pcdCadeiraRodas.png";
-import Logo from "../../public/logo.png";
-import IdosoCriancas from "../../public/idosoECriancas.png";
-import Menina from "../../public/menina.png";
-import IdososLendo from "../../public/idososLendo.png";
-import IdososFelizes from "../../public/idososFelizes.png";
+import pcdCadeiraRodas from "../../../public/pcdCadeiraRodas.png";
+import Logo from "../../../public/logo.png";
+import IdosoCriancas from "../../../public/idosoECriancas.png";
+import Menina from "../../../public/menina.png";
+import IdososLendo from "../../../public/idososLendo.png";
+import IdososFelizes from "../../../public/idososFelizes.png";
 import { Typography } from "@mui/material";
 import "@fontsource/montserrat/300.css";
 import "@fontsource/montserrat/400.css";
@@ -12,6 +12,7 @@ import "@fontsource/montserrat/500.css";
 import "@fontsource/montserrat/700.css";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
+import LinkMedias from "@mui/material/Link";
 
 function LadinPage() {
   return (
@@ -344,7 +345,7 @@ function LadinPage() {
               </Typography>
 
               {/*LINK EMAIL */}
-              <Link
+              <LinkMedias
                 href="#"
                 sx={{
                   color: "#FFFFFF",
@@ -354,7 +355,7 @@ function LadinPage() {
                 }}
               >
                 maos.estendidas@gmail.com
-              </Link>
+              </LinkMedias>
             </Box>
 
             {/*LADO ESQUERDO */}
@@ -372,7 +373,7 @@ function LadinPage() {
 
               {/*LINKS SOCIAL MEDIA */}
               <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <Link
+                <LinkMedias
                   href="#"
                   sx={{
                     color: "#FFFFFF",
@@ -382,8 +383,8 @@ function LadinPage() {
                   }}
                 >
                   @maos.estendidas
-                </Link>
-                <Link
+                </LinkMedias>
+                <LinkMedias
                   href="#"
                   sx={{
                     color: "#FFFFFF",
@@ -393,7 +394,7 @@ function LadinPage() {
                   }}
                 >
                   Maos Estendidas
-                </Link>
+                </LinkMedias>
               </Box>
             </Box>
           </Box>

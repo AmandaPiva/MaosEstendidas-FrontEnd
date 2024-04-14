@@ -1,11 +1,11 @@
-import Header from "../Components/Header";
+import Header from "../../Components/Header";
 import { Box } from "@mui/material";
-import CriancasPcds from "../../public/criancasPcds.png";
+import CriancasPcds from "../../../public/criancasPcds.png";
 import { Typography } from "@mui/material";
-import InputBase from '@mui/material/InputBase';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
+import InputBase from "@mui/material/InputBase";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import SearchIcon from "@mui/icons-material/Search";
 
 function HomeDonartario() {
   return (
@@ -37,33 +37,36 @@ function HomeDonartario() {
             Donatários mais próximos de você
           </Typography>
         </Box>
-
       </Box>
 
       <Box
         sx={{
-          display: 'flex',
-          padding: '5px',
-          marginTop: '6vh', // Ajuste conforme necessário para mover abaixo da imagem
-          marginLeft: '30px', // Ajuste conforme necessário para a margem da esquerda
-          backgroundColor: 'white',
-          boxShadow: '0px 2px 4px rgba(0,0,0,0.2)',
-          borderRadius: '50px',
+          display: "flex",
+          padding: "5px",
+          marginTop: "6vh", // Ajuste conforme necessário para mover abaixo da imagem
+          marginLeft: "30px", // Ajuste conforme necessário para a margem da esquerda
+          backgroundColor: "white",
+          boxShadow: "0px 2px 4px rgba(0,0,0,0.2)",
+          borderRadius: "50px",
           border: 1,
           borderColor: "#E64097",
           height: "5vh",
           width: "20vw",
         }}
       >
-        <IconButton sx={{ color: "#E64097", p: '10px' }} aria-label="menu">
+        <IconButton sx={{ color: "#E64097", p: "10px" }} aria-label="menu">
           <MenuIcon />
         </IconButton>
         <InputBase
           sx={{ color: "#E64097", ml: 1, flex: 1 }}
           placeholder="Filtrar por Região"
-          inputProps={{ 'aria-label': 'pesquisar' }}
+          inputProps={{ "aria-label": "pesquisar" }}
         />
-        <IconButton type="submit" sx={{ color: "#E64097", p: '10px' }} aria-label="search">
+        <IconButton
+          type="submit"
+          sx={{ color: "#E64097", p: "10px" }}
+          aria-label="search"
+        >
           <SearchIcon />
         </IconButton>
       </Box>

@@ -1,11 +1,11 @@
 import { Box, Typography } from "@mui/material";
-import Logo from "../../public/logo.png";
+import Logo from "../../../public/logo.png";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
-function CadastroNecessidade() {
-
-
+function SenhaAcesso() {
   return (
     <>
       <Box
@@ -28,7 +28,9 @@ function CadastroNecessidade() {
             alignItems: "center",
           }}
         >
-          <Box sx={{ position: "relative", width: "100%", textAlign: "center" }}>
+          <Box
+            sx={{ position: "relative", width: "100%", textAlign: "center" }}
+          >
             <Typography
               sx={{
                 fontSize: "36px",
@@ -38,7 +40,7 @@ function CadastroNecessidade() {
                 display: "inline-block", // Necessário para centralizar corretamente a frase
               }}
             >
-              Cadastrando Necessidade
+              Crie uma senha de acesso
             </Typography>
 
             <Box
@@ -72,13 +74,14 @@ function CadastroNecessidade() {
           <Box
             sx={{
               height: "65vh",
-              width: "80vw",
+              width: "40vw",
               backgroundColor: "#FFFFFF",
               borderRadius: "50px",
               margin: "auto",
               border: 1,
               borderColor: "white",
-              boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
+              backgroundImage: "linear-gradient(to bottom, #B2FDF6, #FBD3E8)",
+              boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)", // Adicionando sombra no lado direito e abaixo
             }}
           >
             <Box
@@ -90,24 +93,23 @@ function CadastroNecessidade() {
             >
               <TextField
                 sx={{
-                  width: "60vw",
+                  width: "30vw",
                   backgroundColor: "#FFFFFF",
                   margin: "2vh auto",
                 }}
                 id="outlined-basic"
-                label="Título"
+                label="Senha"
                 variant="outlined"
               />
               <TextField
                 sx={{
-                  width: "60vw",
+                  width: "30vw",
                   backgroundColor: "#FFFFFF",
                   margin: "2vh auto",
                 }}
                 id="outlined-basic"
-                label="Descrição"
+                label="Confirme sua senha"
                 variant="outlined"
-                multiline rows={5}
               />
 
               <Box
@@ -128,16 +130,39 @@ function CadastroNecessidade() {
                     },
                   }}
                 >
-                  Cadastrar
+                  Criar
                 </Button>
+              </Box>
+
+              <Box
+                sx={{
+                  color: "#E64097",
+                  fontFamily: "montserrat",
+                  margin: "auto",
+                }} //colocar o link nos termos de uso
+              >
+                Mas antes, leia e aceite nossos termos de uso
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "end",
+                  color: "#E64097",
+                  fontFamily: "montserrat",
+                  margin: "auto",
+                }}
+              >
+                <FormControlLabel control={<Checkbox />} />
+                Aceito
               </Box>
             </Box>
           </Box>
-
         </Box>
       </Box>
     </>
   );
 }
 
-export default CadastroNecessidade;
+export default SenhaAcesso;

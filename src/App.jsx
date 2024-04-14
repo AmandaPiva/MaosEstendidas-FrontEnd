@@ -1,21 +1,21 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./Login/Login";
-import LadinPage from "./LadinPage/LadinPage";
-import Cadastro from "./Cadastro/Cadastro";
-import Endereco from "./Endereco/Endereco";
-import CadastroNecessidade from "./CadastroNecessidade/CadastroNecessidade";
-import SenhaAcesso from "./SenhaAcesso/SenhaAcesso";
+import Login from "./pages/Login/Login";
+import LadinPage from "./pages/LadinPage/LadinPage";
+import Cadastro from "./pages/Cadastro/Cadastro";
+import Endereco from "./pages/Endereco/Endereco";
+import CadastroNecessidade from "./pages/CadastroNecessidade/CadastroNecessidade";
+import SenhaAcesso from "./pages/SenhaAcesso/SenhaAcesso";
 import ModalCadastroEndereco from "./Components/modalCadastroEndereco";
 import ModalCadastroConcluido from "./Components/modalCadastroConcluido";
 import Header from "./Components/Header";
-import HomeDonatario from "./HomeDonatario/HomeDonatario";
-import HomeDoador from "./HomeDoador/HomeDoador";
+import HomeDonatario from "./pages/HomeDonatario/HomeDonatario";
+import HomeDoador from "./pages/HomeDoador/HomeDoador";
 import CardNecessidade from "./Components/CardsNecessidades";
 import CardDonatarios from "./Components/CardsDonatarios";
-import Doadores from "./verDoadores/verDoadores";
-import HistoricoDoacoes from "./HitoricoDoacoes/HistoricoDoacoes";
-import EscolhendoDonatario from "./EscolhendoDonatario/EscolhendoDonatario";
-import EsqueceuSenha from "./EsqueceuAsenha/EsqueceuSenha";
+import Doadores from "./pages/verDoadores/verDoadores";
+import HistoricoDoacoes from "./pages/HitoricoDoacoes/HistoricoDoacoes";
+import EscolhendoDonatario from "./pages/EscolhendoDonatario/EscolhendoDonatario";
+import EsqueceuSenha from "./pages/EsqueceuAsenha/EsqueceuSenha";
 
 //COMPONENTE
 function App() {

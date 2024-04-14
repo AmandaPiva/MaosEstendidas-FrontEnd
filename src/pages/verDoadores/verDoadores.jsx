@@ -1,5 +1,5 @@
 import { Typography, Box } from "@mui/material";
-import Logo from "../../public/logo.png";
+import Logo from "../../../public/logo.png";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 

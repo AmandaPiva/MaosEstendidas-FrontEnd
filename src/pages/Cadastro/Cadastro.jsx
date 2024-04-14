@@ -1,12 +1,12 @@
 import { Box, Typography } from "@mui/material";
-import PessoasUnidas from "../../public/pessoasUnidas.png";
+import PessoasUnidas from "../../../public/pessoasUnidas.png";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import Pesquisa from "../../public/pesquisa.png";
+import Pesquisa from "../../../public/pesquisa.png";
 import { MarginSharp } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
