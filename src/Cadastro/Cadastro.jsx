@@ -8,6 +8,8 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Pesquisa from "../../public/pesquisa.png";
 import { MarginSharp } from "@mui/icons-material";
+import { Link } from "react-router-dom";
+import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 
 function Cadastro() {
   //MASCARA CNPJ
@@ -51,6 +53,24 @@ function Cadastro() {
             width: "50vw",
           }}
         >
+          <Box sx={{ marginTop: "5.5vh", marginLeft: "5vw" }}>
+            <Link to={"/"}>
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "#04BFAF",
+                  "&:hover": {
+                    backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
+                  },
+                  padding: "8px 18px 8px 5px",
+                }}
+                size="small"
+              >
+                <ReplyAllIcon sx={{ marginRight: "8px" }} />
+                Voltar
+              </Button>
+            </Link>
+          </Box>
           <Typography
             sx={{
               color: "#FFFFFF",
