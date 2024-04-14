@@ -11,7 +11,7 @@ import "@fontsource/montserrat/400.css";
 import "@fontsource/montserrat/500.css";
 import "@fontsource/montserrat/700.css";
 import Button from "@mui/material/Button";
-import Link from "@mui/material/Link";
+import { Link } from "react-router-dom";
 
 function LadinPage() {
   return (
@@ -62,19 +62,23 @@ function LadinPage() {
           </Box>
 
           <Box sx={{ margin: "5vh auto" }}>
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: "#04BFAF",
-                color: "#FFFFFF",
-                width: "200px",
-                "&:hover": {
-                  backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
-                },
-              }}
-            >
-              Cadastre-se
-            </Button>
+            {/**VAMOS USAR O Link PARA ACESSAR AS ROTAS AO CLICAR NOS BOTÕES E MUDAR DE PÁGINA */}
+            {/*ESTE LINK É UM COMPONENTE DO react-router-dom */}
+            <Link to={"/Cadastro"}>
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "#04BFAF",
+                  color: "#FFFFFF",
+                  width: "200px",
+                  "&:hover": {
+                    backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
+                  },
+                }}
+              >
+                Cadastre-se
+              </Button>
+            </Link>
           </Box>
         </Box>
 
@@ -262,19 +266,21 @@ function LadinPage() {
           </Box>
 
           <Box sx={{ margin: "5vh auto" }}>
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: "#E64097",
-                color: "#FFFFFF",
-                width: "200px",
-                "&:hover": {
-                  backgroundColor: "#04BFAF", // Altere a cor desejada para o efeito hover
-                },
-              }}
-            >
-              Cadastre-se
-            </Button>
+            <Link to={"/Cadastro"}>
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "#E64097",
+                  color: "#FFFFFF",
+                  width: "200px",
+                  "&:hover": {
+                    backgroundColor: "#04BFAF", // Altere a cor desejada para o efeito hover
+                  },
+                }}
+              >
+                Cadastre-se
+              </Button>
+            </Link>
           </Box>
           <Box sx={{ margin: "5vh auto" }}>
             <Typography
@@ -290,19 +296,21 @@ function LadinPage() {
           </Box>
 
           <Box sx={{ margin: "5vh auto" }}>
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: "#04BFAF",
-                color: "#FFFFFF",
-                width: "200px",
-                "&:hover": {
-                  backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
-                },
-              }}
-            >
-              Login
-            </Button>
+            <Link to={"/Login"}>
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "#04BFAF",
+                  color: "#FFFFFF",
+                  width: "200px",
+                  "&:hover": {
+                    backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
+                  },
+                }}
+              >
+                Login
+              </Button>
+            </Link>
           </Box>
         </Box>
 
