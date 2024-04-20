@@ -16,9 +16,83 @@ import Doadores from "./pages/verDoadores/verDoadores";
 import HistoricoDoacoes from "./pages/HitoricoDoacoes/HistoricoDoacoes";
 import EscolhendoDonatario from "./pages/EscolhendoDonatario/EscolhendoDonatario";
 import EsqueceuSenha from "./pages/EsqueceuAsenha/EsqueceuSenha";
+import { useEffect, useState } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+
+//variável que vai buscar do navegador a role do usuário logado
+const role = localStorage.getItem("role");
 
 //COMPONENTE
 function App() {
+  //HOOKS (estados)
+  const [loading, setLoading] = useState(true);
+  const [exibeLadinPage, setExibeLadinPage] = useState(true);
+
+  useEffect(() => {
+    const handleValidaToken = async () => {
+      setLoading(true);
+      const token = localStorage.getItem("token"); //variável que vai busar no navegador o token do usuário
+
+      //verifica se o token existe, se ele não existir
+      if (!token) {
+        setExibeLadinPage(true); //A tela LadinPage será exibida, por isso aquele estado se torna true
+      } else {
+        //se existir
+
+        //faz uma requisição get na API que valida este token
+        await axios
+          .get(`http://localhost:8080/api/v1/login/valida`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then(() => {
+            setLoading(false);
+            setExibeLadinPage(false);
+          })
+          .catch((erro) => {
+            //caso o token não passar pela validação
+            console.log(erro);
+            localStorage.removeItem("token"); //remove o token
+            setExibeLadinPage(true); //exibe a ladinPage novamente
+          });
+      }
+      setLoading(false);
+    };
+    handleValidaToken();
+  }, []);
+
+  //verificamos se o estado do hook loading está neste momento true
+  if (loading == true) {
+    //pois se estiver, será renderizado na tela um circulo indicando que a página está carregando
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100vw",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            margin: "5vh auto",
+            color: "#E64097",
+          }}
+        />
+      </Box>
+    );
+  }
+
+  //fazemos também uma verificação se o estado do hook exibeLadinPage é true
+  if (exibeLadinPage == true) {
+    //se for, exibe o componente LadinPage
+    <LadinPage />;
+  }
+
   return (
     <>
       <BrowserRouter>
