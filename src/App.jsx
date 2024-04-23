@@ -19,6 +19,7 @@ import EsqueceuSenha from "./pages/EsqueceuAsenha/EsqueceuSenha";
 import { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import axios from "axios";
 
 //variável que vai buscar do navegador a role do usuário logado
 const role = localStorage.getItem("role");

@@ -14,9 +14,47 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import Pesquisa from "../../../public/pesquisa.png";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function Login() {
   //logica
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+
+  const handleAutenticaLogin = () => {
+    if (!email || email == "") {
+      alert("Email não informado");
+    } else if (!senha || senha == "") {
+      alert("Senha não informada");
+    }
+    //requisição da Api
+    axios
+      .post(`http://localhost:8080/api/v1/login/executa`, {
+        emailPessoa: email,
+        senhaPessoa: senha,
+      })
+      .then((response) => {
+        console.log(response.data);
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("role", response.data.role);
+        localStorage.setItem("email", response.data.email);
+
+        console.log();
+
+        if (response.data.role === "DOADORA") {
+          window.location.href = "/HomeDoador";
+        } else if (response.data.role === "DONATARIA") {
+          window.location.href = "/HomeDonatario";
+        }
+      })
+      .catch((erro) => {
+        localStorage.removeItem("token");
+        console.log(erro);
+
+        alert("Ocorreu um erro ao fazer login, verifique email e senha");
+      });
+  };
 
   return (
     <>
@@ -107,6 +145,7 @@ function Login() {
                 backgroundColor: "#FFFFFF",
                 borderColor: "#FFFFFF",
               }}
+              onChange={(event) => setEmail(event.target.value)}
               id="outlined-basic"
               label="Email"
               variant="outlined"
@@ -117,6 +156,7 @@ function Login() {
                 width: "30vw",
                 backgroundColor: "#FFFFFF",
               }}
+              onChange={(event) => setSenha(event.target.value)}
               id="outlined-basic"
               type="password"
               label="Senha"
@@ -137,6 +177,7 @@ function Login() {
 
             <Button
               variant="contained"
+              onClick={handleAutenticaLogin}
               sx={{
                 margin: "5vh auto 2vh",
                 width: "20vw",
