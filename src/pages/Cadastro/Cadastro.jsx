@@ -7,11 +7,95 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Pesquisa from "../../../public/pesquisa.png";
-import { MarginSharp } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function Cadastro() {
+  const [form, setForm] = useState({
+    nomePessoa: "",
+    emailPessoa: "",
+    documentoPessoa: "",
+    dataNascimentoPessoa: "",
+    rolePessoa: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [tipoSelecionado, setSelecionado] = useState("");
+  const [roles, setRoles] = useState([]);
+
+  const handleCadastroPessoa = () => {
+    setLoading(true);
+
+    if (
+      form.nomePessoa == "" ||
+      form.emailPessoa == "" ||
+      form.documentoPessoa == "" ||
+      form.dataNascimentoPessoa == "" ||
+      form.rolePessoa == ""
+    ) {
+      alert("Os campos não foram preenchidos corretamente, revise-os");
+    } else {
+      axios
+        .post(`http://localhost:8080/api/v1/pessoa`, {
+          nomePessoa: form.nomePessoa,
+          emailPessoa: form.emailPessoa,
+          documentoPessoa: form.documentoPessoa,
+          dataNascimentoPessoa: form.dataNascimentoPessoa,
+          rolePessoa: form.rolePessoa,
+        })
+        .then((response) => {
+          setLoading(false);
+          console.log(response.data);
+          alert("Usuário cadastrado com sucesso");
+        })
+        .catch((erro) => {
+          console.error(erro);
+          alert("Ocorreu um erro ao cadastrar");
+        });
+    }
+    setLoading(false);
+  };
+
+  //BUSCANDO AS ROLES PARA COLOCAR NO SELECT
+  const handleBuscaRoleApi = async () => {
+    setLoading(true);
+    const token = localStorage.getItem("token"); //pega o token gerado do Browser e armazena na variável token
+    if (!token) {
+      alert("token não encontrado");
+    } else {
+      await axios
+        .get(`http://localhost:8080/api/v1/pessoa/role`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          setRoles(response.data);
+          setLoading(false);
+        })
+        .catch((erro) => {
+          console.log(erro);
+          alert("Ocorreu um erro ao buscar a role");
+        });
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    handleBuscaRoleApi();
+  }, []);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   //MASCARA CNPJ
   const cnpjMask = (value) => {
     return value
@@ -33,6 +117,39 @@ function Cadastro() {
     return cpf;
   };
 
+  const formatInputDate = (input) => {
+    // Aplicando a máscara (DD/MM/AAAA) usando REGEX
+    return input
+      .replace(/\D/g, "") // Remove todos os caracteres que não são dígitos
+      .replace(/(\d{2})(\d)/, "$1/$2") // Coloca uma barra após os dois primeiros dígitos
+      .replace(/(\d{2})(\d)/, "$1/$2") // Coloca uma barra após os próximos dois dígitos
+      .slice(0, 10); // Limita a string a 10 caracteres (DD/MM/AAAA)
+  };
+
+  //verificamos se o estado do hook loading está neste momento true
+  if (loading && loading == true) {
+    //pois se estiver, será renderizado na tela um circulo indicando que a página está carregando
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100vw",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            margin: "5vh auto",
+            color: "#E64097",
+          }}
+        />
+      </Box>
+    );
+  }
+  console.log(roles);
   return (
     <>
       <Box
@@ -149,6 +266,9 @@ function Cadastro() {
                   backgroundColor: "#FFFFFF",
                   margin: "2vh auto",
                 }}
+                name="nomePessoa"
+                onChange={handleChange}
+                value={form.nomePessoa}
                 id="outlined-basic"
                 label="Nome"
                 variant="outlined"
@@ -159,6 +279,9 @@ function Cadastro() {
                   backgroundColor: "#FFFFFF",
                   margin: "2vh auto",
                 }}
+                name="emailPessoa"
+                onChange={handleChange}
+                value={form.emailPessoa}
                 id="outlined-basic"
                 label="Email"
                 variant="outlined"
@@ -170,41 +293,9 @@ function Cadastro() {
                   backgroundColor: "#FFFFFF",
                   margin: "2vh auto",
                 }}
-                id="outlined-basic"
-                label="CPF"
-                placeholder="999.999.999-99"
-                variant="outlined"
-              />
-
-              <Typography
-                sx={{
-                  fontSize: "16px",
-                  fontWeight: "200",
-                  fontFamily: "montserrat",
-                  marginLeft: "60px",
-                  color: "#04BFAF",
-                }}
-              >
-                Se você for uma ONG ou empresa *
-              </Typography>
-              <TextField
-                sx={{
-                  width: "25vw",
-                  backgroundColor: "#FFFFFF",
-                  margin: "1vh auto",
-                }}
-                id="outlined-basic"
-                placeholder="99.999.999/9999-99"
-                label="CNPJ"
-                variant="outlined"
-              />
-
-              <TextField
-                sx={{
-                  width: "25vw",
-                  backgroundColor: "#FFFFFF",
-                  margin: "3vh auto",
-                }}
+                name="dataNascimentoPessoa"
+                onChange={handleChange}
+                value={formatInputDate(form.dataNascimentoPessoa)}
                 id="outlined-basic"
                 label="Data de Nascimento"
                 placeholder="DD/MM/AAAA"
@@ -228,9 +319,10 @@ function Cadastro() {
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    // value={age}
+                    name="rolePessoa"
+                    onChange={handleChange}
+                    value={form.rolePessoa}
                     label="Age"
-                    //   onChange={handleChange}
                     sx={{ width: "15vw" }}
                   >
                     <MenuItem value={"doador"}>Doador</MenuItem>
@@ -238,7 +330,74 @@ function Cadastro() {
                   </Select>
                 </FormControl>
               </Box>
+
+              {/**VERIFICAÇÃO DO TIPO DE PESSOA */}
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  margin: "2vh 46px",
+                }}
+              >
+                <FormControl fullWidth>
+                  <InputLabel
+                    id="demo-simple-select-label"
+                    sx={{ margin: "auto" }}
+                  >
+                    Tipo de Doador/Donatário
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    name="rolePessoa"
+                    onChange={(event) => setSelecionado(event.target.value)}
+                    value={tipoSelecionado}
+                    label="Age"
+                    sx={{ width: "15vw" }}
+                  >
+                    <MenuItem value={"cnpj"}>Empresa/ONG</MenuItem>
+                    <MenuItem value={"cpf"}>Pessoa Física</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+
+              {tipoSelecionado === "cnpj" ? (
+                <TextField
+                  sx={{
+                    width: "25vw",
+                    backgroundColor: "#FFFFFF",
+                    margin: "1vh auto",
+                  }}
+                  name="documentoPessoa"
+                  onChange={handleChange}
+                  value={cnpjMask(form.documentoPessoa)}
+                  id="outlined-basic"
+                  placeholder="99.999.999/9999-99"
+                  label="CNPJ"
+                  variant="outlined"
+                />
+              ) : tipoSelecionado === "cpf" ? (
+                <TextField
+                  sx={{
+                    width: "25vw",
+                    backgroundColor: "#FFFFFF",
+                    margin: "2vh auto",
+                  }}
+                  name="documentoPessoa"
+                  onChange={handleChange}
+                  value={formatarCPF(form.documentoPessoa)}
+                  id="outlined-basic"
+                  label="CPF"
+                  placeholder="999.999.999-99"
+                  variant="outlined"
+                />
+              ) : (
+                <></>
+              )}
+
+              {/**BOTÃO */}
               <Button
+                onClick={handleCadastroPessoa}
                 variant="contained"
                 sx={{
                   margin: "5vh auto",

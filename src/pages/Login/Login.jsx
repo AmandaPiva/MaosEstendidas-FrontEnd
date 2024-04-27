@@ -39,9 +39,6 @@ function Login() {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("role", response.data.role);
         localStorage.setItem("email", response.data.email);
-
-        console.log();
-
         if (response.data.role === "DOADORA") {
           window.location.href = "/HomeDoador";
         } else if (response.data.role === "DONATARIA") {
