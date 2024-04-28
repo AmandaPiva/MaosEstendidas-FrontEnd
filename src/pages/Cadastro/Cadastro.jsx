@@ -22,8 +22,17 @@ function Cadastro() {
     rolePessoa: "",
   });
   const [loading, setLoading] = useState(false);
+  const [selectRole, setSelectRole] = useState("");
   const [tipoSelecionado, setSelecionado] = useState("");
   const [roles, setRoles] = useState([]);
+
+  const handleChange = (event) => {
+    setRoles(event.target.value);
+  };
+
+  const handleChangeRole = (event) => {
+    setSelectRole(event.target.value);
+  };
 
   const handleCadastroPessoa = () => {
     setLoading(true);
@@ -33,7 +42,7 @@ function Cadastro() {
       form.emailPessoa == "" ||
       form.documentoPessoa == "" ||
       form.dataNascimentoPessoa == "" ||
-      form.rolePessoa == ""
+      selectRole == ""
     ) {
       alert("Os campos não foram preenchidos corretamente, revise-os");
     } else {
@@ -43,12 +52,13 @@ function Cadastro() {
           emailPessoa: form.emailPessoa,
           documentoPessoa: form.documentoPessoa,
           dataNascimentoPessoa: form.dataNascimentoPessoa,
-          rolePessoa: form.rolePessoa,
+          rolePessoa: selectRole,
         })
         .then((response) => {
           setLoading(false);
           console.log(response.data);
           alert("Usuário cadastrado com sucesso");
+          window.location.href = "/Endereco";
         })
         .catch((erro) => {
           console.error(erro);
@@ -88,7 +98,7 @@ function Cadastro() {
     handleBuscaRoleApi();
   }, []);
 
-  const handleChange = (event) => {
+  const handleChangeForm = (event) => {
     const { name, value } = event.target;
     setForm((prev) => ({
       ...prev,
@@ -149,7 +159,11 @@ function Cadastro() {
       </Box>
     );
   }
-  console.log(roles);
+  console.log(form.nomePessoa);
+  console.log(form.emailPessoa);
+  console.log(form.documentoPessoa);
+  console.log(form.dataNascimentoPessoa);
+  console.log(selectRole);
   return (
     <>
       <Box
@@ -267,7 +281,7 @@ function Cadastro() {
                   margin: "2vh auto",
                 }}
                 name="nomePessoa"
-                onChange={handleChange}
+                onChange={handleChangeForm}
                 value={form.nomePessoa}
                 id="outlined-basic"
                 label="Nome"
@@ -280,7 +294,7 @@ function Cadastro() {
                   margin: "2vh auto",
                 }}
                 name="emailPessoa"
-                onChange={handleChange}
+                onChange={handleChangeForm}
                 value={form.emailPessoa}
                 id="outlined-basic"
                 label="Email"
@@ -294,7 +308,7 @@ function Cadastro() {
                   margin: "2vh auto",
                 }}
                 name="dataNascimentoPessoa"
-                onChange={handleChange}
+                onChange={handleChangeForm}
                 value={formatInputDate(form.dataNascimentoPessoa)}
                 id="outlined-basic"
                 label="Data de Nascimento"
@@ -318,15 +332,25 @@ function Cadastro() {
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
-                    id="demo-simple-select"
+                    id="demo-simple-select1"
                     name="rolePessoa"
-                    onChange={handleChange}
-                    value={form.rolePessoa}
-                    label="Age"
+                    onChange={handleChangeRole}
+                    value={selectRole}
+                    label="role"
                     sx={{ width: "15vw" }}
                   >
-                    <MenuItem value={"doador"}>Doador</MenuItem>
-                    <MenuItem value={"donatario"}>Donatario</MenuItem>
+                    {roles.map((roleItem) => {
+                      return (
+                        <MenuItem
+                          key={roleItem.idPessoaRole}
+                          value={roleItem.idPessoaRole}
+                        >
+                          {roleItem.rolePessoa}
+                        </MenuItem>
+                      );
+                    })}
+                    {/* <MenuItem value={"doador"}>Doador</MenuItem>
+                    <MenuItem value={"donatario"}>Donatario</MenuItem> */}
                   </Select>
                 </FormControl>
               </Box>
@@ -369,7 +393,7 @@ function Cadastro() {
                     margin: "1vh auto",
                   }}
                   name="documentoPessoa"
-                  onChange={handleChange}
+                  onChange={handleChangeForm}
                   value={cnpjMask(form.documentoPessoa)}
                   id="outlined-basic"
                   placeholder="99.999.999/9999-99"
@@ -384,7 +408,7 @@ function Cadastro() {
                     margin: "2vh auto",
                   }}
                   name="documentoPessoa"
-                  onChange={handleChange}
+                  onChange={handleChangeForm}
                   value={formatarCPF(form.documentoPessoa)}
                   id="outlined-basic"
                   label="CPF"

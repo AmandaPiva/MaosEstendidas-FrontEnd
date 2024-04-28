@@ -2,8 +2,136 @@ import { Typography, Box } from "@mui/material";
 import Logo from "../../../public/logo.png";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import { useState } from "react";
+import axios from "axios";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function Endereco() {
+  // Função para validar um CEP utilizando REGEX
+
+  const formatarCEP = (cep) => {
+    // Remove todos os caracteres que não são dígitos
+    cep = cep.replace(/\D/g, "");
+
+    // Adiciona um hífen depois dos primeiros cinco dígitos, se necessário
+    cep = cep.replace(/^(\d{5})(\d)/, "$1-$2");
+
+    // Limita o tamanho máximo do CEP para 9 caracteres
+    cep = cep.slice(0, 9);
+
+    return cep;
+  };
+  // Lista de estados brasileiros
+  const estados = [
+    { sigla: "AC", nome: "Acre" },
+    { sigla: "AL", nome: "Alagoas" },
+    { sigla: "AP", nome: "Amapá" },
+    { sigla: "AM", nome: "Amazonas" },
+    { sigla: "BA", nome: "Bahia" },
+    { sigla: "CE", nome: "Ceará" },
+    { sigla: "DF", nome: "Distrito Federal" },
+    { sigla: "ES", nome: "Espírito Santo" },
+    { sigla: "GO", nome: "Goiás" },
+    { sigla: "MA", nome: "Maranhão" },
+    { sigla: "MT", nome: "Mato Grosso" },
+    { sigla: "MS", nome: "Mato Grosso do Sul" },
+    { sigla: "MG", nome: "Minas Gerais" },
+    { sigla: "PA", nome: "Pará" },
+    { sigla: "PB", nome: "Paraíba" },
+    { sigla: "PR", nome: "Paraná" },
+    { sigla: "PE", nome: "Pernambuco" },
+    { sigla: "PI", nome: "Piauí" },
+    { sigla: "RJ", nome: "Rio de Janeiro" },
+    { sigla: "RN", nome: "Rio Grande do Norte" },
+    { sigla: "RS", nome: "Rio Grande do Sul" },
+    { sigla: "RO", nome: "Rondônia" },
+    { sigla: "RR", nome: "Roraima" },
+    { sigla: "SC", nome: "Santa Catarina" },
+    { sigla: "SP", nome: "São Paulo" },
+    { sigla: "SE", nome: "Sergipe" },
+    { sigla: "TO", nome: "Tocantins" },
+  ];
+
+  const [form, setForm] = useState({
+    logradouro: "",
+    bairro: "",
+    cidade: "",
+    cep: "",
+    numero: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [exibeBotaoProximosPassos, setExibeBotaoProximosPassos] =
+    useState(false);
+
+  const handleSetForm = (event) => {
+    const { name, value } = event.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleCadastroEndereco = () => {
+    setLoading(true);
+    if (
+      form.logradouro == "" ||
+      form.bairro == "" ||
+      form.cidade == "" ||
+      form.cep == "" ||
+      form.numero == ""
+    ) {
+      alert("Os campos não foram preenchidos corretamente, revise-os");
+    } else {
+      axios
+        .post(`http://localhost:8080/api/v1/endereco`, {
+          logradouro: form.logradouro,
+          bairro: form.bairro,
+          cidade: form.cidade,
+          cep: form.cep,
+          numero: form.numero,
+        })
+        .then((response) => {
+          setLoading(false);
+          console.log(response.data);
+          alert("Endereço cadastrado com sucesso");
+          setExibeBotaoProximosPassos(true);
+        })
+        .catch((erro) => {
+          console.log(erro);
+          alert("Ocorreu um erro ao cadastrar endereço");
+        });
+    }
+    setLoading(false);
+  };
+
+  //verificamos se o estado do hook loading está neste momento true
+  if (loading && loading == true) {
+    //pois se estiver, será renderizado na tela um circulo indicando que a página está carregando
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100vw",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            margin: "5vh auto",
+            color: "#E64097",
+          }}
+        />
+      </Box>
+    );
+  }
+
   return (
     <>
       <Box
@@ -143,19 +271,10 @@ function Endereco() {
                   backgroundColor: "#FFFFFF",
                 }}
                 id="outlined-basic"
+                name="logradouro"
+                value={form.logradouro}
+                onChange={handleSetForm}
                 label="Logradouro"
-                variant="outlined"
-              />
-
-              <TextField
-                sx={{
-                  width: "10vw",
-                  backgroundColor: "#FFFFFF",
-                  marginTop: "2vh",
-                }}
-                id="outlined-basic"
-                type="number"
-                label="Número"
                 variant="outlined"
               />
 
@@ -166,6 +285,9 @@ function Endereco() {
                   marginTop: "2vh",
                 }}
                 id="outlined-basic"
+                value={form.bairro}
+                onChange={handleSetForm}
+                name="bairro"
                 label="Bairro"
                 variant="outlined"
               />
@@ -176,6 +298,9 @@ function Endereco() {
                   marginTop: "2vh",
                 }}
                 id="outlined-basic"
+                value={form.cidade}
+                onChange={handleSetForm}
+                name="cidade"
                 label="Cidade"
                 variant="outlined"
               />
@@ -194,21 +319,55 @@ function Endereco() {
                   backgroundColor: "#FFFFFF",
                   marginTop: "3.5vh",
                 }}
+                placeholder="99999-999"
+                value={formatarCEP(form.cep)}
+                onChange={handleSetForm}
+                name="cep"
                 id="outlined-basic"
                 label="CEP"
-                type="number"
+                type="text"
                 variant="outlined"
               />
+
               <TextField
                 sx={{
-                  width: "25vw",
+                  width: "10vw",
                   backgroundColor: "#FFFFFF",
                   marginTop: "2vh",
                 }}
                 id="outlined-basic"
-                label="Estado"
+                name="numero"
+                value={form.numero}
+                onChange={handleSetForm}
+                type="number"
+                label="Número"
                 variant="outlined"
               />
+              {/* <FormControl fullWidth>
+                <InputLabel
+                  id="demo-simple-select-label"
+                  sx={{ margin: "2vh auto" }}
+                >
+                  Estado
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  // onChange={(event) => setSelecionado(event.target.value)}
+                  // value={tipoSelecionado}
+                  value={""}
+                  label="Age"
+                  sx={{ width: "15vw", marginTop: "2vh" }}
+                >
+                  {estados.map((estadosBR) => {
+                    return (
+                      <MenuItem key={estadosBR.sigla} value={estadosBR.sigla}>
+                        {estadosBR.nome} - {estadosBR.sigla}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl> */}
 
               {/*BOTOES*/}
               <Box
@@ -216,6 +375,7 @@ function Endereco() {
               >
                 <Button
                   variant="contained"
+                  onClick={handleCadastroEndereco}
                   sx={{
                     height: "5vh",
                     width: "8vw",
@@ -227,20 +387,26 @@ function Endereco() {
                 >
                   Cadastrar
                 </Button>
-                {/*FAZER VERIFICAÇÃO DE HABILITAR O BOTÃO DE PROXIMOS PASSOS SÓ APÓS CADASTRAR */}
-                <Button
-                  variant="contained"
-                  sx={{
-                    height: "5vh",
-                    marginLeft: "2vh",
-                    backgroundColor: "#E64097",
-                    "&:hover": {
-                      backgroundColor: "#04BFAF", // Altere a cor desejada para o efeito hover
-                    },
-                  }}
-                >
-                  Próximos Passos
-                </Button>
+                {/**FAZER VERIFICAÇÃO DE HABILITAR O BOTÃO DE PROXIMOS PASSOS SÓ APÓS CADASTRAR */}
+                {exibeBotaoProximosPassos === true ? (
+                  <Button
+                    variant="contained"
+                    onClick={() => (location.href = "/Cadastro")}
+                    sx={{
+                      height: "5vh",
+                      marginLeft: "2vh",
+                      backgroundColor: "#E64097",
+                      "&:hover": {
+                        backgroundColor: "#04BFAF", // Altere a cor desejada para o efeito hover
+                      },
+                    }}
+                  >
+                    Próximos Passos
+                  </Button>
+                ) : (
+                  <></>
+                )}
+                {/* */}
               </Box>
             </Box>
           </Box>
