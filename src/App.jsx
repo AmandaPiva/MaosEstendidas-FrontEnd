@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login/Login";
+import Perfil from "./pages/Perfil/Perfil";
 import LadinPage from "./pages/LadinPage/LadinPage";
 import Cadastro from "./pages/Cadastro/Cadastro";
 import Endereco from "./pages/Endereco/Endereco";
@@ -100,12 +101,10 @@ function App() {
         <Routes>
           <Route path={"/"} element={<LadinPage />} />
           <Route path={"/Login"} element={<Login />} />
+          <Route path={"/Perfil"} element={<Perfil />} />
           <Route path={"/Cadastro"} element={<Cadastro />} />
           <Route path={"/Endereco"} element={<Endereco />} />
-          <Route
-            path={"/CadastroNecessidade"}
-            element={<CadastroNecessidade />}
-          />
+          <Route path={"/CadastroNecessidade"} element={<CadastroNecessidade />} />
           <Route path={"/HomeDonatario"} element={<HomeDonatario />} />
           <Route path={"/HomeDoador"} element={<HomeDoador />} />
           <Route path={"/SenhaAcesso"} element={<SenhaAcesso />} />

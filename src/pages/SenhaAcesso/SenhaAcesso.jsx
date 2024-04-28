@@ -1,9 +1,9 @@
 import { Box, Typography } from "@mui/material";
-import Logo from "../../../public/logo.png";
+import Logo from "../../public/logo.png";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 function SenhaAcesso() {
   return (
@@ -28,16 +28,21 @@ function SenhaAcesso() {
             alignItems: "center",
           }}
         >
-          <Box
-            sx={{ position: "relative", width: "100%", textAlign: "center" }}
-          >
+          <Box sx={{ position: "relative", width: "100%", height: "50px" }}>
+            <Box sx={{marginLeft: "5vw" }}>
+              <Button variant="outlined">Voltar</Button>
+            </Box>
+
             <Typography
               sx={{
                 fontSize: "36px",
                 fontWeight: "600",
                 color: "#E64097",
                 fontFamily: "montserrat",
-                display: "inline-block", // Necessário para centralizar corretamente a frase
+                position: "absolute",
+                left: "50%",
+                top: "50%",
+                transform: "translate(-50%, -50%)", // Isso garante que o título esteja perfeitamente centralizado
               }}
             >
               Crie uma senha de acesso
@@ -146,19 +151,24 @@ function SenhaAcesso() {
 
               <Box
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "end",
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'end',
                   color: "#E64097",
                   fontFamily: "montserrat",
-                  margin: "auto",
+                  margin: "auto"
                 }}
               >
-                <FormControlLabel control={<Checkbox />} />
+                <FormControlLabel
+                  control={<Checkbox />}
+                />
                 Aceito
               </Box>
+
+
             </Box>
           </Box>
+
         </Box>
       </Box>
     </>
