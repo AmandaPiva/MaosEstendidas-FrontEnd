@@ -7,9 +7,12 @@ function ModalCadastroEndereco() {
       <Box
         sx={{
           alignItems: "center",
+          margin: "auto",
           display: "flex",
           flexDirection: "column",
-          width: "100vw",
+          width: "50vw",
+          backgroundColor: "#FFFFFF",
+          padding: "4rem",
         }}
       >
         <Typography
@@ -24,11 +27,13 @@ function ModalCadastroEndereco() {
         </Typography>
         <Button
           variant="contained"
+          // onClick={() => window.location.reload()}
           sx={{
             backgroundColor: "#E64097",
             "&:hover": {
               backgroundColor: "#04BFAF", // Altere a cor desejada para o efeito hover
             },
+            marginTop: "5vh",
           }}
         >
           OK

@@ -9,6 +9,8 @@ import InputLabel from "@mui/material/InputLabel";
 import { useState } from "react";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
+import Modal from "@mui/material/Modal";
+import ModalCadastroEndereco from "../../Components/modalCadastroEndereco";
 
 function Endereco() {
   // Função para validar um CEP utilizando REGEX
@@ -60,12 +62,22 @@ function Endereco() {
     logradouro: "",
     bairro: "",
     cidade: "",
+    estado: "",
     cep: "",
     numero: "",
   });
   const [loading, setLoading] = useState(false);
   const [exibeBotaoProximosPassos, setExibeBotaoProximosPassos] =
     useState(false);
+  const [viaCep, setViaCep] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpen = () => {
+    setOpenModal(true);
+  };
+  const handleClose = () => {
+    setOpenModal(false);
+  };
 
   const handleSetForm = (event) => {
     const { name, value } = event.target;
@@ -75,12 +87,17 @@ function Endereco() {
     }));
   };
 
+  const handleChangeEstado = (event) => {
+    setForm({ ...form, estado: event.target.value });
+  };
+
   const handleCadastroEndereco = () => {
     setLoading(true);
     if (
       form.logradouro == "" ||
       form.bairro == "" ||
       form.cidade == "" ||
+      form.estado == "" ||
       form.cep == "" ||
       form.numero == ""
     ) {
@@ -91,13 +108,14 @@ function Endereco() {
           logradouro: form.logradouro,
           bairro: form.bairro,
           cidade: form.cidade,
+          estado: form.estado,
           cep: form.cep,
           numero: form.numero,
         })
         .then((response) => {
           setLoading(false);
           console.log(response.data);
-          alert("Endereço cadastrado com sucesso");
+          handleOpen();
           setExibeBotaoProximosPassos(true);
         })
         .catch((erro) => {
@@ -105,6 +123,24 @@ function Endereco() {
           alert("Ocorreu um erro ao cadastrar endereço");
         });
     }
+    setLoading(false);
+  };
+
+  {
+    /**CRIA ENDEREÇO VIA CEP */
+  }
+  const handleCriaEnderecoViaCep = async () => {
+    setLoading(true);
+    await axios
+      .get(`http://localhost:8080/api/v1/endereco/viacep/${viaCep}`)
+      .then(() => {
+        setLoading(false);
+        setExibeBotaoProximosPassos(true);
+      })
+      .catch((erro) => {
+        console.log(erro);
+        alert("Ocorreu um erro ao cadastrar um endereço pelo CEP informado");
+      });
     setLoading(false);
   };
 
@@ -134,6 +170,16 @@ function Endereco() {
 
   return (
     <>
+      {/**MODAL QUE EXIBE MENSAGEM DE ENDEREÇO CADASTRADO COM SUCESSO */}
+      <Modal
+        open={openModal}
+        onClose={handleClose}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <ModalCadastroEndereco />
+      </Modal>
+
       <Box
         sx={{
           display: "flex",
@@ -157,7 +203,7 @@ function Endereco() {
               textAlign: "center",
             }}
           >
-            Cadastro do endereço
+            Vamos começar cadastrando seu endereço!
           </Typography>
         </Box>
 
@@ -194,6 +240,9 @@ function Endereco() {
                   backgroundColor: "#FFFFFF",
                   marginTop: "5vh",
                 }}
+                name="cep"
+                value={viaCep}
+                onChange={(event) => setViaCep(event.target.value)}
                 id="outlined-basic"
                 label="CEP"
                 variant="outlined"
@@ -208,6 +257,7 @@ function Endereco() {
             >
               <Button
                 variant="contained"
+                onClick={handleCriaEnderecoViaCep}
                 sx={{
                   width: "25vw",
                   margin: "5vh 100px",
@@ -305,6 +355,7 @@ function Endereco() {
                 variant="outlined"
               />
             </Box>
+
             {/**LADO DIREITO */}
             <Box
               sx={{
@@ -313,11 +364,36 @@ function Endereco() {
                 paddingLeft: "5vw",
               }}
             >
+              <FormControl fullWidth>
+                <InputLabel
+                  id="demo-simple-select-label"
+                  sx={{ margin: "2vh auto" }}
+                >
+                  Estado
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  name="estado"
+                  onChange={handleChangeEstado}
+                  value={form.estado}
+                  label="estado"
+                  sx={{ width: "15vw", marginTop: "2vh" }}
+                >
+                  {estados.map((estadosBR) => {
+                    return (
+                      <MenuItem key={estadosBR.sigla} value={estadosBR.sigla}>
+                        {estadosBR.nome} - {estadosBR.sigla}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
               <TextField
                 sx={{
                   width: "25vw",
                   backgroundColor: "#FFFFFF",
-                  marginTop: "3.5vh",
+                  marginTop: "2vh",
                 }}
                 placeholder="99999-999"
                 value={formatarCEP(form.cep)}
@@ -343,31 +419,6 @@ function Endereco() {
                 label="Número"
                 variant="outlined"
               />
-              {/* <FormControl fullWidth>
-                <InputLabel
-                  id="demo-simple-select-label"
-                  sx={{ margin: "2vh auto" }}
-                >
-                  Estado
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  // onChange={(event) => setSelecionado(event.target.value)}
-                  // value={tipoSelecionado}
-                  value={""}
-                  label="Age"
-                  sx={{ width: "15vw", marginTop: "2vh" }}
-                >
-                  {estados.map((estadosBR) => {
-                    return (
-                      <MenuItem key={estadosBR.sigla} value={estadosBR.sigla}>
-                        {estadosBR.nome} - {estadosBR.sigla}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl> */}
 
               {/*BOTOES*/}
               <Box
