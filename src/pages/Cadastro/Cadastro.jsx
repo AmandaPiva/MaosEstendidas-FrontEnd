@@ -211,7 +211,7 @@ function Cadastro() {
               margin: "10vh auto 5vh",
             }}
           >
-            Cadastre -se manualmente ao lado
+            Coloque seus dados manualmente ao lado
           </Typography>
           <Typography
             sx={{
@@ -278,7 +278,7 @@ function Cadastro() {
                 sx={{
                   width: "25vw",
                   backgroundColor: "#FFFFFF",
-                  margin: "2vh auto",
+                  margin: "1vh auto",
                 }}
                 name="nomePessoa"
                 onChange={handleChangeForm}
@@ -291,7 +291,7 @@ function Cadastro() {
                 sx={{
                   width: "25vw",
                   backgroundColor: "#FFFFFF",
-                  margin: "2vh auto",
+                  margin: "1vh auto",
                 }}
                 name="emailPessoa"
                 onChange={handleChangeForm}
@@ -305,7 +305,7 @@ function Cadastro() {
                 sx={{
                   width: "25vw",
                   backgroundColor: "#FFFFFF",
-                  margin: "2vh auto",
+                  margin: "1vh auto",
                 }}
                 name="dataNascimentoPessoa"
                 onChange={handleChangeForm}
@@ -320,7 +320,7 @@ function Cadastro() {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  margin: "2vh 46px",
+                  margin: "1vh 53px",
                 }}
               >
                 <FormControl fullWidth>
@@ -360,7 +360,7 @@ function Cadastro() {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  margin: "2vh 46px",
+                  margin: "1vh 53px",
                 }}
               >
                 <FormControl fullWidth>
@@ -401,20 +401,62 @@ function Cadastro() {
                   variant="outlined"
                 />
               ) : tipoSelecionado === "cpf" ? (
-                <TextField
-                  sx={{
-                    width: "25vw",
-                    backgroundColor: "#FFFFFF",
-                    margin: "2vh auto",
-                  }}
-                  name="documentoPessoa"
-                  onChange={handleChangeForm}
-                  value={formatarCPF(form.documentoPessoa)}
-                  id="outlined-basic"
-                  label="CPF"
-                  placeholder="999.999.999-99"
-                  variant="outlined"
-                />
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  <TextField
+                    sx={{
+                      width: "25vw",
+                      backgroundColor: "#FFFFFF",
+                      margin: "1vh auto",
+                    }}
+                    name="documentoPessoa"
+                    onChange={handleChangeForm}
+                    value={formatarCPF(form.documentoPessoa)}
+                    id="outlined-basic"
+                    label="CPF"
+                    placeholder="999.999.999-99"
+                    variant="outlined"
+                  />
+                  {/**ESPAÇO CRIAR SENHA */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      margin: "3vh auto",
+                      borderStyle: "solid",
+                      borderColor: "#E64097",
+                      borderWidth: "1px",
+                      width: "25vw",
+                    }}
+                  >
+                    <Typography sx={{ padding: "8px" }}>
+                      Crie uma senha de acesso!
+                    </Typography>
+                    <TextField
+                      sx={{
+                        width: "15vw",
+                        backgroundColor: "#FFFFFF",
+                        margin: "1vh",
+                      }}
+                      name="senhaPessoa"
+                      id="outlined-basic"
+                      label="Crie uma senha"
+                      type="password"
+                      variant="outlined"
+                    />
+                    <TextField
+                      sx={{
+                        width: "15vw",
+                        backgroundColor: "#FFFFFF",
+                        margin: "1vh",
+                      }}
+                      name="confirmeSuaSenha"
+                      id="outlined-basic"
+                      label="Confirme sua senha"
+                      type="password"
+                      variant="outlined"
+                    />
+                  </Box>
+                </Box>
               ) : (
                 <></>
               )}

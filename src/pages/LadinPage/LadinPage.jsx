@@ -65,7 +65,7 @@ function LadinPage() {
           <Box sx={{ margin: "5vh auto" }}>
             {/**VAMOS USAR O Link PARA ACESSAR AS ROTAS AO CLICAR NOS BOTÕES E MUDAR DE PÁGINA */}
             {/*ESTE LINK É UM COMPONENTE DO react-router-dom */}
-            <Link to={"/Cadastro"}>
+            <Link to={"/Endereco"}>
               <Button
                 variant="contained"
                 sx={{
@@ -267,7 +267,7 @@ function LadinPage() {
           </Box>
 
           <Box sx={{ margin: "5vh auto" }}>
-            <Link to={"/Cadastro"}>
+            <Link to={"/Endereco"}>
               <Button
                 variant="contained"
                 sx={{

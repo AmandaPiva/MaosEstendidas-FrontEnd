@@ -115,7 +115,7 @@ function Endereco() {
         .then((response) => {
           setLoading(false);
           console.log(response.data);
-          handleOpen();
+          alert("Endereço cadastrado com sucesso!");
           setExibeBotaoProximosPassos(true);
         })
         .catch((erro) => {
@@ -135,6 +135,7 @@ function Endereco() {
       .get(`http://localhost:8080/api/v1/endereco/viacep/${viaCep}`)
       .then(() => {
         setLoading(false);
+        alert("Endereço cadastrado com sucesso!");
         setExibeBotaoProximosPassos(true);
       })
       .catch((erro) => {
@@ -190,7 +191,9 @@ function Endereco() {
       >
         <Box sx={{ display: "flex", flexDirection: "row" }}>
           <Box sx={{ marginTop: "5.5vh", marginLeft: "5vw" }}>
-            <Button variant="outlined">Voltar</Button>
+            <Button onClick={() => (location.href = "/")} variant="outlined">
+              Voltar
+            </Button>
           </Box>
 
           <Typography
