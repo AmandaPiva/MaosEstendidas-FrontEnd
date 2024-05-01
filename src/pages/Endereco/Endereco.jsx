@@ -11,6 +11,7 @@ import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import Modal from "@mui/material/Modal";
 import ModalCadastroEndereco from "../../Components/modalCadastroEndereco";
+import Cadastro from "../Cadastro/Cadastro";
 
 function Endereco() {
   // Função para validar um CEP utilizando REGEX
@@ -71,6 +72,8 @@ function Endereco() {
     useState(false);
   const [viaCep, setViaCep] = useState("");
   const [openModal, setOpenModal] = useState(false);
+  const [enderecoSalvo, setEnderecoSalvo] = useState(null);
+  const [exibeCadastro, setExibeCadastro] = useState(false);
 
   const handleOpen = () => {
     setOpenModal(true);
@@ -114,8 +117,8 @@ function Endereco() {
         })
         .then((response) => {
           setLoading(false);
-          console.log(response.data);
-          alert("Endereço cadastrado com sucesso!");
+          setEnderecoSalvo(response.data);
+
           setExibeBotaoProximosPassos(true);
         })
         .catch((erro) => {
@@ -125,6 +128,7 @@ function Endereco() {
     }
     setLoading(false);
   };
+  console.log("Passou aqui", enderecoSalvo);
 
   {
     /**CRIA ENDEREÇO VIA CEP */
@@ -133,16 +137,22 @@ function Endereco() {
     setLoading(true);
     await axios
       .get(`http://localhost:8080/api/v1/endereco/viacep/${viaCep}`)
-      .then(() => {
+      .then((response) => {
+        setEnderecoSalvo(response.data);
+
         setLoading(false);
         alert("Endereço cadastrado com sucesso!");
-        setExibeBotaoProximosPassos(true);
+        setExibeCadastro(true); // Exibe o componente Cadastro
       })
       .catch((erro) => {
         console.log(erro);
         alert("Ocorreu um erro ao cadastrar um endereço pelo CEP informado");
       });
     setLoading(false);
+  };
+
+  const handleProximosPassos = () => {
+    return <Cadastro data={enderecoSalvo} />;
   };
 
   //verificamos se o estado do hook loading está neste momento true
@@ -168,9 +178,10 @@ function Endereco() {
       </Box>
     );
   }
-
   return (
     <>
+      {exibeCadastro && enderecoSalvo && <Cadastro endereco={enderecoSalvo} />}
+
       {/**MODAL QUE EXIBE MENSAGEM DE ENDEREÇO CADASTRADO COM SUCESSO */}
       <Modal
         open={openModal}
@@ -445,7 +456,7 @@ function Endereco() {
                 {exibeBotaoProximosPassos === true ? (
                   <Button
                     variant="contained"
-                    onClick={() => (location.href = "/Cadastro")}
+                    onClick={handleProximosPassos}
                     sx={{
                       height: "5vh",
                       marginLeft: "2vh",

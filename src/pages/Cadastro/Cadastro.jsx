@@ -1,4 +1,6 @@
 import { Box, Typography } from "@mui/material";
+import React from "react";
+
 import PessoasUnidas from "../../../public/pessoasUnidas.png";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -13,7 +15,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 
-function Cadastro() {
+function Cadastro(props) {
+  // Verifica se as props foram passadas corretamente
+
+  // Acessando os dados do endereço
   const [form, setForm] = useState({
     nomePessoa: "",
     emailPessoa: "",
@@ -53,6 +58,7 @@ function Cadastro() {
           documentoPessoa: form.documentoPessoa,
           dataNascimentoPessoa: form.dataNascimentoPessoa,
           rolePessoa: selectRole,
+          idEndereco: props.id,
         })
         .then((response) => {
           setLoading(false);
@@ -159,11 +165,12 @@ function Cadastro() {
       </Box>
     );
   }
-  console.log(form.nomePessoa);
-  console.log(form.emailPessoa);
-  console.log(form.documentoPessoa);
-  console.log(form.dataNascimentoPessoa);
-  console.log(selectRole);
+  // console.log(form.nomePessoa);
+  // console.log(form.emailPessoa);
+  // console.log(form.documentoPessoa);
+  // console.log(form.dataNascimentoPessoa);
+  // console.log(selectRole);
+  console.log(props);
   return (
     <>
       <Box

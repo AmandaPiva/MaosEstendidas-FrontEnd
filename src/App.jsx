@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import axios from "axios";
+import { EnderecoProvider } from "./pages/Endereco/EnderecoContext";
 
 //variável que vai buscar do navegador a role do usuário logado
 const role = localStorage.getItem("role");
@@ -100,8 +101,6 @@ function App() {
         <Routes>
           <Route path={"/"} element={<LadinPage />} />
           <Route path={"/Login"} element={<Login />} />
-          <Route path={"/Cadastro"} element={<Cadastro />} />
-          <Route path={"/Endereco"} element={<Endereco />} />
           <Route
             path={"/CadastroNecessidade"}
             element={<CadastroNecessidade />}
@@ -127,6 +126,9 @@ function App() {
           <Route path={"/Header"} element={<Header />} />
           <Route path={"/CardNecessidade"} element={<CardNecessidade />} />
           <Route path={"/CardDonatarios"} element={<CardDonatarios />} />
+
+          <Route path={"/Cadastro"} element={<Cadastro />} />
+          <Route path={"/Endereco"} element={<Endereco />} />
         </Routes>
       </BrowserRouter>
     </>
