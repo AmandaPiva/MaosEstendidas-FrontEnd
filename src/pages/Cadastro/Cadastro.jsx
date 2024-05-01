@@ -25,6 +25,8 @@ function Cadastro(props) {
     documentoPessoa: "",
     dataNascimentoPessoa: "",
     rolePessoa: "",
+    senhaPessoa: "",
+    endereco: "",
   });
   const [loading, setLoading] = useState(false);
   const [selectRole, setSelectRole] = useState("");
@@ -58,7 +60,8 @@ function Cadastro(props) {
           documentoPessoa: form.documentoPessoa,
           dataNascimentoPessoa: form.dataNascimentoPessoa,
           rolePessoa: selectRole,
-          idEndereco: props.id,
+          endereco: props.endereco.idEndereco,
+          senhaPessoa: form.senhaPessoa,
         })
         .then((response) => {
           setLoading(false);
@@ -77,26 +80,26 @@ function Cadastro(props) {
   //BUSCANDO AS ROLES PARA COLOCAR NO SELECT
   const handleBuscaRoleApi = async () => {
     setLoading(true);
-    const token = localStorage.getItem("token"); //pega o token gerado do Browser e armazena na variável token
-    if (!token) {
-      alert("token não encontrado");
-    } else {
-      await axios
-        .get(`http://localhost:8080/api/v1/pessoa/role`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          console.log(response.data);
-          setRoles(response.data);
-          setLoading(false);
-        })
-        .catch((erro) => {
-          console.log(erro);
-          alert("Ocorreu um erro ao buscar a role");
-        });
-    }
+    // const token = localStorage.getItem("token"); //pega o token gerado do Browser e armazena na variável token
+    // if (!token) {
+    //   alert("token não encontrado");
+    // } else {
+    await axios
+      .get(`http://localhost:8080/api/v1/pessoa/role`, {
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // },
+      })
+      .then((response) => {
+        console.log(response.data);
+        setRoles(response.data);
+        setLoading(false);
+      })
+      .catch((erro) => {
+        console.log(erro);
+        alert("Ocorreu um erro ao buscar a role");
+      });
+
     setLoading(false);
   };
 
@@ -109,6 +112,24 @@ function Cadastro(props) {
     setForm((prev) => ({
       ...prev,
       [name]: value,
+    }));
+  };
+
+  const handleChangeFormData = (event) => {
+    const { name, value } = event.target;
+    let formattedValue = value;
+
+    // Verifica se o campo é de data de nascimento e formata para o formato esperado pelo backend
+    if (name === "dataNascimentoPessoa") {
+      // Converte a data do formato brasileiro (DD/MM/AAAA) para o formato americano (AAAA-MM-DD)
+      const parts = value.split("/");
+      if (parts.length === 3) {
+        formattedValue = `${parts[2]}-${parts[1]}-${parts[0]}`;
+      }
+    }
+    setForm((prev) => ({
+      ...prev,
+      [name]: formattedValue,
     }));
   };
 
@@ -169,8 +190,9 @@ function Cadastro(props) {
   // console.log(form.emailPessoa);
   // console.log(form.documentoPessoa);
   // console.log(form.dataNascimentoPessoa);
-  // console.log(selectRole);
-  console.log(props);
+  console.log(selectRole);
+  console.log(form.senhaPessoa);
+  console.log(props.endereco.idEndereco);
   return (
     <>
       <Box
@@ -315,7 +337,7 @@ function Cadastro(props) {
                   margin: "1vh auto",
                 }}
                 name="dataNascimentoPessoa"
-                onChange={handleChangeForm}
+                onChange={handleChangeFormData}
                 value={formatInputDate(form.dataNascimentoPessoa)}
                 id="outlined-basic"
                 label="Data de Nascimento"
@@ -445,6 +467,8 @@ function Cadastro(props) {
                         margin: "1vh",
                       }}
                       name="senhaPessoa"
+                      value={form.senhaPessoa}
+                      onChange={handleChangeForm}
                       id="outlined-basic"
                       label="Crie uma senha"
                       type="password"

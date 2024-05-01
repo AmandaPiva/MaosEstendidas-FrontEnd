@@ -128,7 +128,7 @@ function Endereco() {
     }
     setLoading(false);
   };
-  console.log("Passou aqui", enderecoSalvo);
+  // console.log("Passou aqui", enderecoSalvo);
 
   {
     /**CRIA ENDEREÇO VIA CEP */
