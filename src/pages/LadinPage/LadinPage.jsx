@@ -65,21 +65,21 @@ function LadinPage() {
           <Box sx={{ margin: "5vh auto" }}>
             {/**VAMOS USAR O Link PARA ACESSAR AS ROTAS AO CLICAR NOS BOTÕES E MUDAR DE PÁGINA */}
             {/*ESTE LINK É UM COMPONENTE DO react-router-dom */}
-            <Link to={"/Endereco"}>
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: "#04BFAF",
-                  color: "#FFFFFF",
-                  width: "200px",
-                  "&:hover": {
-                    backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
-                  },
-                }}
-              >
-                Cadastre-se
-              </Button>
-            </Link>
+
+            <Button
+              variant="contained"
+              onClick={() => (location.href = "/Endereco")}
+              sx={{
+                backgroundColor: "#04BFAF",
+                color: "#FFFFFF",
+                width: "200px",
+                "&:hover": {
+                  backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
+                },
+              }}
+            >
+              Cadastre-se
+            </Button>
           </Box>
         </Box>
 
@@ -267,21 +267,20 @@ function LadinPage() {
           </Box>
 
           <Box sx={{ margin: "5vh auto" }}>
-            <Link to={"/Endereco"}>
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: "#E64097",
-                  color: "#FFFFFF",
-                  width: "200px",
-                  "&:hover": {
-                    backgroundColor: "#04BFAF", // Altere a cor desejada para o efeito hover
-                  },
-                }}
-              >
-                Cadastre-se
-              </Button>
-            </Link>
+            <Button
+              variant="contained"
+              onClick={() => (location.href = "/Endereco")}
+              sx={{
+                backgroundColor: "#E64097",
+                color: "#FFFFFF",
+                width: "200px",
+                "&:hover": {
+                  backgroundColor: "#04BFAF", // Altere a cor desejada para o efeito hover
+                },
+              }}
+            >
+              Cadastre-se
+            </Button>
           </Box>
           <Box sx={{ margin: "5vh auto" }}>
             <Typography

@@ -38,6 +38,7 @@ function HomeDonartario() {
         <Box sx={{ margin: "2vh auto" }}>
           <Button
             variant="contained"
+            onClick={() => (location.href = "/CadastroNecessidade")}
             sx={{
               backgroundColor: "#04BFAF",
               color: "#FFFFFF",

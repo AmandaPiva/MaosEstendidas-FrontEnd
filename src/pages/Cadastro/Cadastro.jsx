@@ -26,9 +26,11 @@ function Cadastro(props) {
     dataNascimentoPessoa: "",
     rolePessoa: "",
     senhaPessoa: "",
+    confirmeSuaSenha: "",
     endereco: "",
   });
   const [loading, setLoading] = useState(false);
+  const [senhaError, setSenhaError] = useState("");
   const [selectRole, setSelectRole] = useState("");
   const [tipoSelecionado, setSelecionado] = useState("");
   const [roles, setRoles] = useState([]);
@@ -67,7 +69,7 @@ function Cadastro(props) {
           setLoading(false);
           console.log(response.data);
           alert("Usuário cadastrado com sucesso");
-          window.location.href = "/Endereco";
+          window.location.href = "/Login";
         })
         .catch((erro) => {
           console.error(erro);
@@ -113,6 +115,13 @@ function Cadastro(props) {
       ...prev,
       [name]: value,
     }));
+
+    //validando os campos de senha
+    if (name === "confirmeSuaSenha" && value !== form.senhaPessoa) {
+      setSenhaError("As senhas não coincidem");
+    } else {
+      setSenhaError("");
+    }
   };
 
   const handleChangeFormData = (event) => {
@@ -192,7 +201,7 @@ function Cadastro(props) {
   // console.log(form.dataNascimentoPessoa);
   console.log(selectRole);
   console.log(form.senhaPessoa);
-  console.log(props.endereco.idEndereco);
+  console.log(props);
   return (
     <>
       <Box
@@ -214,7 +223,7 @@ function Cadastro(props) {
           }}
         >
           <Box sx={{ marginTop: "5.5vh", marginLeft: "5vw" }}>
-            <Link to={"/"}>
+            <Link to={"/Endereco"}>
               <Button
                 variant="contained"
                 sx={{
@@ -231,10 +240,11 @@ function Cadastro(props) {
               </Button>
             </Link>
           </Box>
+
           <Typography
             sx={{
               color: "#FFFFFF",
-              fontSize: "36px",
+              fontSize: "30px",
               fontWeight: "600",
               fontFamily: "montserrat",
               margin: "10vh auto 5vh",
@@ -284,12 +294,13 @@ function Cadastro(props) {
           sx={{
             width: "50vw",
             display: "flex",
+            padding: "20px",
             flexDirection: "column",
           }}
         >
           <Box
             sx={{
-              height: "95vh",
+              minHeight: "100vh",
               width: "30vw",
               backgroundColor: "#FFFFFF",
               borderRadius: "50px",
@@ -342,6 +353,7 @@ function Cadastro(props) {
                 id="outlined-basic"
                 label="Data de Nascimento"
                 placeholder="DD/MM/AAAA"
+                type="date"
                 variant="outlined"
               />
 
@@ -415,20 +427,67 @@ function Cadastro(props) {
               </Box>
 
               {tipoSelecionado === "cnpj" ? (
-                <TextField
-                  sx={{
-                    width: "25vw",
-                    backgroundColor: "#FFFFFF",
-                    margin: "1vh auto",
-                  }}
-                  name="documentoPessoa"
-                  onChange={handleChangeForm}
-                  value={cnpjMask(form.documentoPessoa)}
-                  id="outlined-basic"
-                  placeholder="99.999.999/9999-99"
-                  label="CNPJ"
-                  variant="outlined"
-                />
+                <>
+                  <TextField
+                    sx={{
+                      width: "25vw",
+                      backgroundColor: "#FFFFFF",
+                      margin: "1vh auto",
+                    }}
+                    name="documentoPessoa"
+                    onChange={handleChangeForm}
+                    value={cnpjMask(form.documentoPessoa)}
+                    id="outlined-basic"
+                    placeholder="99.999.999/9999-99"
+                    label="CNPJ"
+                    variant="outlined"
+                  />
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      margin: "3vh auto",
+                      borderStyle: "solid",
+                      borderColor: "#04BFAF",
+                      borderWidth: "1px",
+                      width: "25vw",
+                    }}
+                  >
+                    <Typography sx={{ padding: "8px" }}>
+                      Crie uma senha de acesso!
+                    </Typography>
+                    <TextField
+                      sx={{
+                        width: "15vw",
+                        backgroundColor: "#FFFFFF",
+                        margin: "1vh",
+                      }}
+                      name="senhaPessoa"
+                      value={form.senhaPessoa}
+                      onChange={handleChangeForm}
+                      id="outlined-basic"
+                      label="Crie uma senha"
+                      type="password"
+                      variant="outlined"
+                    />
+                    <TextField
+                      sx={{
+                        width: "15vw",
+                        backgroundColor: "#FFFFFF",
+                        margin: "1vh",
+                      }}
+                      name="confirmeSuaSenha"
+                      value={form.confirmeSuaSenha}
+                      onChange={handleChangeForm}
+                      error={senhaError !== ""}
+                      helperText={senhaError}
+                      id="outlined-basic"
+                      label="Confirme sua senha"
+                      type="password"
+                      variant="outlined"
+                    />
+                  </Box>
+                </>
               ) : tipoSelecionado === "cpf" ? (
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
                   <TextField
@@ -445,6 +504,7 @@ function Cadastro(props) {
                     placeholder="999.999.999-99"
                     variant="outlined"
                   />
+
                   {/**ESPAÇO CRIAR SENHA */}
                   <Box
                     sx={{
@@ -497,7 +557,7 @@ function Cadastro(props) {
                 onClick={handleCadastroPessoa}
                 variant="contained"
                 sx={{
-                  margin: "5vh auto",
+                  margin: "1vh auto",
                   width: "15vw",
                   backgroundColor: "#04BFAF",
                   "&:hover": {
@@ -505,7 +565,7 @@ function Cadastro(props) {
                   },
                 }}
               >
-                Próximos Passos
+                Finalizar Cadastro
               </Button>
             </Box>
           </Box>

@@ -152,7 +152,7 @@ function Endereco() {
   };
 
   const handleProximosPassos = () => {
-    return <Cadastro data={enderecoSalvo} />;
+    return setExibeCadastro(true);
   };
 
   //verificamos se o estado do hook loading está neste momento true
@@ -180,303 +180,311 @@ function Endereco() {
   }
   return (
     <>
-      {exibeCadastro && enderecoSalvo && <Cadastro endereco={enderecoSalvo} />}
-
-      {/**MODAL QUE EXIBE MENSAGEM DE ENDEREÇO CADASTRADO COM SUCESSO */}
-      <Modal
-        open={openModal}
-        onClose={handleClose}
-        aria-labelledby="parent-modal-title"
-        aria-describedby="parent-modal-description"
-      >
-        <ModalCadastroEndereco />
-      </Modal>
-
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          width: "100vw",
-          heigth: "100vh",
-        }}
-      >
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
-          <Box sx={{ marginTop: "5.5vh", marginLeft: "5vw" }}>
-            <Button onClick={() => (location.href = "/")} variant="outlined">
-              Voltar
-            </Button>
-          </Box>
-
-          <Typography
-            sx={{
-              fontSize: "36px",
-              fontWeight: "600",
-              color: "#E64097",
-              fontFamily: "montserrat",
-              margin: "5vh ",
-              textAlign: "center",
-            }}
-          >
-            Vamos começar cadastrando seu endereço!
-          </Typography>
-        </Box>
-
-        <Box
-          sx={{
-            boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
-            backgroundColor: "#FAFAFA",
-          }}
-        >
+      {exibeCadastro == true ? (
+        <Cadastro endereco={enderecoSalvo} />
+      ) : (
+        <>
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
-              width: "50vw",
+              width: "100vw",
+              heigth: "100vh",
+              overflowX: "hidden",
             }}
           >
-            <Typography
-              sx={{
-                fontSize: "24px",
-                fontWeight: "600",
-                color: "#04BFAF",
-                paddingLeft: "5vw",
-                width: "50vw",
-                marginTop: "5vh",
-              }}
-            >
-              Cadastre automaticamente apenas digitando seu CEP:
-            </Typography>
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <Box sx={{ marginTop: "5.5vh", marginLeft: "5vw" }}>
+                <Button
+                  onClick={() => (location.href = "/")}
+                  variant="outlined"
+                >
+                  Voltar
+                </Button>
+              </Box>
 
-            <Box sx={{ paddingLeft: "5vw" }}>
-              <TextField
-                sx={{
-                  width: "35vw",
-                  backgroundColor: "#FFFFFF",
-                  marginTop: "5vh",
-                }}
-                name="cep"
-                value={viaCep}
-                onChange={(event) => setViaCep(event.target.value)}
-                id="outlined-basic"
-                label="CEP"
-                variant="outlined"
-              />
-            </Box>
-
-            <Box
-              sx={{
-                width: "35vw",
-                marginLeft: "5vw",
-              }}
-            >
-              <Button
-                variant="contained"
-                onClick={handleCriaEnderecoViaCep}
-                sx={{
-                  width: "25vw",
-                  margin: "5vh 100px",
-                  backgroundColor: "#E64097",
-                  "&:hover": {
-                    backgroundColor: "#04BFAF", // Altere a cor desejada para o efeito hover
-                  },
-                }}
-              >
-                Cadastrar Automático
-              </Button>
               <Typography
                 sx={{
+                  fontSize: "36px",
+                  fontWeight: "600",
+                  color: "#E64097",
                   fontFamily: "montserrat",
-                  color: "black",
-                  fontSize: "24px",
-                  fontWeight: "500",
+                  margin: "5vh ",
                   textAlign: "center",
                 }}
               >
-                Ou
+                Vamos começar cadastrando seu endereço!
               </Typography>
             </Box>
-          </Box>
 
-          {/**FORM CADASTRO MANUAL */}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
-              paddingTop: "2em",
-              paddingBottom: "2em",
-              width: "90vw",
-              margin: "10vh auto",
-              borderRadius: "20px",
-              backgroundColor: "#FFFFFF",
-            }}
-          >
-            {/**LADO ESQUERDO */}
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                paddingLeft: "5vw",
+                boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
+                width: "90vw",
+                height: "100vh",
+                margin: "auto",
+                backgroundColor: "#FAFAFA",
               }}
             >
-              <Typography
-                sx={{
-                  fontFamily: "montserrat",
-                  fontSize: "18",
-                  fontWeight: "500",
-                  marginBottom: "10px",
-                }}
-              >
-                Cadastre manualmente
-              </Typography>
-              <TextField
-                sx={{
-                  width: "25vw",
-                  backgroundColor: "#FFFFFF",
-                }}
-                id="outlined-basic"
-                name="logradouro"
-                value={form.logradouro}
-                onChange={handleSetForm}
-                label="Logradouro"
-                variant="outlined"
-              />
-
-              <TextField
-                sx={{
-                  width: "25vw",
-                  backgroundColor: "#FFFFFF",
-                  marginTop: "2vh",
-                }}
-                id="outlined-basic"
-                value={form.bairro}
-                onChange={handleSetForm}
-                name="bairro"
-                label="Bairro"
-                variant="outlined"
-              />
-              <TextField
-                sx={{
-                  width: "25vw",
-                  backgroundColor: "#FFFFFF",
-                  marginTop: "2vh",
-                }}
-                id="outlined-basic"
-                value={form.cidade}
-                onChange={handleSetForm}
-                name="cidade"
-                label="Cidade"
-                variant="outlined"
-              />
-            </Box>
-
-            {/**LADO DIREITO */}
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                paddingLeft: "5vw",
-              }}
-            >
-              <FormControl fullWidth>
-                <InputLabel
-                  id="demo-simple-select-label"
-                  sx={{ margin: "2vh auto" }}
-                >
-                  Estado
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  name="estado"
-                  onChange={handleChangeEstado}
-                  value={form.estado}
-                  label="estado"
-                  sx={{ width: "15vw", marginTop: "2vh" }}
-                >
-                  {estados.map((estadosBR) => {
-                    return (
-                      <MenuItem key={estadosBR.sigla} value={estadosBR.sigla}>
-                        {estadosBR.nome} - {estadosBR.sigla}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-              <TextField
-                sx={{
-                  width: "25vw",
-                  backgroundColor: "#FFFFFF",
-                  marginTop: "2vh",
-                }}
-                placeholder="99999-999"
-                value={formatarCEP(form.cep)}
-                onChange={handleSetForm}
-                name="cep"
-                id="outlined-basic"
-                label="CEP"
-                type="text"
-                variant="outlined"
-              />
-
-              <TextField
-                sx={{
-                  width: "10vw",
-                  backgroundColor: "#FFFFFF",
-                  marginTop: "2vh",
-                }}
-                id="outlined-basic"
-                name="numero"
-                value={form.numero}
-                onChange={handleSetForm}
-                type="number"
-                label="Número"
-                variant="outlined"
-              />
-
-              {/*BOTOES*/}
               <Box
-                sx={{ display: "flex", flexDirection: "row", marginTop: "3vh" }}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "50vw",
+                }}
               >
-                <Button
-                  variant="contained"
-                  onClick={handleCadastroEndereco}
+                <Typography
                   sx={{
-                    height: "5vh",
-                    width: "8vw",
-                    backgroundColor: "#04BFAF",
-                    "&:hover": {
-                      backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
-                    },
+                    fontSize: "24px",
+                    fontWeight: "600",
+                    color: "#04BFAF",
+                    paddingLeft: "5vw",
+                    width: "50vw",
+                    marginTop: "5vh",
                   }}
                 >
-                  Cadastrar
-                </Button>
-                {/**FAZER VERIFICAÇÃO DE HABILITAR O BOTÃO DE PROXIMOS PASSOS SÓ APÓS CADASTRAR */}
-                {exibeBotaoProximosPassos === true ? (
+                  Cadastre automaticamente apenas digitando seu CEP:
+                </Typography>
+
+                <Box sx={{ paddingLeft: "5vw" }}>
+                  <TextField
+                    sx={{
+                      width: "35vw",
+                      backgroundColor: "#FFFFFF",
+                      marginTop: "5vh",
+                    }}
+                    name="cep"
+                    value={viaCep}
+                    onChange={(event) => setViaCep(event.target.value)}
+                    id="outlined-basic"
+                    label="CEP"
+                    variant="outlined"
+                  />
+                </Box>
+
+                <Box
+                  sx={{
+                    width: "35vw",
+                    marginLeft: "5vw",
+                  }}
+                >
                   <Button
                     variant="contained"
-                    onClick={handleProximosPassos}
+                    onClick={handleCriaEnderecoViaCep}
                     sx={{
-                      height: "5vh",
-                      marginLeft: "2vh",
+                      width: "25vw",
+                      margin: "5vh 100px",
                       backgroundColor: "#E64097",
                       "&:hover": {
                         backgroundColor: "#04BFAF", // Altere a cor desejada para o efeito hover
                       },
                     }}
                   >
-                    Próximos Passos
+                    Cadastrar Automático
                   </Button>
-                ) : (
-                  <></>
-                )}
-                {/* */}
+                  <Typography
+                    sx={{
+                      fontFamily: "montserrat",
+                      color: "black",
+                      fontSize: "24px",
+                      fontWeight: "500",
+                      textAlign: "center",
+                    }}
+                  >
+                    Ou
+                  </Typography>
+                </Box>
+              </Box>
+
+              {/**FORM CADASTRO MANUAL */}
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
+                  paddingTop: "2em",
+                  paddingBottom: "2em",
+                  width: "90vw",
+                  margin: "10vh auto",
+                  borderRadius: "20px",
+                  backgroundColor: "#FFFFFF",
+                }}
+              >
+                {/**LADO ESQUERDO */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    paddingLeft: "5vw",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontFamily: "montserrat",
+                      fontSize: "18",
+                      fontWeight: "500",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    Cadastre manualmente
+                  </Typography>
+                  <TextField
+                    sx={{
+                      width: "25vw",
+                      backgroundColor: "#FFFFFF",
+                    }}
+                    id="outlined-basic"
+                    name="logradouro"
+                    value={form.logradouro}
+                    onChange={handleSetForm}
+                    label="Logradouro"
+                    variant="outlined"
+                  />
+
+                  <TextField
+                    sx={{
+                      width: "25vw",
+                      backgroundColor: "#FFFFFF",
+                      marginTop: "2vh",
+                    }}
+                    id="outlined-basic"
+                    value={form.bairro}
+                    onChange={handleSetForm}
+                    name="bairro"
+                    label="Bairro"
+                    variant="outlined"
+                  />
+                  <TextField
+                    sx={{
+                      width: "25vw",
+                      backgroundColor: "#FFFFFF",
+                      marginTop: "2vh",
+                    }}
+                    id="outlined-basic"
+                    value={form.cidade}
+                    onChange={handleSetForm}
+                    name="cidade"
+                    label="Cidade"
+                    variant="outlined"
+                  />
+                </Box>
+
+                {/**LADO DIREITO */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    paddingLeft: "5vw",
+                  }}
+                >
+                  <FormControl fullWidth>
+                    <InputLabel
+                      id="demo-simple-select-label"
+                      sx={{ margin: "2vh auto" }}
+                    >
+                      Estado
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      name="estado"
+                      onChange={handleChangeEstado}
+                      value={form.estado}
+                      label="estado"
+                      sx={{ width: "15vw", marginTop: "2vh" }}
+                    >
+                      {estados.map((estadosBR) => {
+                        return (
+                          <MenuItem
+                            key={estadosBR.sigla}
+                            value={estadosBR.sigla}
+                          >
+                            {estadosBR.nome} - {estadosBR.sigla}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+                  <TextField
+                    sx={{
+                      width: "25vw",
+                      backgroundColor: "#FFFFFF",
+                      marginTop: "2vh",
+                    }}
+                    placeholder="99999-999"
+                    value={formatarCEP(form.cep)}
+                    onChange={handleSetForm}
+                    name="cep"
+                    id="outlined-basic"
+                    label="CEP"
+                    type="text"
+                    variant="outlined"
+                  />
+
+                  <TextField
+                    sx={{
+                      width: "10vw",
+                      backgroundColor: "#FFFFFF",
+                      marginTop: "2vh",
+                    }}
+                    id="outlined-basic"
+                    name="numero"
+                    value={form.numero}
+                    onChange={handleSetForm}
+                    type="number"
+                    label="Número"
+                    variant="outlined"
+                  />
+
+                  {/*BOTOES*/}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      marginTop: "3vh",
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      onClick={handleCadastroEndereco}
+                      sx={{
+                        height: "5vh",
+                        width: "8vw",
+                        backgroundColor: "#04BFAF",
+                        "&:hover": {
+                          backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
+                        },
+                      }}
+                    >
+                      Cadastrar
+                    </Button>
+                    {/**FAZER VERIFICAÇÃO DE HABILITAR O BOTÃO DE PROXIMOS PASSOS SÓ APÓS CADASTRAR */}
+                    {exibeBotaoProximosPassos === true ? (
+                      <Button
+                        variant="contained"
+                        onClick={handleProximosPassos}
+                        sx={{
+                          height: "5vh",
+                          marginLeft: "2vh",
+                          backgroundColor: "#E64097",
+                          "&:hover": {
+                            backgroundColor: "#04BFAF", // Altere a cor desejada para o efeito hover
+                          },
+                        }}
+                      >
+                        Próximos Passos
+                      </Button>
+                    ) : (
+                      <></>
+                    )}
+                    {/* */}
+                  </Box>
+                </Box>
               </Box>
             </Box>
           </Box>
-        </Box>
-      </Box>
+        </>
+      )}
     </>
   );
 }
