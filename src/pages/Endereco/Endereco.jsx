@@ -68,19 +68,9 @@ function Endereco() {
     numero: "",
   });
   const [loading, setLoading] = useState(false);
-  const [exibeBotaoProximosPassos, setExibeBotaoProximosPassos] =
-    useState(false);
   const [viaCep, setViaCep] = useState("");
-  const [openModal, setOpenModal] = useState(false);
   const [enderecoSalvo, setEnderecoSalvo] = useState(null);
   const [exibeCadastro, setExibeCadastro] = useState(false);
-
-  const handleOpen = () => {
-    setOpenModal(true);
-  };
-  const handleClose = () => {
-    setOpenModal(false);
-  };
 
   const handleSetForm = (event) => {
     const { name, value } = event.target;
@@ -119,7 +109,8 @@ function Endereco() {
           setLoading(false);
           setEnderecoSalvo(response.data);
 
-          setExibeBotaoProximosPassos(true);
+          alert("Endereço cadastrado com sucesso!");
+          setExibeCadastro(true); // Exibe o componente Cadastro
         })
         .catch((erro) => {
           console.log(erro);
@@ -458,26 +449,6 @@ function Endereco() {
                     >
                       Cadastrar
                     </Button>
-                    {/**FAZER VERIFICAÇÃO DE HABILITAR O BOTÃO DE PROXIMOS PASSOS SÓ APÓS CADASTRAR */}
-                    {exibeBotaoProximosPassos === true ? (
-                      <Button
-                        variant="contained"
-                        onClick={handleProximosPassos}
-                        sx={{
-                          height: "5vh",
-                          marginLeft: "2vh",
-                          backgroundColor: "#E64097",
-                          "&:hover": {
-                            backgroundColor: "#04BFAF", // Altere a cor desejada para o efeito hover
-                          },
-                        }}
-                      >
-                        Próximos Passos
-                      </Button>
-                    ) : (
-                      <></>
-                    )}
-                    {/* */}
                   </Box>
                 </Box>
               </Box>

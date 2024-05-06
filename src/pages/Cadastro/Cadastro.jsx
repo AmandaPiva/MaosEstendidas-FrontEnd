@@ -16,8 +16,6 @@ import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 
 function Cadastro(props) {
-  // Verifica se as props foram passadas corretamente
-
   // Acessando os dados do endereço
   const [form, setForm] = useState({
     nomePessoa: "",
@@ -62,7 +60,7 @@ function Cadastro(props) {
           documentoPessoa: form.documentoPessoa,
           dataNascimentoPessoa: form.dataNascimentoPessoa,
           rolePessoa: selectRole,
-          endereco: props.endereco.idEndereco,
+          endereco: props.endereco.idEndereco, //adicionando o endereço que veio do props do componente Endereco
           senhaPessoa: form.senhaPessoa,
         })
         .then((response) => {
@@ -82,16 +80,8 @@ function Cadastro(props) {
   //BUSCANDO AS ROLES PARA COLOCAR NO SELECT
   const handleBuscaRoleApi = async () => {
     setLoading(true);
-    // const token = localStorage.getItem("token"); //pega o token gerado do Browser e armazena na variável token
-    // if (!token) {
-    //   alert("token não encontrado");
-    // } else {
     await axios
-      .get(`http://localhost:8080/api/v1/pessoa/role`, {
-        // headers: {
-        //   Authorization: `Bearer ${token}`,
-        // },
-      })
+      .get(`http://localhost:8080/api/v1/pessoa/role`, {})
       .then((response) => {
         console.log(response.data);
         setRoles(response.data);
@@ -163,15 +153,6 @@ function Cadastro(props) {
     return cpf;
   };
 
-  const formatInputDate = (input) => {
-    // Aplicando a máscara (DD/MM/AAAA) usando REGEX
-    return input
-      .replace(/\D/g, "") // Remove todos os caracteres que não são dígitos
-      .replace(/(\d{2})(\d)/, "$1/$2") // Coloca uma barra após os dois primeiros dígitos
-      .replace(/(\d{2})(\d)/, "$1/$2") // Coloca uma barra após os próximos dois dígitos
-      .slice(0, 10); // Limita a string a 10 caracteres (DD/MM/AAAA)
-  };
-
   //verificamos se o estado do hook loading está neste momento true
   if (loading && loading == true) {
     //pois se estiver, será renderizado na tela um circulo indicando que a página está carregando
@@ -195,13 +176,7 @@ function Cadastro(props) {
       </Box>
     );
   }
-  // console.log(form.nomePessoa);
-  // console.log(form.emailPessoa);
-  // console.log(form.documentoPessoa);
-  // console.log(form.dataNascimentoPessoa);
-  console.log(selectRole);
-  console.log(form.senhaPessoa);
-  console.log(props);
+
   return (
     <>
       <Box
@@ -209,7 +184,7 @@ function Cadastro(props) {
           display: "flex",
           flexDirection: "row",
           width: "100vw",
-          height: "100vh",
+          minHeight: "100vh",
           backgroundImage: `linear-gradient(to bottom, rgba(230, 64, 151, 0.8) 30%, rgba(230, 64, 151, 0)), url(${PessoasUnidas})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -341,6 +316,9 @@ function Cadastro(props) {
                 variant="outlined"
               />
 
+              <Typography sx={{ fontFamily: "montserrat", margin: "2vh auto" }}>
+                Data de Nascimento ou fundação
+              </Typography>
               <TextField
                 sx={{
                   width: "25vw",
@@ -349,9 +327,9 @@ function Cadastro(props) {
                 }}
                 name="dataNascimentoPessoa"
                 onChange={handleChangeFormData}
-                value={formatInputDate(form.dataNascimentoPessoa)}
+                value={form.dataNascimentoPessoa}
                 id="outlined-basic"
-                label="Data de Nascimento"
+                label=""
                 placeholder="DD/MM/AAAA"
                 type="date"
                 variant="outlined"
@@ -390,8 +368,6 @@ function Cadastro(props) {
                         </MenuItem>
                       );
                     })}
-                    {/* <MenuItem value={"doador"}>Doador</MenuItem>
-                    <MenuItem value={"donatario"}>Donatario</MenuItem> */}
                   </Select>
                 </FormControl>
               </Box>
@@ -557,7 +533,8 @@ function Cadastro(props) {
                 onClick={handleCadastroPessoa}
                 variant="contained"
                 sx={{
-                  margin: "1vh auto",
+                  margin: "auto",
+                  marginBottom: "2vh",
                   width: "15vw",
                   backgroundColor: "#04BFAF",
                   "&:hover": {
