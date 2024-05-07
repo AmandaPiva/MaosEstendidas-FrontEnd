@@ -69,6 +69,7 @@ function CadastroNecessidade() {
   };
 
   console.log(email);
+
   return (
     <>
       <Box
@@ -189,6 +190,9 @@ function CadastroNecessidade() {
                   margin: "2vh auto",
                 }}
                 id="outlined-basic"
+                name="tituloRequisicao"
+                onChange={handleChangeForm}
+                value={form.tituloRequisicao}
                 label="Título"
                 variant="outlined"
               />
@@ -199,6 +203,9 @@ function CadastroNecessidade() {
                   margin: "2vh auto",
                 }}
                 id="outlined-basic"
+                name="descricaoRequisicao"
+                onChange={handleChangeForm}
+                value={form.descricaoRequisicao}
                 label="Descrição"
                 variant="outlined"
                 multiline
@@ -214,6 +221,7 @@ function CadastroNecessidade() {
               >
                 <Button
                   variant="contained"
+                  onClick={handleCadastraNecessidade}
                   sx={{
                     margin: "5vh auto",
                     width: "15vw",
