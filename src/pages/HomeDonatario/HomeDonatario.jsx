@@ -92,10 +92,6 @@ function HomeDonartario() {
       setLoading(true);
       const token = localStorage.getItem("token");
 
-      console.log("ID da requisição:", idRequisicao);
-      console.log("Novo título da requisição:", form.tituloRequisicao);
-      console.log("Nova descrição da requisição:", form.descricaoRequisicao);
-
       await axios
         .patch(
           `http://localhost:8080/api/v1/requisicao/${idRequisicao}`,
@@ -120,6 +116,34 @@ function HomeDonartario() {
         .catch((erro) => {
           console.log(erro);
           alert("Ocorreu um erro ao editar essa requisição");
+        });
+    }
+  };
+
+  const handleExcluirRequisicao = async (idRequisicao) => {
+    if (!idRequisicao || idRequisicao === "") {
+      alert("Não foi possível pegar o id");
+    } else {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+
+      await axios
+        .delete(
+          `http://localhost:8080/api/v1/requisicao/deleteRequisicao/${idRequisicao}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then(() => {
+          handleBuscaRequisicoesPelaPessoa();
+          setLoading(false);
+          alert("Requisição excluida com sucesso");
+        })
+        .catch((erro) => {
+          console.log(erro);
+          alert("Ocorreu um erro ao remover uma requisição");
         });
     }
   };
@@ -368,7 +392,11 @@ function HomeDonartario() {
                   Editar
                 </Button>
 
-                <Button>
+                <Button
+                  onClick={() =>
+                    handleExcluirRequisicao(requisicao.idRequisicao)
+                  }
+                >
                   <DeleteIcon sx={{ fontSize: "40px", color: "#E64097" }} />
                 </Button>
               </Box>
