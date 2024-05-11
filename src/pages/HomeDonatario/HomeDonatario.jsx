@@ -5,15 +5,56 @@ import { Typography } from "@mui/material";
 import Header from "../../Components/Header";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Modal from "@mui/material/Modal";
+import TextField from "@mui/material/TextField";
 
 function HomeDonartario() {
   //hook como um array, pois vamos armazenar as requisições dentro de um array
   const [requisicoes, setRequisicoes] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [idRequisicao, setIdRequisicao] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+
+  //funções abrir modal de editar requisição
+  const handleOpen = (idRequisicao) => {
+    setIdRequisicao(idRequisicao);
+    const selectedRequisicao = requisicoes.find(
+      (req) => req.idRequisicao === idRequisicao
+    );
+
+    console.log(selectedRequisicao);
+    if (selectedRequisicao) {
+      setForm({
+        tituloRequisicao: selectedRequisicao.tituloRequisicao,
+        descricaoRequisicao: selectedRequisicao.descricaoRequisicao,
+      });
+      console.log("chegou aqui");
+
+      setOpenModal(true);
+    }
+  };
+  const handleClose = () => setOpenModal(false);
+
+  const [form, setForm] = useState({
+    tituloRequisicao: "",
+    descricaoRequisicao: "",
+  });
+
+  const handleChangeForm = (event) => {
+    const { name, value } = event.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   //pegando o email da pessoa logada no navegador
   const email = localStorage.getItem("email");
 
+  //trazer requuisições
   const handleBuscaRequisicoesPelaPessoa = () => {
     setLoading(true);
     const token = localStorage.getItem("token"); //pega o token gerado do Browser e armazena na variável token
@@ -43,13 +84,137 @@ function HomeDonartario() {
     setLoading(false);
   };
 
+  //atualizar requisição
+  const handleEditarRequisicao = async () => {
+    if (!idRequisicao || idRequisicao === "") {
+      alert("Não foi possível pegar o id");
+    } else {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+
+      console.log("ID da requisição:", idRequisicao);
+      console.log("Novo título da requisição:", form.tituloRequisicao);
+      console.log("Nova descrição da requisição:", form.descricaoRequisicao);
+
+      await axios
+        .patch(
+          `http://localhost:8080/api/v1/requisicao/${idRequisicao}`,
+          {
+            tituloRequisicao: form.tituloRequisicao,
+            descricaoRequisicao: form.descricaoRequisicao,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((response) => {
+          console.log("Resposta da requisição PATCH:", response);
+
+          handleBuscaRequisicoesPelaPessoa();
+          setLoading(false);
+          alert("Requisição editada com sucesso");
+          handleClose();
+        })
+        .catch((erro) => {
+          console.log(erro);
+          alert("Ocorreu um erro ao editar essa requisição");
+        });
+    }
+  };
+
   useEffect(() => {
     handleBuscaRequisicoesPelaPessoa();
   }, []);
 
-  console.log(requisicoes);
+  const style = {
+    position: "absolute",
+    top: "25%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 700,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+  };
+
   return (
     <>
+      {/**MODAL EDTAR REQUISIÇÃO */}
+      <Modal
+        open={openModal}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography
+            sx={{
+              color: "#E64097",
+              fontFamily: "montserrat",
+              fontSize: "24px",
+              fontWeight: "500",
+              textAlign: "center",
+            }}
+          >
+            Editar requisição
+          </Typography>
+
+          <TextField
+            sx={{
+              width: "100%",
+              backgroundColor: "#FFFFFF",
+              margin: "2vh auto",
+            }}
+            id="outlined-basic"
+            name="tituloRequisicao"
+            onChange={handleChangeForm}
+            value={form.tituloRequisicao}
+            label="Título"
+            variant="outlined"
+          />
+
+          <TextField
+            sx={{
+              width: "100%",
+              backgroundColor: "#FFFFFF",
+              margin: "2vh auto",
+            }}
+            id="outlined-basic"
+            name="descricaoRequisicao"
+            onChange={handleChangeForm}
+            value={form.descricaoRequisicao}
+            label="Descrição"
+            variant="outlined"
+            multiline
+            rows={5}
+          />
+
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Button
+              variant="contained"
+              onClick={handleEditarRequisicao}
+              sx={{
+                backgroundColor: "#04BFAF",
+                width: "200px",
+                "&:hover": {
+                  backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
+                },
+              }}
+            >
+              Editar
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+
       <Box
         sx={{
           display: "flex",
@@ -118,6 +283,12 @@ function HomeDonartario() {
         }}
       >
         {requisicoes.map((requisicao) => {
+          //Formatando a data em padrão brasileiro
+          const dataRequisicao = new Date(requisicao.dataRequisicao);
+          const formattedDate = `${dataRequisicao.getDate()}/${
+            dataRequisicao.getMonth() + 1
+          }/${dataRequisicao.getFullYear()}`;
+
           return (
             <Box
               sx={{
@@ -150,12 +321,57 @@ function HomeDonartario() {
                   fontFamily: "montserrat",
                   color: "#231F20",
                   fontWeight: "500",
-                  marginTop: "5vh",
+                  margin: "5vh auto",
                 }}
               >
                 {" "}
                 {requisicao.descricaoRequisicao}
               </Typography>
+
+              <Box sx={{ display: "flex", flexDirection: "row" }}>
+                <Typography
+                  sx={{ fontFamily: "montserrat", marginRight: "15px" }}
+                >
+                  Criado em: {formattedDate}
+                </Typography>
+
+                <Stack direction="row" spacing={1} sx={{ marginLeft: "auto" }}>
+                  <Chip
+                    sx={{
+                      backgroundColor: "#48E54E",
+                      color: "#FFFFFF",
+                    }}
+                    label={requisicao.statusRequisicao}
+                  />
+                </Stack>
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  marginTop: "auto",
+                  marginLeft: "auto",
+                }}
+              >
+                <Button
+                  variant="contained"
+                  onClick={() => handleOpen(requisicao.idRequisicao)}
+                  sx={{
+                    backgroundColor: "#04BFAF",
+                    height: "40px",
+                    "&:hover": {
+                      backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
+                    },
+                  }}
+                >
+                  Editar
+                </Button>
+
+                <Button>
+                  <DeleteIcon sx={{ fontSize: "40px", color: "#E64097" }} />
+                </Button>
+              </Box>
             </Box>
           );
         })}
