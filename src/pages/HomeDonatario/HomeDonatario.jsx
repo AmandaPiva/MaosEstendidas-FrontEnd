@@ -59,7 +59,6 @@ function HomeDonartario() {
     setLoading(true);
     const token = localStorage.getItem("token"); //pega o token gerado do Browser e armazena na variável token
     if (!token) {
-      alert("Token não encontrado --> Redirecionando a tela de Login");
       location.href = "/Login";
     } else {
       axios
