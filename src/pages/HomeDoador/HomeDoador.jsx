@@ -6,8 +6,36 @@ import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Button from "@mui/material/Button";
 
 function HomeDonartario() {
+  const [requisicoes, setRequisicoes] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const handleBuscarRequisicoes = async () => {
+    setLoading(true);
+    const token = localStorage.getItem("token");
+    await axios
+      .get(`http://localhost:8080/api/v1/requisicao`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setRequisicoes(response.data);
+        console.log(response.data);
+      })
+      .catch((erro) => {
+        console.error("Erro ao buscar donatarios pela role:", erro);
+      });
+  };
+
+  useEffect(() => {
+    handleBuscarRequisicoes();
+  }, []);
+
   return (
     <>
       <Box
@@ -69,6 +97,80 @@ function HomeDonartario() {
         >
           <SearchIcon />
         </IconButton>
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          marginLeft: "5vw",
+          marginTop: "5vh",
+        }}
+      >
+        {/**REQUISICOES */}
+        {requisicoes.map((requisicao) => {
+          return (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                borderRadius: "20px",
+                backgroundColor: "#FFFFFF",
+                boxShadow: "5px 0px  10px rgba(0, 0, 0, 0.3)",
+                height: "50vh",
+                width: "20vw",
+                alignItems: "center",
+                padding: "2rem",
+                marginLeft: "2vw",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: "24px",
+                  fontFamily: "montserrat",
+                  color: "#E64097",
+                  fontWeight: "500",
+                }}
+              >
+                {" "}
+                {requisicao.pessoaDonataria.nomePessoa}
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "20px",
+                  fontFamily: "montserrat",
+                  color: "#231F20",
+                  fontWeight: "500",
+                  margin: "5vh auto",
+                }}
+              >
+                {" "}
+                {requisicao.descricaoRequisicao}
+              </Typography>
+              <Typography
+                sx={{ fontFamily: "montserrat", marginRight: "15px" }}
+              >
+                {requisicao.pessoaDonataria.endereco.bairro} -
+                {requisicao.pessoaDonataria.endereco.cidade}/
+                {requisicao.pessoaDonataria.endereco.estado}
+              </Typography>
+
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "#E64097",
+                  marginTop: "auto",
+                  height: "40px",
+                  "&:hover": {
+                    backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
+                  },
+                }}
+              >
+                Ajudar esta pessoa
+              </Button>
+            </Box>
+          );
+        })}
       </Box>
     </>
   );

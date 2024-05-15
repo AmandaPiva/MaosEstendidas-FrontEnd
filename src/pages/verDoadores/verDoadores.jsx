@@ -11,34 +11,6 @@ function Doadores() {
   const [rolePessoa, setRolePessoa] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    handleBuscarRoles();
-  }, []);
-
-  const handleBuscarRoles = async () => {
-    setLoading(true);
-    const token = localStorage.getItem("token"); //pega o token gerado do Browser e armazena na variável token
-    if (!token) {
-      location.href = "/Login";
-    } else {
-      axios
-        .get(`http://localhost:8080/api/v1/pessoa/role`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          console.log(response.data);
-          setRoles(response.data);
-          setLoading(false);
-        })
-        .catch((erro) => {
-          console.log(erro);
-          alert("Não foi possível trazer as roles");
-        });
-    }
-  };
-
   const handleBuscaDoadoresPelaRole = async () => {
     setLoading(true);
     const token = localStorage.getItem("token");
@@ -50,7 +22,6 @@ function Doadores() {
       })
       .then((response) => {
         setDoadores(response.data);
-        console.log("Ocorreu um erro ao buscar doadores pela role");
       })
       .catch((erro) => {
         console.error("Erro ao buscar doadores pela role:", erro);
