@@ -12,7 +12,10 @@ import Button from "@mui/material/Button";
 
 function HomeDonartario() {
   const [requisicoes, setRequisicoes] = useState([]);
+  const [doacao, setDoacao] = useState("");
   const [loading, setLoading] = useState(false);
+  //pegando o email da pessoa logada no navegador
+  const email = localStorage.getItem("email");
 
   const handleBuscarRequisicoes = async () => {
     setLoading(true);
@@ -30,6 +33,107 @@ function HomeDonartario() {
       .catch((erro) => {
         console.error("Erro ao buscar donatarios pela role:", erro);
       });
+  };
+
+  // const handleCadastraDoacao = async (requisicaoId) => {
+  //   setLoading(true);
+
+  //   const token = localStorage.getItem("token");
+
+  //   if (!token) {
+  //     alert("Token não encontrado --> Redirecionando a tela de Login");
+  //     location.href = "/Login";
+  //   } else {
+  //     try {
+  //       const response = await axios.post(
+  //         `http://localhost:8080/api/v1/doacoes`,
+  //         {
+  //           pessoaDoadora: email,
+  //         },
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
+
+  //       setDoacao(response.data);
+  //       console.log(response.data);
+
+  //       // Vincular a doação à requisição
+  //       handleVinculaDoacaoRequisicao(response.data.id, requisicaoId);
+  //     } catch (erro) {
+  //       console.error(erro);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+  // };
+
+  const handleCadastraDoacao = async (idRequisicao) => {
+    setLoading(true);
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("Token não encontrado --> Redirecionando a tela de Login");
+      location.href = "/Login";
+    } else {
+      await axios
+        .post(
+          `http://localhost:8080/api/v1/doacoes`,
+          {
+            pessoaDoadora: email,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((response) => {
+          setLoading(false);
+          setDoacao(response.data);
+          handleVinculaDoacaoRequisicao(response.data.idDoacao, idRequisicao);
+          console.log(response.data);
+        })
+        .catch((erro) => {
+          console.error(erro);
+        });
+      setLoading(false);
+    }
+  };
+
+  const handleVinculaDoacaoRequisicao = async (idDoacao, idRequisicao) => {
+    setLoading(true);
+
+    const token = localStorage.getItem("token"); //pega o token gerado do Browser e armazena na variável token
+
+    if (!token) {
+      alert("Token não encontrado --> Redirecionando a tela de Login");
+      location.href = "/Login";
+    } else {
+      await axios
+        .post(
+          `http://localhost:8080/api/v1/requisicao/vinculaDoacaoARequisicao`,
+          {
+            idDoacao,
+            idRequisicao,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((response) => {
+          setLoading(false);
+          console.log(response.data);
+        })
+        .catch((erro) => {
+          console.error(erro);
+        });
+    }
   };
 
   useEffect(() => {
@@ -165,6 +269,7 @@ function HomeDonartario() {
                     backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
                   },
                 }}
+                onClick={() => handleCadastraDoacao(requisicao.idRequisicao)}
               >
                 Ajudar esta pessoa
               </Button>
