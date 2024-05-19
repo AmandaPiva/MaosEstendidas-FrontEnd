@@ -25,7 +25,6 @@ function HomeDonartario() {
       (req) => req.idRequisicao === idRequisicao
     );
 
-    console.log(selectedRequisicao);
     if (selectedRequisicao) {
       setForm({
         tituloRequisicao: selectedRequisicao.tituloRequisicao,

@@ -9,66 +9,81 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
 
-function HomeDonartario() {
+function HomeDoador({ requisicoesInicial }) {
   const [requisicoes, setRequisicoes] = useState([]);
+  const [reqInicial, setReqInicial] = useState(requisicoesInicial);
   const [doacao, setDoacao] = useState("");
   const [loading, setLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [filtro, setFiltro] = useState(""); //HOOK PARA ARMAZENAR O VALOR DO FILTRO
+
+  const handleClose = () => setOpenModal(false);
+  const handleOpen = () => setOpenModal(true);
+
+  //PEGANDO O VALOR DIGITADO NO INPUT
+  const handleFilterChange = (event) => {
+    setFiltro(event.target.value);
+  };
+
+  const filteredRequisicoes = requisicoes.filter(
+    (requisicao) =>
+      requisicao.pessoaDonataria.nomePessoa
+        .toLowerCase()
+        .includes(filtro.toLowerCase()) ||
+      requisicao.tituloRequisicao
+        .toLowerCase()
+        .includes(filtro.toLowerCase()) ||
+      requisicao.descricaoRequisicao
+        .toLowerCase()
+        .includes(filtro.toLowerCase()) ||
+      requisicao.pessoaDonataria.endereco.bairro
+        .toLowerCase()
+        .includes(filtro.toLowerCase()) ||
+      requisicao.pessoaDonataria.endereco.cidade
+        .toLowerCase()
+        .includes(filtro.toLowerCase()) ||
+      requisicao.pessoaDonataria.endereco.estado
+        .toLowerCase()
+        .includes(filtro.toLowerCase())
+  );
+
   //pegando o email da pessoa logada no navegador
   const email = localStorage.getItem("email");
+
+  const handleRemoveRequisicao = (idRequisicao) => {
+    setRequisicoes(
+      requisicoes.filter(
+        (requisicao) => requisicao.idRequisicao !== idRequisicao
+      )
+    );
+  };
 
   const handleBuscarRequisicoes = async () => {
     setLoading(true);
     const token = localStorage.getItem("token");
-    await axios
-      .get(`http://localhost:8080/api/v1/requisicao`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        setRequisicoes(response.data);
-        console.log(response.data);
-      })
-      .catch((erro) => {
-        console.error("Erro ao buscar donatarios pela role:", erro);
-      });
+    if (!token) {
+      location.href = "/Login";
+    } else {
+      await axios
+        .get(`http://localhost:8080/api/v1/requisicao`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          setRequisicoes(response.data);
+          console.log(response.data);
+        })
+        .catch((erro) => {
+          console.error("Erro ao buscar donatarios pela role:", erro);
+        });
+    }
   };
-
-  // const handleCadastraDoacao = async (requisicaoId) => {
-  //   setLoading(true);
-
-  //   const token = localStorage.getItem("token");
-
-  //   if (!token) {
-  //     alert("Token não encontrado --> Redirecionando a tela de Login");
-  //     location.href = "/Login";
-  //   } else {
-  //     try {
-  //       const response = await axios.post(
-  //         `http://localhost:8080/api/v1/doacoes`,
-  //         {
-  //           pessoaDoadora: email,
-  //         },
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         }
-  //       );
-
-  //       setDoacao(response.data);
-  //       console.log(response.data);
-
-  //       // Vincular a doação à requisição
-  //       handleVinculaDoacaoRequisicao(response.data.id, requisicaoId);
-  //     } catch (erro) {
-  //       console.error(erro);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  // };
 
   const handleCadastraDoacao = async (idRequisicao) => {
     setLoading(true);
@@ -84,6 +99,7 @@ function HomeDonartario() {
           `http://localhost:8080/api/v1/doacoes`,
           {
             pessoaDoadora: email,
+            requisicao: idRequisicao,
           },
           {
             headers: {
@@ -94,7 +110,6 @@ function HomeDonartario() {
         .then((response) => {
           setLoading(false);
           setDoacao(response.data);
-          handleVinculaDoacaoRequisicao(response.data.idDoacao, idRequisicao);
           console.log(response.data);
         })
         .catch((erro) => {
@@ -104,22 +119,21 @@ function HomeDonartario() {
     }
   };
 
-  const handleVinculaDoacaoRequisicao = async (idDoacao, idRequisicao) => {
+  {
+    /**MUDAR STATUS DA REQUISIÇÃO */
+  }
+  const handleMudaStatusDaRequisicao = async (idRequisicao) => {
     setLoading(true);
 
-    const token = localStorage.getItem("token"); //pega o token gerado do Browser e armazena na variável token
+    const token = localStorage.getItem("token");
 
     if (!token) {
       alert("Token não encontrado --> Redirecionando a tela de Login");
       location.href = "/Login";
     } else {
       await axios
-        .post(
-          `http://localhost:8080/api/v1/requisicao/vinculaDoacaoARequisicao`,
-          {
-            idDoacao,
-            idRequisicao,
-          },
+        .patch(
+          `http://localhost:8080/api/v1/requisicao/mudarStatusRequisicao/${idRequisicao}/EM_ANDAMENTO`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -133,6 +147,7 @@ function HomeDonartario() {
         .catch((erro) => {
           console.error(erro);
         });
+      setLoading(false);
     }
   };
 
@@ -140,8 +155,70 @@ function HomeDonartario() {
     handleBuscarRequisicoes();
   }, []);
 
+  const style = {
+    position: "absolute",
+    top: "25%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 700,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+  };
+
   return (
     <>
+      {/**MODAL */}
+      <Modal
+        open={openModal}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography
+            sx={{
+              color: "#04BFAF",
+              fontFamily: "montserrat",
+              fontSize: "36px",
+              fontWeight: "600",
+              textAlign: "center",
+            }}
+          >
+            Fantástico!
+          </Typography>
+          <Typography
+            sx={{
+              color: "#E64097",
+              fontFamily: "montserrat",
+              fontSize: "24px",
+              fontWeight: "500",
+              textAlign: "center",
+              marginTop: "2vh",
+            }}
+          >
+            Agora você está pronto para fazer o bem. Vamos direcionar você para
+            o chat desse donatário
+          </Typography>
+          <Button
+            variant="contained"
+            onClick={() => handleClose()}
+            sx={{
+              backgroundColor: "#E64097",
+              width: "100px",
+              display: "flex",
+              flexDirection: "column",
+              margin: "5vh auto",
+              "&:hover": {
+                backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
+              },
+            }}
+          >
+            OK
+          </Button>
+        </Box>
+      </Modal>
+
       <Box
         sx={{
           display: "flex",
@@ -191,8 +268,11 @@ function HomeDonartario() {
         </IconButton>
         <InputBase
           sx={{ color: "#E64097", ml: 1, flex: 1 }}
-          placeholder="Filtrar por Região"
+          placeholder="Filtrar por Palavras Chave"
           inputProps={{ "aria-label": "pesquisar" }}
+          handleFilterChange
+          value={filtro}
+          onChange={handleFilterChange}
         />
         <IconButton
           type="submit"
@@ -212,9 +292,10 @@ function HomeDonartario() {
         }}
       >
         {/**REQUISICOES */}
-        {requisicoes.map((requisicao) => {
+        {filteredRequisicoes.map((requisicao) => {
           return (
             <Box
+              key={requisicao.idRequisicao}
               sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -233,7 +314,7 @@ function HomeDonartario() {
                   fontSize: "24px",
                   fontFamily: "montserrat",
                   color: "#E64097",
-                  fontWeight: "500",
+                  fontWeight: "600",
                 }}
               >
                 {" "}
@@ -241,11 +322,23 @@ function HomeDonartario() {
               </Typography>
               <Typography
                 sx={{
+                  fontSize: "24px",
+                  fontFamily: "montserrat",
+                  color: "#231F20",
+                  fontWeight: "500",
+                  marginTop: "5vh",
+                }}
+              >
+                {" "}
+                {requisicao.tituloRequisicao}
+              </Typography>
+              <Typography
+                sx={{
                   fontSize: "20px",
                   fontFamily: "montserrat",
                   color: "#231F20",
                   fontWeight: "500",
-                  margin: "5vh auto",
+                  margin: "2vh auto",
                 }}
               >
                 {" "}
@@ -259,6 +352,20 @@ function HomeDonartario() {
                 {requisicao.pessoaDonataria.endereco.estado}
               </Typography>
 
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{ marginLeft: "auto", marginTop: "5vh" }}
+              >
+                <Chip
+                  sx={{
+                    backgroundColor: "#48E54E",
+                    color: "#FFFFFF",
+                  }}
+                  label={requisicao.statusRequisicao}
+                />
+              </Stack>
+
               <Button
                 variant="contained"
                 sx={{
@@ -269,7 +376,12 @@ function HomeDonartario() {
                     backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
                   },
                 }}
-                onClick={() => handleCadastraDoacao(requisicao.idRequisicao)}
+                onClick={() => {
+                  handleCadastraDoacao(requisicao.idRequisicao);
+                  handleMudaStatusDaRequisicao(requisicao.idRequisicao);
+                  handleRemoveRequisicao(requisicao.idRequisicao);
+                  handleOpen();
+                }}
               >
                 Ajudar esta pessoa
               </Button>
@@ -280,4 +392,4 @@ function HomeDonartario() {
     </>
   );
 }
-export default HomeDonartario;
+export default HomeDoador;

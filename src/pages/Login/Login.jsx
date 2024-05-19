@@ -96,7 +96,7 @@ function Login() {
               width: "50vw",
             }}
           >
-            <Link to={"/Cadastro"}>
+            <Link to={"/"}>
               <Button
                 variant="outlined"
                 sx={{

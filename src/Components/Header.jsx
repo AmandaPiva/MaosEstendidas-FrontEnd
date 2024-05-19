@@ -9,6 +9,8 @@ function Header() {
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
 
+  const role = localStorage.getItem("role"); //pega a role do navegador
+
   //removendo dados do navegador para logout
   const handleRemoveItensLocalStorage = () => {
     localStorage.removeItem("token");
@@ -101,12 +103,25 @@ function Header() {
             justifyContent: "center",
           }}
         >
-          <Button
-            onClick={() => (location.href = "/verDoadores")}
-            sx={{ color: "#FFFFFF", marginLeft: "5vw" }}
-          >
-            Ver doadores
-          </Button>
+          {/**MUDANDO HEADER DE ACORDO COM A ROLE */}
+          {role === "DOADORA" ? (
+            <Button
+              onClick={() => (location.href = "/verDoadores")}
+              sx={{ color: "#FFFFFF", marginLeft: "5vw" }}
+            >
+              Historico de doações
+            </Button>
+          ) : role === "DONATARIA" ? (
+            <Button
+              onClick={() => (location.href = "/verDoadores")}
+              sx={{ color: "#FFFFFF", marginLeft: "5vw" }}
+            >
+              Ver doadores
+            </Button>
+          ) : (
+            <></>
+          )}
+
           <Button onClick={() => handleOpen()} sx={{ color: "#FFFFFF" }}>
             Logout
           </Button>
