@@ -2,12 +2,34 @@ import { Box, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import TextField from "@mui/material/TextField";
+import axios from "axios";
 
 function EsqueceuSenha() {
   //HOOKS
   const [pessoa, setPessoa] = useState({
+    email: "",
     senha: "",
   });
+  const [senha, setSenha] = useState("");
+
+  {
+    /**FUNÇÃO QUE LEVA A SENHA AO EMAIL */
+  }
+  const handleEnviaSenhaParaOEmail = async () => {
+    await axios
+      .post(`http://localhost:8080/api/v1/email/send-password`, {
+        email: pessoa.email,
+        newPassword: senha,
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((erro) => {
+        console.log(erro);
+        alert("Ocorreu um erro ao enviar a senha a este email");
+      });
+  };
 
   //FUNÇÃO GERA SENHA RANDOMICA
   const handleGeraSenha = (tamanho = 8) => {
@@ -23,14 +45,21 @@ function EsqueceuSenha() {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
       counter += 1;
     }
-
-    //atualiza o state pessoa com a nova senha gerada
+    setSenha(result); // Salva a senha gerada no estado
     setPessoa((prevState) => ({
       ...prevState,
-      senha: result, //adicionamos o conteudo gerado na variável result para a propriedade senha que vem do HOOK pessoa
+      senha: result,
     }));
   };
 
+  const handleChangeForm = (event) => {
+    const { name, value } = event.target;
+    //atualiza o state pessoa com a nova senha gerada
+    setPessoa((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
   //VAI FAZER RENDERIZAR NA TELA O CÓDIGO GERADO PELA FUNÇÃO
   useEffect(() => {
     handleGeraSenha(10);
@@ -57,18 +86,32 @@ function EsqueceuSenha() {
               <Button variant="outlined">Voltar</Button>
             </Link>
           </Box>
-          <Typography
-            sx={{
-              color: "#E64097",
-              fontFamily: "montserrat",
-              fontSize: "36px",
-              fontWeight: "600",
-              textAlign: "center",
-              margin: "10vh 2vw",
-            }}
-          >
-            Esqueceu sua senha?
-          </Typography>
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Typography
+              sx={{
+                color: "#E64097",
+                fontFamily: "montserrat",
+                fontSize: "36px",
+                fontWeight: "600",
+                textAlign: "center",
+                margin: "8vh 5vw 0",
+              }}
+            >
+              Esqueceu sua senha?
+            </Typography>
+            <Typography
+              sx={{
+                color: "#04BFAF",
+                fontFamily: "montserrat",
+                fontSize: "24px",
+                fontWeight: "500",
+                textAlign: "center",
+                margin: "2vh 2vw",
+              }}
+            >
+              Vamos ajudá-lo a recuperá-la!
+            </Typography>
+          </Box>
         </Box>
 
         <Box
@@ -78,43 +121,48 @@ function EsqueceuSenha() {
             boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
             paddingTop: "2em",
             paddingBottom: "2em",
-            width: "90vw",
-            height: "15vh",
-            margin: "2vh auto",
+            width: "50vw",
+            height: "auto",
+            margin: "6vh auto",
             borderRadius: "20px",
             backgroundColor: "#FAFAFA",
           }}
         >
-          <Box sx={{ display: "flex", flexDirection: "row" }}>
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Typography
               sx={{
                 fontFamily: "montserrat",
-                color: "#231F20",
-                fontSize: "20px",
-                fontWeight: "500",
-                marginLeft: "40px",
+                color: "#E64097",
+                fontSize: "24px",
+                fontWeight: "600",
+                margin: "auto",
               }}
             >
-              Clique na sua nova senha gerada ao lado:{" "}
+              Informe um email para que a nova senha seja enviada
             </Typography>
-            <Typography
-              variant="overline"
-              sx={{ marginLeft: "10px", cursor: "pointer" }}
-              onClick={() => {
-                navigator.clipboard.writeText(pessoa.senha); //COMANDO PARA COPIAR O QUE ESTÁ ESCRITO NA ÁREA DE TRASNFERENCIA DO COMPUTADOR
-                alert("Senha copiada para a área de transferência");
+
+            <TextField
+              sx={{
+                width: "50%",
+                backgroundColor: "#FFFFFF",
+                margin: "5vh auto",
               }}
-            >
-              {pessoa.senha}
-            </Typography>
+              id="outlined-basic"
+              onChange={handleChangeForm}
+              value={pessoa.email}
+              name="email"
+              label="Email de recuperação de senha"
+              variant="outlined"
+            />
           </Box>
 
           <Button
             variant="contained"
+            onClick={handleEnviaSenhaParaOEmail}
             sx={{
               height: "5vh",
-              width: "10vw",
-              margin: "2vh 40px",
+              width: "20vw",
+              margin: "2vh auto",
               backgroundColor: "#04BFAF",
               "&:hover": {
                 backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
