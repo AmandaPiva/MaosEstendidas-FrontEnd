@@ -52,6 +52,23 @@ function EsqueceuSenha() {
     }));
   };
 
+  const handleAtualizaSenha = async () => {
+    await axios
+      .patch(
+        `http://localhost:8080/api/v1/pessoa/updateSenha/${pessoa.email}`,
+        {
+          senhaPessoa: senha,
+        }
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((erro) => {
+        console.error(erro);
+        alert("Ocorreu um erro enviar a nova senha");
+      });
+  };
+
   const handleChangeForm = (event) => {
     const { name, value } = event.target;
     //atualiza o state pessoa com a nova senha gerada
@@ -65,6 +82,7 @@ function EsqueceuSenha() {
     handleGeraSenha(10);
   }, []);
 
+  console.log(senha);
   return (
     <>
       <Box
@@ -158,7 +176,9 @@ function EsqueceuSenha() {
 
           <Button
             variant="contained"
-            onClick={handleEnviaSenhaParaOEmail}
+            onClick={() => {
+              handleEnviaSenhaParaOEmail();
+            }}
             sx={{
               height: "5vh",
               width: "20vw",

@@ -293,7 +293,7 @@ function HomeDoador({ requisicoesInicial }) {
       >
         {/**REQUISICOES */}
         {filteredRequisicoes.map((requisicao) => {
-          return (
+          return requisicao && requisicao.statusRequisicao === "ABERTA" ? (
             <Box
               key={requisicao.idRequisicao}
               sx={{
@@ -301,7 +301,7 @@ function HomeDoador({ requisicoesInicial }) {
                 flexDirection: "column",
                 borderRadius: "20px",
                 backgroundColor: "#FFFFFF",
-                boxShadow: "5px 0px  10px rgba(0, 0, 0, 0.3)",
+                boxShadow: "5px 0px 10px rgba(0, 0, 0, 0.3)",
                 height: "50vh",
                 width: "20vw",
                 alignItems: "center",
@@ -317,7 +317,6 @@ function HomeDoador({ requisicoesInicial }) {
                   fontWeight: "600",
                 }}
               >
-                {" "}
                 {requisicao.pessoaDonataria.nomePessoa}
               </Typography>
               <Typography
@@ -329,7 +328,6 @@ function HomeDoador({ requisicoesInicial }) {
                   marginTop: "5vh",
                 }}
               >
-                {" "}
                 {requisicao.tituloRequisicao}
               </Typography>
               <Typography
@@ -341,7 +339,6 @@ function HomeDoador({ requisicoesInicial }) {
                   margin: "2vh auto",
                 }}
               >
-                {" "}
                 {requisicao.descricaoRequisicao}
               </Typography>
               <Typography
@@ -373,7 +370,7 @@ function HomeDoador({ requisicoesInicial }) {
                   marginTop: "auto",
                   height: "40px",
                   "&:hover": {
-                    backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
+                    backgroundColor: "#E64097",
                   },
                 }}
                 onClick={() => {
@@ -386,7 +383,7 @@ function HomeDoador({ requisicoesInicial }) {
                 Ajudar esta pessoa
               </Button>
             </Box>
-          );
+          ) : null;
         })}
       </Box>
     </>

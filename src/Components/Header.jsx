@@ -130,7 +130,15 @@ function Header() {
 
         {/**AVATAR */}
         <Stack sx={{ padding: "10px" }} direction="column">
-          <Avatar src="/broken-image.jpg" />
+          <Button
+            onClick={() => (location.href = "/Perfil")}
+            sx={{
+              marginRight: "10px",
+            }}
+          >
+            <Avatar src="/broken-image.jpg" />
+          </Button>
+
           <Typography
             sx={{
               fontSize: "16px",

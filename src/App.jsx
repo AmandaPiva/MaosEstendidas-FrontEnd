@@ -16,6 +16,7 @@ import Doadores from "./pages/verDoadores/verDoadores";
 import HistoricoDoacoes from "./pages/HitoricoDoacoes/HistoricoDoacoes";
 import EscolhendoDonatario from "./pages/EscolhendoDonatario/EscolhendoDonatario";
 import EsqueceuSenha from "./pages/EsqueceuAsenha/EsqueceuSenha";
+import Perfil from "./pages/Perfil/Perfil";
 import { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
@@ -112,6 +113,7 @@ function App() {
           <Route path={"/verDoadores"} element={<Doadores />} />
           <Route path={"/HistoricoDoacoes"} element={<HistoricoDoacoes />} />
           <Route path={"/EsqueceuSenha"} element={<EsqueceuSenha />} />
+          <Route path={"/Perfil"} element={<Perfil />} />
 
           <Route
             path={"/EscolhendoDonatario"}
