@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import { useChat } from "./../context/ChatContext"; // Certifique-se de usar o caminho correto para o ChatContext
 import {
   Dialog,
@@ -15,6 +16,7 @@ import {
   Slide,
 } from "@mui/material";
 import { Close as CloseIcon, Send as SendIcon } from "@mui/icons-material";
+import axios from "axios";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -22,7 +24,45 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function Chat() {
   const { openChat, closeChatDialog } = useChat();
+  const [mensagem, setMensagem] = useState("");
+  const [loading, setLoading] = useState(false);
 
+  const email = localStorage.getItem("email");
+
+  const handleMandaMensagem = () => {
+    setLoading(true);
+    const token = localStorage.getItem("token"); //pega o token gerado do Browser e armazena na variável token
+
+    if (!token) {
+      location.href = "/Login";
+    } else {
+      axios
+        .post(
+          `http://localhost:8080/api/v1/mensagem`,
+          {
+            pessoaRemetente: email,
+            pessoaDestinataria: "marialinda@gmail.com",
+            mensagem: mensagem,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((response) => {
+          setLoading(false);
+          console.log(response.data);
+        })
+        .catch((erro) => {
+          console.error(erro);
+          alert("Ocorreu um erro ao cadastrar Requisição");
+        });
+    }
+    setLoading(false);
+  };
+
+  console.log(mensagem);
   return (
     <Dialog
       fullScreen
@@ -61,6 +101,9 @@ function Chat() {
             }}
           >
             <TextField
+              value={mensagem}
+              onChange={(event) => setMensagem(event.target.value)}
+              name="mensagem"
               sx={{
                 width: "40vw",
                 display: "flex",
@@ -75,6 +118,7 @@ function Chat() {
               sx={{ marginLeft: "30px", background: "#E64097" }}
               color="primary"
               aria-label="add"
+              onClick={() => handleMandaMensagem()}
             >
               <SendIcon />
             </Fab>
