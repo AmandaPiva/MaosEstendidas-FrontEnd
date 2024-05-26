@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import axios from "axios";
+import Chat from "../src/Components/Chat"; // Certifique-se de usar o caminho correto para o Chat
 
 //variável que vai buscar do navegador a role do usuário logado
 const role = localStorage.getItem("role");
@@ -106,7 +107,6 @@ function App() {
             element={<CadastroNecessidade />}
           />
           <Route path={"/HomeDonatario"} element={<HomeDonatario />} />
-
           <Route path={"/HomeDoador"} element={<HomeDoador />} />
           <Route path={"/SenhaAcesso"} element={<SenhaAcesso />} />
           <Route path={"/modalEndereco"} element={<ModalCadastroEndereco />} />
@@ -114,7 +114,7 @@ function App() {
           <Route path={"/HistoricoDoacoes"} element={<HistoricoDoacoes />} />
           <Route path={"/EsqueceuSenha"} element={<EsqueceuSenha />} />
           <Route path={"/Perfil"} element={<Perfil />} />
-
+          {/* Adicione o Chat aqui para que esteja sempre disponível */}
           <Route
             path={"/EscolhendoDonatario"}
             element={<EscolhendoDonatario />}
@@ -124,14 +124,13 @@ function App() {
             element={<ModalCadastroConcluido />}
           />
           {/*TESTANDO UM NOVO COMPONENTE QUE SERÁ NOSSO MODAL DE AVISOS  */}
-
           <Route path={"/Header"} element={<Header />} />
           <Route path={"/CardNecessidade"} element={<CardNecessidade />} />
           <Route path={"/CardDonatarios"} element={<CardDonatarios />} />
-
           <Route path={"/Cadastro"} element={<Cadastro />} />
           <Route path={"/Endereco"} element={<Endereco />} />
         </Routes>
+        <Chat />{" "}
       </BrowserRouter>
     </>
   );

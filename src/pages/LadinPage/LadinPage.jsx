@@ -63,23 +63,21 @@ function LadinPage() {
           </Box>
 
           <Box sx={{ margin: "5vh auto" }}>
-            {/**VAMOS USAR O Link PARA ACESSAR AS ROTAS AO CLICAR NOS BOTÕES E MUDAR DE PÁGINA */}
-            {/*ESTE LINK É UM COMPONENTE DO react-router-dom */}
-
-            <Button
-              variant="contained"
-              onClick={() => (location.href = "/Endereco")}
-              sx={{
-                backgroundColor: "#04BFAF",
-                color: "#FFFFFF",
-                width: "200px",
-                "&:hover": {
-                  backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
-                },
-              }}
-            >
-              Cadastre-se
-            </Button>
+            <Link to={"/Login"}>
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "#04BFAF",
+                  color: "#FFFFFF",
+                  width: "200px",
+                  "&:hover": {
+                    backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
+                  },
+                }}
+              >
+                Login
+              </Button>
+            </Link>
           </Box>
         </Box>
 

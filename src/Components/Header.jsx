@@ -1,11 +1,15 @@
 import { Box, Button, Typography } from "@mui/material";
+import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import Modal from "@mui/material/Modal";
 import { useState } from "react";
+import { useChat } from "./../context/ChatContext"; // Certifique-se de usar o caminho correto para o ChatContext
 
 function Header() {
   const [openModal, setOpenModal] = useState(false);
+  const { openChatDialog } = useChat();
+
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
 
@@ -125,7 +129,9 @@ function Header() {
           <Button onClick={() => handleOpen()} sx={{ color: "#FFFFFF" }}>
             Logout
           </Button>
-          <Button sx={{ color: "#FFFFFF" }}>Chat</Button>
+          <Button onClick={openChatDialog} sx={{ color: "#FFFFFF" }}>
+            Chat
+          </Button>
         </Box>
 
         {/**AVATAR */}
