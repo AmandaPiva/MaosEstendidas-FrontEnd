@@ -13,6 +13,7 @@ import Modal from "@mui/material/Modal";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
+// import { useChat } from "../../context/ChatContext"; // Certifique-se de usar o caminho correto para o ChatContext
 
 function HomeDoador({ requisicoesInicial }) {
   const [requisicoes, setRequisicoes] = useState([]);
@@ -21,6 +22,7 @@ function HomeDoador({ requisicoesInicial }) {
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [filtro, setFiltro] = useState(""); //HOOK PARA ARMAZENAR O VALOR DO FILTRO
+  // const { openChatDialog } = useChat();
 
   const handleClose = () => setOpenModal(false);
   const handleOpen = () => setOpenModal(true);
@@ -61,6 +63,16 @@ function HomeDoador({ requisicoesInicial }) {
         (requisicao) => requisicao.idRequisicao !== idRequisicao
       )
     );
+  };
+
+  const formatPhoneNumber = (phone) => {
+    // Remove todos os caracteres não numéricos
+    let cleaned = ("" + phone).replace(/\D/g, "");
+    // Adiciona o código do país, se necessário
+    if (cleaned.length === 11) {
+      cleaned = "55" + cleaned;
+    }
+    return cleaned;
   };
 
   const handleBuscarRequisicoes = async () => {
@@ -202,7 +214,11 @@ function HomeDoador({ requisicoesInicial }) {
           </Typography>
           <Button
             variant="contained"
-            onClick={() => handleClose()}
+            onClick={() => {
+              handleClose();
+
+              // openChatDialog();
+            }}
             sx={{
               backgroundColor: "#E64097",
               width: "100px",
@@ -374,6 +390,13 @@ function HomeDoador({ requisicoesInicial }) {
                   },
                 }}
                 onClick={() => {
+                  const phoneNumber = formatPhoneNumber(
+                    requisicao.pessoaDonataria.celular
+                  );
+
+                  const whatsappLink = `https://wa.me/${phoneNumber}?text=Olá%20${requisicao.pessoaDonataria.nomePessoa},%20quero%20ajudar%20com%20a%20sua%20requisição!`;
+                  window.open(whatsappLink, "_blank");
+
                   handleCadastraDoacao(requisicao.idRequisicao);
                   handleMudaStatusDaRequisicao(requisicao.idRequisicao);
                   handleRemoveRequisicao(requisicao.idRequisicao);

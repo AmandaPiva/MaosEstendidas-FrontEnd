@@ -21,7 +21,7 @@ import { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import axios from "axios";
-import Chat from "../src/Components/Chat"; // Certifique-se de usar o caminho correto para o Chat
+// import Chat from "../src/Components/Chat"; // Certifique-se de usar o caminho correto para o Chat
 
 //variável que vai buscar do navegador a role do usuário logado
 const role = localStorage.getItem("role");
@@ -130,7 +130,7 @@ function App() {
           <Route path={"/Cadastro"} element={<Cadastro />} />
           <Route path={"/Endereco"} element={<Endereco />} />
         </Routes>
-        <Chat />{" "}
+        {/* <Chat />{" "} */}
       </BrowserRouter>
     </>
   );

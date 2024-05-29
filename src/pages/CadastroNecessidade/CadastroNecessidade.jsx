@@ -61,7 +61,8 @@ function CadastroNecessidade() {
   };
 
   const handleChangeForm = (event) => {
-    const { name, value } = event.setForm((prev) => ({
+    const { name, value } = event.target;
+    setForm((prev) => ({
       ...prev,
       [name]: value,
     }));

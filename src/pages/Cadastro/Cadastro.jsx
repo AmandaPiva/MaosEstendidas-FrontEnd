@@ -21,6 +21,7 @@ function Cadastro(props) {
     nomePessoa: "",
     emailPessoa: "",
     documentoPessoa: "",
+    celular: "",
     dataNascimentoPessoa: "",
     rolePessoa: "",
     senhaPessoa: "",
@@ -41,12 +42,21 @@ function Cadastro(props) {
     setSelectRole(event.target.value);
   };
 
+  const phoneMask = (value) => {
+    if (!value) return "";
+    value = value.replace(/\D/g, "");
+    value = value.replace(/(\d{2})(\d)/, "($1) $2");
+    value = value.replace(/(\d)(\d{4})$/, "$1-$2");
+    return value;
+  };
+
   const handleCadastroPessoa = () => {
     setLoading(true);
 
     if (
       form.nomePessoa == "" ||
       form.emailPessoa == "" ||
+      form.celular == "" ||
       form.documentoPessoa == "" ||
       form.dataNascimentoPessoa == "" ||
       selectRole == ""
@@ -57,6 +67,7 @@ function Cadastro(props) {
         .post(`http://localhost:8080/api/v1/pessoa`, {
           nomePessoa: form.nomePessoa,
           emailPessoa: form.emailPessoa,
+          celular: form.celular,
           documentoPessoa: form.documentoPessoa,
           dataNascimentoPessoa: form.dataNascimentoPessoa,
           rolePessoa: selectRole,
@@ -313,6 +324,21 @@ function Cadastro(props) {
                 value={form.emailPessoa}
                 id="outlined-basic"
                 label="Email"
+                variant="outlined"
+              />
+
+              <TextField
+                sx={{
+                  width: "25vw",
+                  backgroundColor: "#FFFFFF",
+                  margin: "1vh auto",
+                }}
+                name="celular"
+                onChange={handleChangeForm}
+                value={phoneMask(form.celular)}
+                placeholder="(99)99999-9999"
+                id="outlined-basic"
+                label="Celular"
                 variant="outlined"
               />
 
