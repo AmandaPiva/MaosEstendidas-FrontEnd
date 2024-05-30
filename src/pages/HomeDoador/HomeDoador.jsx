@@ -22,7 +22,6 @@ function HomeDoador({ requisicoesInicial }) {
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [filtro, setFiltro] = useState(""); //HOOK PARA ARMAZENAR O VALOR DO FILTRO
-  // const { openChatDialog } = useChat();
 
   const handleClose = () => setOpenModal(false);
   const handleOpen = () => setOpenModal(true);
@@ -217,7 +216,12 @@ function HomeDoador({ requisicoesInicial }) {
             onClick={() => {
               handleClose();
 
-              // openChatDialog();
+              const phoneNumber = formatPhoneNumber(
+                requisicao.pessoaDonataria.celular
+              );
+
+              const whatsappLink = `https://wa.me/${phoneNumber}?text=Olá%20${requisicao.pessoaDonataria.nomePessoa},%20quero%20ajudar%20com%20a%20sua%20requisição!`;
+              window.open(whatsappLink, "_blank");
             }}
             sx={{
               backgroundColor: "#E64097",
@@ -390,13 +394,6 @@ function HomeDoador({ requisicoesInicial }) {
                   },
                 }}
                 onClick={() => {
-                  const phoneNumber = formatPhoneNumber(
-                    requisicao.pessoaDonataria.celular
-                  );
-
-                  const whatsappLink = `https://wa.me/${phoneNumber}?text=Olá%20${requisicao.pessoaDonataria.nomePessoa},%20quero%20ajudar%20com%20a%20sua%20requisição!`;
-                  window.open(whatsappLink, "_blank");
-
                   handleCadastraDoacao(requisicao.idRequisicao);
                   handleMudaStatusDaRequisicao(requisicao.idRequisicao);
                   handleRemoveRequisicao(requisicao.idRequisicao);

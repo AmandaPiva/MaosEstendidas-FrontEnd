@@ -108,7 +108,7 @@ function Header() {
           {/**MUDANDO HEADER DE ACORDO COM A ROLE */}
           {role === "DOADORA" ? (
             <Button
-              onClick={() => (location.href = "/verDoadores")}
+              onClick={() => (location.href = "/HistoricoDoacoes")}
               sx={{ color: "#FFFFFF", marginLeft: "5vw" }}
             >
               Historico de doações
