@@ -6,6 +6,8 @@ import CriancasPcds from "../../../public/criancasPcds.png";
 import { Link } from "react-router-dom";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import { useState } from "react";
+import Modal from "@mui/material/Modal";
+
 import axios from "axios";
 
 function CadastroNecessidade() {
@@ -16,8 +18,13 @@ function CadastroNecessidade() {
     statusRequisicao: "",
   });
   const [loading, setLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+
   //pegando o email da pessoa logada no navegador
   const email = localStorage.getItem("email");
+
+  const handleClose = () => setOpenModal(false);
+  const handleOpen = () => setOpenModal(true);
 
   const handleCadastraNecessidade = () => {
     setLoading(true);
@@ -49,7 +56,8 @@ function CadastroNecessidade() {
           .then((response) => {
             setLoading(false);
             console.log(response.data);
-            alert("Requisição cadastrada com sucesso");
+
+            handleOpen();
           })
           .catch((erro) => {
             console.error(erro);
@@ -68,10 +76,61 @@ function CadastroNecessidade() {
     }));
   };
 
-  console.log(email);
+  const style = {
+    position: "absolute",
+    top: "25%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 700,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+  };
 
   return (
     <>
+      {/**MODAL */}
+      <Modal
+        open={openModal}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography
+            sx={{
+              color: "#E64097",
+              fontFamily: "montserrat",
+              fontSize: "24px",
+              fontWeight: "500",
+              textAlign: "center",
+              marginTop: "2vh",
+            }}
+          >
+            Requisição cadastrada com sucesso, aguarde um doador entrar em
+            contato com você!
+          </Typography>
+          <Button
+            variant="contained"
+            onClick={() => {
+              handleClose();
+              location.href = "/HomeDonatario";
+            }}
+            sx={{
+              backgroundColor: "#E64097",
+              width: "100px",
+              display: "flex",
+              flexDirection: "column",
+              margin: "5vh auto",
+              "&:hover": {
+                backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
+              },
+            }}
+          >
+            OK
+          </Button>
+        </Box>
+      </Modal>
       <Box
         sx={{
           display: "flex",

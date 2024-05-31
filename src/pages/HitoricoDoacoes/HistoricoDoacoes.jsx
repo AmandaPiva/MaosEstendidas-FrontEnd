@@ -210,6 +210,12 @@ function HistoricoDoacoes() {
         >
           {/**HISTÓRICO DAS DOAÇÕES */}
           {historicoDoacoes.map((historico) => {
+            //Formatando a data em padrão brasileiro
+            const dataRequisicao = new Date(historico.dataDoacao);
+            const formattedDate = `${dataRequisicao.getDate()}/${
+              dataRequisicao.getMonth() + 1
+            }/${dataRequisicao.getFullYear()}`;
+
             return (historico &&
               historico.requisicao.statusRequisicao === "EM_ANDAMENTO") ||
               historico.requisicao.statusRequisicao === "CONCLUIDA" ? (
@@ -273,35 +279,65 @@ function HistoricoDoacoes() {
                   spacing={1}
                   sx={{ marginLeft: "auto", marginTop: "5vh" }}
                 >
-                  <Chip
-                    sx={{
-                      backgroundColor: "#48E54E",
-                      color: "#FFFFFF",
-                    }}
-                    label={historico.requisicao.statusRequisicao}
-                  />
+                  {historico.requisicao.statusRequisicao === "EM_ANDAMENTO" ? (
+                    /**AMARELO */
+                    <Chip
+                      sx={{
+                        backgroundColor: "#E5DF48",
+                        color: "#FFFFFF",
+                      }}
+                      label={historico.requisicao.statusRequisicao}
+                    />
+                  ) : historico.requisicao.statusRequisicao === "CONCLUIDA" ? (
+                    <>
+                      <Typography
+                        sx={{ fontFamily: "montserrat", marginRight: "10px" }}
+                      >
+                        Concluída em: {formattedDate}
+                      </Typography>
+
+                      <Chip
+                        sx={{
+                          backgroundColor: "#F03737",
+                          color: "#FFFFFF",
+                        }}
+                        label={historico.requisicao.statusRequisicao}
+                      />
+                    </>
+                  ) : (
+                    /**VERDE */
+                    <Chip
+                      sx={{
+                        backgroundColor: "#48E54E",
+                        color: "#FFFFFF",
+                      }}
+                      label={historico.requisicao.statusRequisicao}
+                    />
+                  )}
                 </Stack>
-
-                <Button
-                  variant="contained"
-                  sx={{
-                    backgroundColor: "#04BFAF",
-                    marginTop: "auto",
-                    height: "40px",
-                    "&:hover": {
+                {historico.requisicao.statusRequisicao === "EM_ANDAMENTO" ||
+                historico.requisicao.statusRequisicao === "ABERTA" ? (
+                  <Button
+                    variant="contained"
+                    sx={{
                       backgroundColor: "#04BFAF",
-                    },
-                  }}
-                  onClick={() => {
-                    handleMudaStatusDaRequisicao(
-                      historico.requisicao.idRequisicao
-                    );
+                      marginTop: "auto",
+                      height: "40px",
+                      "&:hover": {
+                        backgroundColor: "#04BFAF",
+                      },
+                    }}
+                    onClick={() => {
+                      handleMudaStatusDaRequisicao(
+                        historico.requisicao.idRequisicao
+                      );
 
-                    handleOpen();
-                  }}
-                >
-                  Concluir doação
-                </Button>
+                      handleOpen();
+                    }}
+                  >
+                    Concluir doação
+                  </Button>
+                ) : null}
               </Box>
             ) : null;
           })}

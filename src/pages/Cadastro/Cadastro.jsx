@@ -187,7 +187,7 @@ function Cadastro(props) {
       </Box>
     );
   }
-
+  console.log(roles);
   return (
     <>
       <Box
@@ -385,7 +385,7 @@ function Cadastro(props) {
                     sx={{ width: "15vw" }}
                   >
                     {roles.map((roleItem) => {
-                      return (
+                      return roleItem.rolePessoa === "ADMIN" ? null : (
                         <MenuItem
                           key={roleItem.idPessoaRole}
                           value={roleItem.idPessoaRole}
@@ -544,6 +544,10 @@ function Cadastro(props) {
                       }}
                       name="confirmeSuaSenha"
                       id="outlined-basic"
+                      value={form.confirmeSuaSenha}
+                      onChange={handleChangeForm}
+                      error={senhaError !== ""}
+                      helperText={senhaError}
                       label="Confirme sua senha"
                       type="password"
                       variant="outlined"

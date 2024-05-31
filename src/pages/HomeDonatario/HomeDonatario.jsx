@@ -358,13 +358,41 @@ function HomeDonartario() {
                 </Typography>
 
                 <Stack direction="row" spacing={1} sx={{ marginLeft: "auto" }}>
-                  <Chip
-                    sx={{
-                      backgroundColor: "#48E54E",
-                      color: "#FFFFFF",
-                    }}
-                    label={requisicao.statusRequisicao}
-                  />
+                  {requisicao.statusRequisicao === "EM_ANDAMENTO" ? (
+                    /**AMARELO */
+                    <Chip
+                      sx={{
+                        backgroundColor: "#E5DF48",
+                        color: "#FFFFFF",
+                      }}
+                      label={requisicao.statusRequisicao}
+                    />
+                  ) : requisicao.statusRequisicao === "CONCLUIDA" ? (
+                    <>
+                      <Typography
+                        sx={{ fontFamily: "montserrat", marginRight: "10px" }}
+                      >
+                        Concluída em: {formattedDate}
+                      </Typography>
+
+                      <Chip
+                        sx={{
+                          backgroundColor: "#F03737",
+                          color: "#FFFFFF",
+                        }}
+                        label={requisicao.statusRequisicao}
+                      />
+                    </>
+                  ) : (
+                    /**VERDE */
+                    <Chip
+                      sx={{
+                        backgroundColor: "#48E54E",
+                        color: "#FFFFFF",
+                      }}
+                      label={requisicao.statusRequisicao}
+                    />
+                  )}
                 </Stack>
               </Box>
 

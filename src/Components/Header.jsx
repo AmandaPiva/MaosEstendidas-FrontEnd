@@ -127,7 +127,7 @@ function Header() {
           <Button onClick={() => handleOpen()} sx={{ color: "#FFFFFF" }}>
             Logout
           </Button>
-          <Button
+          {/* <Button
             // onClick={() => {
             //   openChatDialog();
             // }}
@@ -135,6 +135,7 @@ function Header() {
           >
             Chat
           </Button>
+          */}
         </Box>
 
         {/**AVATAR */}

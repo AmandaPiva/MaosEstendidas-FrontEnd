@@ -13,7 +13,6 @@ import Modal from "@mui/material/Modal";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-// import { useChat } from "../../context/ChatContext"; // Certifique-se de usar o caminho correto para o ChatContext
 
 function HomeDoador({ requisicoesInicial }) {
   const [requisicoes, setRequisicoes] = useState([]);
@@ -215,13 +214,6 @@ function HomeDoador({ requisicoesInicial }) {
             variant="contained"
             onClick={() => {
               handleClose();
-
-              const phoneNumber = formatPhoneNumber(
-                requisicao.pessoaDonataria.celular
-              );
-
-              const whatsappLink = `https://wa.me/${phoneNumber}?text=Olá%20${requisicao.pessoaDonataria.nomePessoa},%20quero%20ajudar%20com%20a%20sua%20requisição!`;
-              window.open(whatsappLink, "_blank");
             }}
             sx={{
               backgroundColor: "#E64097",
@@ -398,6 +390,12 @@ function HomeDoador({ requisicoesInicial }) {
                   handleMudaStatusDaRequisicao(requisicao.idRequisicao);
                   handleRemoveRequisicao(requisicao.idRequisicao);
                   handleOpen();
+                  const phoneNumber = formatPhoneNumber(
+                    requisicao.pessoaDonataria.celular
+                  );
+
+                  const whatsappLink = `https://wa.me/${phoneNumber}?text=Olá%20${requisicao.pessoaDonataria.nomePessoa},%20quero%20ajudar%20com%20a%20sua%20requisição!`;
+                  window.open(whatsappLink, "_blank");
                 }}
               >
                 Ajudar esta pessoa
