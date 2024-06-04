@@ -13,7 +13,6 @@ import "@fontsource/montserrat/700.css";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import LinkMedias from "@mui/material/Link";
-
 function LadinPage() {
   return (
     <>
