@@ -197,12 +197,12 @@ function HistoricoDoacoes() {
 
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "row",
-            // marginLeft: "5vw",
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "30px",
             padding: "30px",
-            overflowX: "scroll",
             minHeight: "70vh",
+            width: "100vw",
             background: "#F3EDF7",
             marginTop: "5vh",
             boxShadow: "5px 0px 10px rgba(0, 0, 0, 0.3)",

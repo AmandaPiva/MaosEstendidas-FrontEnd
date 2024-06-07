@@ -2,19 +2,16 @@ import { Box, Typography } from "@mui/material";
 import Logo from "../../../public/logo.png";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import CriancasPcds from "../../../public/criancasPcds.png";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { pink } from "@mui/material/colors";
 
 function Perfil() {
   const role = localStorage.getItem("role");
   const email = localStorage.getItem("email");
 
   const [loading, setLoading] = useState(false);
-  const [pessoa, setPessoa] = useState("");
+  const [pessoa, setPessoa] = useState({});
 
   const handleValidaRole = () => {
     if (role === "DOADORA") {
@@ -30,25 +27,31 @@ function Perfil() {
     if (!token) {
       location.href = "/Login";
     } else {
-      await axios
-        .get(`http://localhost:8080/api/v1/pessoa/buscaPeloEmail/${email}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          setPessoa(response.data);
-          console.log(response.data);
-        })
-        .catch((erro) => {
-          console.error("Erro ao buscar usuário pelo e-mail:", erro);
-        });
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/api/v1/pessoa/buscaPeloEmail/${email}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setPessoa(response.data);
+        console.log(response.data);
+      } catch (erro) {
+        console.error("Erro ao buscar usuário pelo e-mail:", erro);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   useEffect(() => {
     handleBuscarPessoa();
   }, []);
+
+  const { nomePessoa, rolePessoa } = pessoa;
+  const roleDescricao = rolePessoa?.rolePessoa || "";
 
   return (
     <>
@@ -169,7 +172,7 @@ function Perfil() {
                 margin: "10px 60px",
               }}
             >
-              {pessoa.nomePessoa}
+              {nomePessoa}
             </Typography>
 
             <Typography
@@ -182,7 +185,7 @@ function Perfil() {
                 margin: "10px 60px",
               }}
             >
-              {pessoa.rolePessoa.rolePessoa}
+              {roleDescricao}
             </Typography>
 
             <Button
@@ -192,7 +195,7 @@ function Perfil() {
                 width: "10vw",
                 backgroundColor: "#E64097",
                 "&:hover": {
-                  backgroundColor: "#04BFAF", // Altere a cor desejada para o efeito hover
+                  backgroundColor: "#04BFAF",
                 },
               }}
             >
@@ -233,6 +236,7 @@ function Perfil() {
               label="Nome"
               id="outlined-size-small"
               size="small"
+              value={nomePessoa || ""}
             />
 
             <TextField
@@ -243,6 +247,7 @@ function Perfil() {
               label="E-mail"
               id="outlined-size-small"
               size="small"
+              value={email || ""}
             />
 
             <TextField
@@ -257,6 +262,7 @@ function Perfil() {
               placeholder="DD/MM/AAAA"
               type="date"
               variant="outlined"
+              value={pessoa.dataNascimentoPessoa || ""}
             />
 
             <TextField
@@ -270,6 +276,7 @@ function Perfil() {
               placeholder="99.999.999/9999-99"
               label="CNPJ"
               variant="outlined"
+              value={pessoa.documentoPessoa || ""}
             />
 
             <TextField
@@ -283,6 +290,7 @@ function Perfil() {
               label="CPF"
               placeholder="999.999.999-99"
               variant="outlined"
+              value={pessoa.documentoPessoa || ""}
             />
 
             <Button
@@ -292,7 +300,7 @@ function Perfil() {
                 width: "10vw",
                 backgroundColor: "#E64097",
                 "&:hover": {
-                  backgroundColor: "#04BFAF", // Altere a cor desejada para o efeito hover
+                  backgroundColor: "#04BFAF",
                 },
               }}
             >
@@ -304,4 +312,5 @@ function Perfil() {
     </>
   );
 }
+
 export default Perfil;

@@ -298,8 +298,9 @@ function HomeDonartario() {
 
       <Box
         sx={{
-          display: "flex",
-          flexDirection: "row",
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "30px",
           marginLeft: "5vw",
           marginTop: "5vh",
         }}

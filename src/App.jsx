@@ -21,7 +21,6 @@ import { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import axios from "axios";
-import VLibras from "./pages/VLibras";
 // import Chat from "../src/Components/Chat"; // Certifique-se de usar o caminho correto para o Chat
 
 //variável que vai buscar do navegador a role do usuário logado
@@ -99,7 +98,6 @@ function App() {
 
   return (
     <>
-      <VLibras />{" "}
       {/* Certifique-se de que o VLibras esteja sempre disponível */}
       <BrowserRouter>
         <Routes>

@@ -28,6 +28,16 @@ function Doadores() {
       });
   };
 
+  const formatPhoneNumber = (phone) => {
+    // Remove todos os caracteres não numéricos
+    let cleaned = ("" + phone).replace(/\D/g, "");
+    // Adiciona o código do país, se necessário
+    if (cleaned.length === 11) {
+      cleaned = "55" + cleaned;
+    }
+    return cleaned;
+  };
+
   useEffect(() => {
     handleBuscaDoadoresPelaRole();
   }, []);
@@ -84,7 +94,7 @@ function Doadores() {
                 display: "flex",
                 flexDirection: "row",
                 backgroundColor: "#FFFFFF",
-                height: "10vh",
+                minHeight: "10vh",
                 width: "70vw",
                 margin: "5vh auto",
                 borderRadius: "5px",
@@ -105,7 +115,11 @@ function Doadores() {
                 </Typography>
 
                 <Typography
-                  sx={{ fontFamily: "montserrat", paddingLeft: "18px" }}
+                  sx={{
+                    fontFamily: "montserrat",
+                    paddingLeft: "18px",
+                    marginBottom: "20px",
+                  }}
                 >
                   {doador.endereco.bairro} - {doador.endereco.cidade}
                 </Typography>
@@ -113,6 +127,11 @@ function Doadores() {
 
               <Button
                 variant="contained"
+                onClick={() => {
+                  const phoneNumber = formatPhoneNumber(doador.celular);
+                  const whatsappLink = `https://wa.me/${phoneNumber}?text=Olá%20${doador.nomePessoa},%20vim%20da%20plataforma%20Mãos%20Estendidas!%20Gostaria%20muito%20de%20pedir%20a%20sua%20ajuda`;
+                  window.open(whatsappLink, "_blank");
+                }}
                 sx={{
                   backgroundColor: "#E64097",
                   marginLeft: "auto",
