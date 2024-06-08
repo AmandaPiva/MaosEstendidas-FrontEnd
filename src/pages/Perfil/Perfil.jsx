@@ -3,6 +3,7 @@ import Logo from "../../../public/logo.png";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
+import CloseIcon from "@mui/icons-material/Close";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -12,6 +13,7 @@ function Perfil() {
 
   const [loading, setLoading] = useState(false);
   const [pessoa, setPessoa] = useState({});
+  const [editar, setEditar] = useState(false);
 
   const handleValidaRole = () => {
     if (role === "DOADORA") {
@@ -44,6 +46,52 @@ function Perfil() {
         setLoading(false);
       }
     }
+  };
+
+  //atualizar cadastro Pessoa
+  const handleSalvarAlteracoesPerfil = async () => {
+    await axios
+      .patch(`http://localhost:8080/api/v1/pessoa/${pessoa.idPessoa}`, {
+        nomePessoa: form.nomePessoa,
+        emailPessoa: form.emailPessoa,
+        documentoPessoa: form.documentoPessoa,
+        dataNascimentoPessoa: form.dataNascimentoPessoa,
+        celular: form.celular,
+      })
+      .then((response) => {
+        console.log("Resposta da pessoa PATCH:", response);
+        handleBuscarPessoa();
+        setLoading(false);
+        alert("Pessoa editada com sucesso");
+      })
+      .catch((erro) => {
+        console.log(erro);
+        alert("Ocorreu um erro ao editar essa pessoa");
+      });
+  };
+
+  const [form, setForm] = useState({
+    nomePessoa: "",
+    emailPessoa: "",
+    documentoPessoa: "",
+    dataNascimentoPessoa: "",
+    celular: "",
+  });
+
+  const phoneMask = (value) => {
+    if (!value) return "";
+    value = value.replace(/\D/g, "");
+    value = value.replace(/(\d{2})(\d)/, "($1) $2");
+    value = value.replace(/(\d)(\d{4})$/, "$1-$2");
+    return value;
+  };
+
+  const handleChangeForm = (event) => {
+    const { name, value } = event.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   useEffect(() => {
@@ -190,6 +238,16 @@ function Perfil() {
 
             <Button
               variant="contained"
+              onClick={() => {
+                setEditar(true);
+                setForm({
+                  nomePessoa: pessoa.nomePessoa,
+                  emailPessoa: pessoa.emailPessoa,
+                  documentoPessoa: pessoa.documentoPessoa,
+                  dataNascimentoPessoa: pessoa.dataNascimentoPessoa,
+                  celular: pessoa.celular,
+                });
+              }}
               sx={{
                 margin: "5vh auto 2vh",
                 width: "10vw",
@@ -203,110 +261,146 @@ function Perfil() {
             </Button>
           </Box>
 
-          {/*BOX CARD EDITAR PERFIL DIREITA */}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              width: "50vw",
-              height: "auto",
-              borderRadius: "50px",
-              boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
-              margin: "10px 30px",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "#E64097",
-                fontFamily: "montserrat",
-                fontSize: "30px",
-                fontWeight: "600",
-                textAlign: "left",
-                margin: "10px 60px",
-              }}
-            >
-              Editar Perfil
-            </Typography>
+          {editar === true ? (
+            <>
+              {/*BOX CARD EDITAR PERFIL DIREITA */}
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "50vw",
+                  height: "auto",
+                  borderRadius: "50px",
+                  boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
+                  margin: "10px 30px",
+                }}
+              >
+                {/*BOX TITULO DA PAGINA DE EDITAR*/}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "45vw",
+                    height: "10vh",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: "#E64097",
+                      fontFamily: "montserrat",
+                      fontSize: "30px",
+                      fontWeight: "600",
+                      textAlign: "left",
+                      margin: "20px 60px",
+                    }}
+                  >
+                    Editar Perfil
+                  </Typography>
+                  <Button
+                    onClick={() => setEditar(false)}
+                    sx={{
+                      marginLeft: "auto",
+                      marginTop: "10px",
+                    }}
+                  >
+                    <CloseIcon
+                      sx={{
+                        color: "#E64097",
+                        fontSize: "40px",
+                      }}
+                    ></CloseIcon>
+                  </Button>
+                </Box>
 
-            <TextField
-              sx={{
-                width: "40vw",
-                margin: "10px auto",
-              }}
-              label="Nome"
-              id="outlined-size-small"
-              size="small"
-              value={nomePessoa || ""}
-            />
+                <TextField
+                  sx={{
+                    width: "40vw",
+                    margin: "10px auto",
+                  }}
+                  label="Nome"
+                  id="outlined-size-small"
+                  size="small"
+                  value={form.nomePessoa}
+                  onChange={handleChangeForm}
+                  name="nomePessoa"
+                />
 
-            <TextField
-              sx={{
-                width: "40vw",
-                margin: "10px auto",
-              }}
-              label="E-mail"
-              id="outlined-size-small"
-              size="small"
-              value={email || ""}
-            />
+                <TextField
+                  sx={{
+                    width: "40vw",
+                    margin: "10px auto",
+                  }}
+                  label="E-mail"
+                  id="outlined-size-small"
+                  size="small"
+                  value={form.emailPessoa}
+                  onChange={handleChangeForm}
+                  name="emailPessoa"
+                />
 
-            <TextField
-              sx={{
-                width: "40vw",
-                backgroundColor: "#FFFFFF",
-                margin: "1vh auto",
-              }}
-              name="dataNascimentoPessoa"
-              id="outlined-basic"
-              label=""
-              placeholder="DD/MM/AAAA"
-              type="date"
-              variant="outlined"
-              value={pessoa.dataNascimentoPessoa || ""}
-            />
+                <TextField
+                  sx={{
+                    width: "40vw",
+                    margin: "10px auto",
+                  }}
+                  name="celular"
+                  value={phoneMask(form.celular)}
+                  onChange={handleChangeForm}
+                  id="outlined-size-small"
+                  label="Celular"
+                  variant="outlined"
+                />
 
-            <TextField
-              sx={{
-                width: "40vw",
-                backgroundColor: "#FFFFFF",
-                margin: "1vh auto",
-              }}
-              name="documentoPessoa"
-              id="outlined-basic"
-              placeholder="99.999.999/9999-99"
-              label="CNPJ"
-              variant="outlined"
-              value={pessoa.documentoPessoa || ""}
-            />
+                <TextField
+                  sx={{
+                    width: "40vw",
+                    backgroundColor: "#FFFFFF",
+                    margin: "1vh auto",
+                  }}
+                  name="dataNascimentoPessoa"
+                  id="outlined-basic"
+                  label="Data de Nascimento ou Fundação"
+                  placeholder="DD/MM/AAAA"
+                  type="date"
+                  variant="outlined"
+                  value={form.dataNascimentoPessoa}
+                  onChange={handleChangeForm}
+                />
 
-            <TextField
-              sx={{
-                width: "40vw",
-                backgroundColor: "#FFFFFF",
-                margin: "1vh auto",
-              }}
-              name="documentoPessoa"
-              id="outlined-basic"
-              label="CPF"
-              placeholder="999.999.999-99"
-              variant="outlined"
-              value={pessoa.documentoPessoa || ""}
-            />
+                <TextField
+                  sx={{
+                    width: "40vw",
+                    backgroundColor: "#FFFFFF",
+                    margin: "1vh auto",
+                  }}
+                  name="documentoPessoa"
+                  id="outlined-basic"
+                  label="Documento"
+                  placeholder="999.999.999-99"
+                  variant="outlined"
+                  value={form.documentoPessoa}
+                  onChange={handleChangeForm}
+                />
 
-            <Button
-              variant="contained"
-              sx={{
-                margin: "5vh auto 2vh",
-                width: "10vw",
-                backgroundColor: "#E64097",
-                "&:hover": {
-                  backgroundColor: "#04BFAF",
-                },
-              }}
-            >
-              Salvar
-            </Button>
-          </Box>
+                <Button
+                  variant="contained"
+                  onClick={() => handleSalvarAlteracoesPerfil()}
+                  sx={{
+                    margin: "5vh auto 2vh",
+                    width: "10vw",
+                    backgroundColor: "#E64097",
+                    "&:hover": {
+                      backgroundColor: "#04BFAF",
+                    },
+                  }}
+                >
+                  Salvar
+                </Button>
+              </Box>
+            </>
+          ) : (
+            <></>
+          )}
         </Box>
       </Box>
     </>
