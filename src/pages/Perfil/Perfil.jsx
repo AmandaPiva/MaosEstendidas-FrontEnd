@@ -1,7 +1,4 @@
-import { Box, Typography } from "@mui/material";
-import Logo from "../../../public/logo.png";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import { Box, Typography, Button, TextField } from "@mui/material";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import CloseIcon from "@mui/icons-material/Close";
 import { useEffect, useState } from "react";
@@ -14,6 +11,8 @@ function Perfil() {
   const [loading, setLoading] = useState(false);
   const [pessoa, setPessoa] = useState({});
   const [editar, setEditar] = useState(false);
+  const [imagem, setImagem] = useState(null); // Estado para armazenar a imagem selecionada
+  const [imagemPreview, setImagemPreview] = useState(null); // Estado para armazenar a URL da imagem selecionada
 
   const handleValidaRole = () => {
     if (role === "DOADORA") {
@@ -39,6 +38,7 @@ function Perfil() {
           }
         );
         setPessoa(response.data);
+        setImagemPreview(response.data.urlImagem); // Atualiza a URL da imagem quando a pessoa é buscada
         console.log(response.data);
       } catch (erro) {
         console.error("Erro ao buscar usuário pelo e-mail:", erro);
@@ -48,26 +48,61 @@ function Perfil() {
     }
   };
 
-  //atualizar cadastro Pessoa
   const handleSalvarAlteracoesPerfil = async () => {
-    await axios
-      .patch(`http://localhost:8080/api/v1/pessoa/${pessoa.idPessoa}`, {
-        nomePessoa: form.nomePessoa,
-        emailPessoa: form.emailPessoa,
-        documentoPessoa: form.documentoPessoa,
-        dataNascimentoPessoa: form.dataNascimentoPessoa,
-        celular: form.celular,
-      })
-      .then((response) => {
-        console.log("Resposta da pessoa PATCH:", response);
-        handleBuscarPessoa();
-        setLoading(false);
-        alert("Pessoa editada com sucesso");
-      })
-      .catch((erro) => {
-        console.log(erro);
-        alert("Ocorreu um erro ao editar essa pessoa");
-      });
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await axios.patch(
+        `http://localhost:8080/api/v1/pessoa/${pessoa.idPessoa}`,
+        {
+          nomePessoa: form.nomePessoa,
+          emailPessoa: form.emailPessoa,
+          documentoPessoa: form.documentoPessoa,
+          dataNascimentoPessoa: form.dataNascimentoPessoa,
+          celular: form.celular,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Resposta da pessoa PATCH:", response);
+      handleBuscarPessoa();
+      setLoading(false);
+      alert("Pessoa editada com sucesso");
+    } catch (erro) {
+      console.log(erro);
+      alert("Ocorreu um erro ao editar essa pessoa");
+    }
+  };
+
+  const handleUploadImagem = async () => {
+    const formData = new FormData();
+    formData.append("imagem", imagem);
+
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/api/v1/pessoa/${pessoa.idPessoa}/upload-imagem`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("Resposta da API de upload:", response);
+      setImagemPreview(response.data.urlImagem); // Atualiza a URL da imagem com a URL retornada pelo servidor
+      handleBuscarPessoa();
+      setLoading(false);
+      alert("Imagem de perfil atualizada com sucesso");
+    } catch (erro) {
+      console.log(erro);
+      alert("Ocorreu um erro ao fazer o upload da imagem");
+    }
   };
 
   const [form, setForm] = useState({
@@ -94,6 +129,12 @@ function Perfil() {
     }));
   };
 
+  const handleChangeImagem = (event) => {
+    const file = event.target.files[0];
+    setImagem(file);
+    setImagemPreview(URL.createObjectURL(file)); // Atualiza a URL da imagem quando um arquivo é selecionado
+  };
+
   useEffect(() => {
     handleBuscarPessoa();
   }, []);
@@ -118,7 +159,7 @@ function Perfil() {
             display: "flex",
             flexDirection: "row",
             width: "100vw",
-            height: "20vh",
+            height: "15vh",
           }}
         >
           {/*BOX METADE ESQUERDA HEADER */}
@@ -147,20 +188,19 @@ function Perfil() {
             sx={{
               display: "flex",
               flexDirection: "column",
-              padding: "1rem",
               marginLeft: "auto",
               width: "15vw",
             }}
           >
             <img
               width={300}
-              src={Logo}
+              src="/path/to/logo.png"
               alt="logo"
               style={{
                 borderRadius: "500px",
                 width: "200px",
                 height: "200px",
-                padding: "2rem",
+                padding: "1rem",
               }}
             />
           </Box>
@@ -182,7 +222,7 @@ function Perfil() {
               fontSize: "36px",
               fontWeight: "600",
               textAlign: "right",
-              margin: "10px 80px",
+              marginLeft: "85px",
             }}
           >
             Meu Perfil
@@ -207,9 +247,38 @@ function Perfil() {
               height: "auto",
               borderRadius: "50px",
               boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
-              margin: "10px 30px",
+              margin: "10px 80px",
+              justifyContent: "center",
+              alignItems: "center", // Centraliza o conteúdo horizontalmente
             }}
           >
+            {/**FOTO DE PERFIL */}
+            {imagemPreview ? (
+              <img
+                src={imagemPreview}
+                alt="Imagem de Perfil"
+                style={{
+                  width: "150px",
+                  height: "150px",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  margin: "20px",
+                }}
+              />
+            ) : (
+              <img
+                src="/path/to/default-profile-picture.png" // Imagem padrão, caso não haja imagem
+                alt="Imagem de Perfil Padrão"
+                style={{
+                  width: "150px",
+                  height: "150px",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  margin: "20px",
+                }}
+              />
+            )}
+
             <Typography
               sx={{
                 color: "#E64097",
@@ -225,10 +294,10 @@ function Perfil() {
 
             <Typography
               sx={{
-                color: "black",
+                color: "#231F20",
                 fontFamily: "montserrat",
                 fontSize: "30px",
-                fontWeight: "600",
+                fontWeight: "500",
                 textAlign: "center",
                 margin: "10px 60px",
               }}
@@ -261,133 +330,87 @@ function Perfil() {
             </Button>
           </Box>
 
-          {editar === true ? (
-            <>
-              {/*BOX CARD EDITAR PERFIL DIREITA */}
-              <Box
+          {/*BOX CARD PERFIL DIREITA */}
+          {editar && (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                width: "40vw",
+                height: "auto",
+                borderRadius: "50px",
+                boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
+                margin: "10px 80px",
+                padding: "20px",
+                justifyContent: "center",
+              }}
+            >
+              <TextField
+                label="Nome"
+                name="nomePessoa"
+                value={form.nomePessoa}
+                onChange={handleChangeForm}
+                fullWidth
+                sx={{ marginBottom: "20px" }}
+              />
+
+              <TextField
+                label="Email"
+                name="emailPessoa"
+                value={form.emailPessoa}
+                onChange={handleChangeForm}
+                fullWidth
+                sx={{ marginBottom: "20px" }}
+              />
+
+              <TextField
+                label="Documento"
+                name="documentoPessoa"
+                value={form.documentoPessoa}
+                onChange={handleChangeForm}
+                fullWidth
+                sx={{ marginBottom: "20px" }}
+              />
+
+              <TextField
+                label="Data de Nascimento"
+                name="dataNascimentoPessoa"
+                value={form.dataNascimentoPessoa}
+                onChange={handleChangeForm}
+                fullWidth
+                sx={{ marginBottom: "20px" }}
+              />
+
+              <TextField
+                label="Celular"
+                name="celular"
+                value={phoneMask(form.celular)}
+                onChange={handleChangeForm}
+                fullWidth
+                sx={{ marginBottom: "20px" }}
+              />
+
+              <Button
+                variant="contained"
+                component="label"
                 sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  width: "50vw",
-                  height: "auto",
-                  borderRadius: "50px",
-                  boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
-                  margin: "10px 30px",
+                  marginBottom: "20px",
+                  backgroundColor: "#E64097",
+                  "&:hover": {
+                    backgroundColor: "#04BFAF",
+                  },
                 }}
               >
-                {/*BOX TITULO DA PAGINA DE EDITAR*/}
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    width: "45vw",
-                    height: "10vh",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      color: "#E64097",
-                      fontFamily: "montserrat",
-                      fontSize: "30px",
-                      fontWeight: "600",
-                      textAlign: "left",
-                      margin: "20px 60px",
-                    }}
-                  >
-                    Editar Perfil
-                  </Typography>
-                  <Button
-                    onClick={() => setEditar(false)}
-                    sx={{
-                      marginLeft: "auto",
-                      marginTop: "10px",
-                    }}
-                  >
-                    <CloseIcon
-                      sx={{
-                        color: "#E64097",
-                        fontSize: "40px",
-                      }}
-                    ></CloseIcon>
-                  </Button>
-                </Box>
+                Escolher Imagem
+                <input type="file" hidden onChange={handleChangeImagem} />
+              </Button>
 
-                <TextField
-                  sx={{
-                    width: "40vw",
-                    margin: "10px auto",
-                  }}
-                  label="Nome"
-                  id="outlined-size-small"
-                  size="small"
-                  value={form.nomePessoa}
-                  onChange={handleChangeForm}
-                  name="nomePessoa"
-                />
-
-                <TextField
-                  sx={{
-                    width: "40vw",
-                    margin: "10px auto",
-                  }}
-                  label="E-mail"
-                  id="outlined-size-small"
-                  size="small"
-                  value={form.emailPessoa}
-                  onChange={handleChangeForm}
-                  name="emailPessoa"
-                />
-
-                <TextField
-                  sx={{
-                    width: "40vw",
-                    margin: "10px auto",
-                  }}
-                  name="celular"
-                  value={phoneMask(form.celular)}
-                  onChange={handleChangeForm}
-                  id="outlined-size-small"
-                  label="Celular"
-                  variant="outlined"
-                />
-
-                <TextField
-                  sx={{
-                    width: "40vw",
-                    backgroundColor: "#FFFFFF",
-                    margin: "1vh auto",
-                  }}
-                  name="dataNascimentoPessoa"
-                  id="outlined-basic"
-                  label="Data de Nascimento ou Fundação"
-                  placeholder="DD/MM/AAAA"
-                  type="date"
-                  variant="outlined"
-                  value={form.dataNascimentoPessoa}
-                  onChange={handleChangeForm}
-                />
-
-                <TextField
-                  sx={{
-                    width: "40vw",
-                    backgroundColor: "#FFFFFF",
-                    margin: "1vh auto",
-                  }}
-                  name="documentoPessoa"
-                  id="outlined-basic"
-                  label="Documento"
-                  placeholder="999.999.999-99"
-                  variant="outlined"
-                  value={form.documentoPessoa}
-                  onChange={handleChangeForm}
-                />
-
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Button
                   variant="contained"
-                  onClick={() => handleSalvarAlteracoesPerfil()}
+                  onClick={handleSalvarAlteracoesPerfil}
                   sx={{
-                    margin: "5vh auto 2vh",
-                    width: "10vw",
+                    marginRight: "20px",
                     backgroundColor: "#E64097",
                     "&:hover": {
                       backgroundColor: "#04BFAF",
@@ -396,10 +419,20 @@ function Perfil() {
                 >
                   Salvar
                 </Button>
+                <Button
+                  variant="contained"
+                  onClick={handleUploadImagem}
+                  sx={{
+                    backgroundColor: "#E64097",
+                    "&:hover": {
+                      backgroundColor: "#04BFAF",
+                    },
+                  }}
+                >
+                  Upload Imagem
+                </Button>
               </Box>
-            </>
-          ) : (
-            <></>
+            </Box>
           )}
         </Box>
       </Box>
