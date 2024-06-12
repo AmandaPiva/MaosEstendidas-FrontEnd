@@ -3,6 +3,7 @@ import Logo from "../../../public/logo.png";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
+import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
@@ -190,6 +191,7 @@ function Endereco() {
                   onClick={() => (location.href = "/")}
                   variant="outlined"
                 >
+                  <ReplyAllIcon sx={{ marginRight: "8px" }} />
                   Voltar
                 </Button>
               </Box>

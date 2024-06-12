@@ -12,7 +12,7 @@ function Perfil() {
   const [pessoa, setPessoa] = useState({});
   const [editar, setEditar] = useState(false);
   const [imagem, setImagem] = useState(null); // Estado para armazenar a imagem selecionada
-  const [imagemPreview, setImagemPreview] = useState(null); // Estado para armazenar a URL da imagem selecionada
+  const [imagemPreview, setImagemPreview] = useState(null);
 
   const handleValidaRole = () => {
     if (role === "DOADORA") {
@@ -40,6 +40,7 @@ function Perfil() {
         setPessoa(response.data);
         setImagemPreview(response.data.urlImagem); // Atualiza a URL da imagem quando a pessoa é buscada
         console.log(response.data);
+        buscaImagemPeloIdPessoa();
       } catch (erro) {
         console.error("Erro ao buscar usuário pelo e-mail:", erro);
       } finally {
@@ -50,30 +51,33 @@ function Perfil() {
 
   const handleSalvarAlteracoesPerfil = async () => {
     const token = localStorage.getItem("token");
-
-    try {
-      const response = await axios.patch(
-        `http://localhost:8080/api/v1/pessoa/${pessoa.idPessoa}`,
-        {
-          nomePessoa: form.nomePessoa,
-          emailPessoa: form.emailPessoa,
-          documentoPessoa: form.documentoPessoa,
-          dataNascimentoPessoa: form.dataNascimentoPessoa,
-          celular: form.celular,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
+    if (!token) {
+      location.href = "/Login";
+    } else {
+      try {
+        const response = await axios.patch(
+          `http://localhost:8080/api/v1/pessoa/${pessoa.idPessoa}`,
+          {
+            nomePessoa: form.nomePessoa,
+            emailPessoa: form.emailPessoa,
+            documentoPessoa: form.documentoPessoa,
+            dataNascimentoPessoa: form.dataNascimentoPessoa,
+            celular: form.celular,
           },
-        }
-      );
-      console.log("Resposta da pessoa PATCH:", response);
-      handleBuscarPessoa();
-      setLoading(false);
-      alert("Pessoa editada com sucesso");
-    } catch (erro) {
-      console.log(erro);
-      alert("Ocorreu um erro ao editar essa pessoa");
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("Resposta da pessoa PATCH:", response);
+        handleBuscarPessoa();
+        setLoading(false);
+        alert("Pessoa editada com sucesso");
+      } catch (erro) {
+        console.log(erro);
+        alert("Ocorreu um erro ao editar essa pessoa");
+      }
     }
   };
 
@@ -82,26 +86,51 @@ function Perfil() {
     formData.append("imagem", imagem);
 
     const token = localStorage.getItem("token");
+    if (!token) {
+      location.href = "/Login";
+    } else {
+      try {
+        const response = await axios.post(
+          `http://localhost:8080/api/v1/pessoa/${pessoa.idPessoa}/upload-imagem`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log("Resposta da API de upload:", response);
+        setImagemPreview(response.data.urlImagem); // Atualiza a URL da imagem com a URL retornada pelo servidor
+        handleBuscarPessoa();
+        setLoading(false);
+        alert("Imagem de perfil atualizada com sucesso");
+      } catch (erro) {
+        console.log(erro);
+        alert("Ocorreu um erro ao fazer o upload da imagem");
+      }
+    }
+  };
 
-    try {
-      const response = await axios.post(
-        `http://localhost:8080/api/v1/pessoa/${pessoa.idPessoa}/upload-imagem`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log("Resposta da API de upload:", response);
-      setImagemPreview(response.data.urlImagem); // Atualiza a URL da imagem com a URL retornada pelo servidor
-      handleBuscarPessoa();
-      setLoading(false);
-      alert("Imagem de perfil atualizada com sucesso");
-    } catch (erro) {
-      console.log(erro);
-      alert("Ocorreu um erro ao fazer o upload da imagem");
+  const buscaImagemPeloIdPessoa = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      location.href = "/Login";
+    } else {
+      try {
+        await axios.get(
+          `http://localhost:8080/api/v1/pessoa/imagem/${pessoa.idPessoa}`,
+          {
+            responseType: "arraybuffer",
+          }
+        );
+        const base64Image = Buffer.from(response.data, "binary").toString(
+          "base64"
+        );
+        setImagem(`data:image/jpeg;base64,${base64Image}`);
+      } catch (erro) {
+        console.error("Erro ao buscar imagem:", erro);
+      }
     }
   };
 
@@ -253,9 +282,9 @@ function Perfil() {
             }}
           >
             {/**FOTO DE PERFIL */}
-            {imagemPreview ? (
+            {imagem ? (
               <img
-                src={imagemPreview}
+                src={imagem}
                 alt="Imagem de Perfil"
                 style={{
                   width: "150px",

@@ -8,7 +8,7 @@ import Modal from "@mui/material/Modal";
 import axios from "axios";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
-
+import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import { useState, useEffect } from "react";
 
 function HistoricoDoacoes() {
@@ -163,6 +163,7 @@ function HistoricoDoacoes() {
               onClick={() => (location.href = "/HomeDoador")}
               variant="outlined"
             >
+              <ReplyAllIcon sx={{ marginRight: "8px" }} />
               Voltar
             </Button>
           </Box>
@@ -190,7 +191,7 @@ function HistoricoDoacoes() {
                 textAlign: "center",
               }}
             >
-              Veja o histórico de suas ultimas doações
+              Veja o histórico de suas últimas doações
             </Typography>
           </Box>
         </Box>

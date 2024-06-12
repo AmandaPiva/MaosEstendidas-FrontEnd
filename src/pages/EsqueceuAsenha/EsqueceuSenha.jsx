@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
+import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import axios from "axios";
 
 function EsqueceuSenha() {
@@ -27,7 +28,7 @@ function EsqueceuSenha() {
       })
       .catch((erro) => {
         console.log(erro);
-        alert("Ocorreu um erro ao enviar a senha a este email");
+        alert("Ocorreu um erro ao enviar a senha para este e-mail");
       });
   };
 
@@ -65,7 +66,7 @@ function EsqueceuSenha() {
       })
       .catch((erro) => {
         console.error(erro);
-        alert("Ocorreu um erro enviar a nova senha");
+        alert("Ocorreu um erro ao enviar a nova senha");
       });
   };
 
@@ -101,7 +102,10 @@ function EsqueceuSenha() {
         >
           <Box sx={{ marginTop: "10vh", marginLeft: "5vw" }}>
             <Link to="/Login">
-              <Button variant="outlined">Voltar</Button>
+              <Button variant="outlined">
+                <ReplyAllIcon sx={{ marginRight: "8px" }} />
+                Voltar
+              </Button>
             </Link>
           </Box>
           <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -156,7 +160,7 @@ function EsqueceuSenha() {
                 margin: "auto",
               }}
             >
-              Informe um email para que a nova senha seja enviada
+              Informe o e-mail cadastrado para que a nova senha seja enviada!
             </Typography>
 
             <TextField
@@ -169,7 +173,7 @@ function EsqueceuSenha() {
               onChange={handleChangeForm}
               value={pessoa.email}
               name="email"
-              label="Email de recuperação de senha"
+              label="E-mail de recuperação de senha"
               variant="outlined"
             />
           </Box>

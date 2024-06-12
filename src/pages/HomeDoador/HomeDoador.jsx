@@ -21,9 +21,13 @@ function HomeDoador({ requisicoesInicial }) {
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [filtro, setFiltro] = useState(""); //HOOK PARA ARMAZENAR O VALOR DO FILTRO
+  const [requisicao, setRequisicao] = useState(null);
 
   const handleClose = () => setOpenModal(false);
-  const handleOpen = () => setOpenModal(true);
+  const handleOpen = (requisicao) => {
+    setRequisicao(requisicao);
+    setOpenModal(true);
+  };
 
   //PEGANDO O VALOR DIGITADO NO INPUT
   const handleFilterChange = (event) => {
@@ -208,11 +212,17 @@ function HomeDoador({ requisicoesInicial }) {
             }}
           >
             Agora você está pronto para fazer o bem. Vamos direcionar você para
-            o chat desse donatário
+            o WhatsApp desse donatário!
           </Typography>
           <Button
             variant="contained"
             onClick={() => {
+              const phoneNumber = formatPhoneNumber(
+                requisicao.pessoaDonataria.celular
+              );
+
+              const whatsappLink = `https://wa.me/${phoneNumber}?text=Olá%20${requisicao.pessoaDonataria.nomePessoa},%20quero%20ajudar%20com%20a%20sua%20requisição!`;
+              window.open(whatsappLink, "_blank");
               handleClose();
             }}
             sx={{
@@ -389,13 +399,7 @@ function HomeDoador({ requisicoesInicial }) {
                   handleCadastraDoacao(requisicao.idRequisicao);
                   handleMudaStatusDaRequisicao(requisicao.idRequisicao);
                   handleRemoveRequisicao(requisicao.idRequisicao);
-                  handleOpen();
-                  const phoneNumber = formatPhoneNumber(
-                    requisicao.pessoaDonataria.celular
-                  );
-
-                  const whatsappLink = `https://wa.me/${phoneNumber}?text=Olá%20${requisicao.pessoaDonataria.nomePessoa},%20quero%20ajudar%20com%20a%20sua%20requisição!`;
-                  window.open(whatsappLink, "_blank");
+                  handleOpen(requisicao);
                 }}
               >
                 Ajudar esta pessoa

@@ -111,7 +111,7 @@ function Header() {
               onClick={() => (location.href = "/HistoricoDoacoes")}
               sx={{ color: "#FFFFFF", marginLeft: "5vw" }}
             >
-              Historico de doações
+              Histórico de doações
             </Button>
           ) : role === "DONATARIA" ? (
             <Button

@@ -3,6 +3,7 @@ import Logo from "../../../public/logo.png";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
+import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import axios from "axios";
 
 function Doadores() {
@@ -57,6 +58,7 @@ function Doadores() {
             onClick={() => (location.href = "/HomeDonatario")}
             variant="outlined"
           >
+            <ReplyAllIcon sx={{ marginRight: "8px" }} />
             Voltar
           </Button>
         </Box>

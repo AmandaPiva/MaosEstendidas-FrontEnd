@@ -164,6 +164,8 @@ function Cadastro(props) {
     return cpf;
   };
 
+  //upload imagem
+
   //verificamos se o estado do hook loading está neste momento true
   if (loading && loading == true) {
     //pois se estiver, será renderizado na tela um circulo indicando que a página está carregando
@@ -209,7 +211,7 @@ function Cadastro(props) {
           }}
         >
           <Box sx={{ marginTop: "5.5vh", marginLeft: "5vw" }}>
-            <Link to={"/Endereco"}>
+            <Link to={"/"}>
               <Button
                 variant="contained"
                 sx={{
