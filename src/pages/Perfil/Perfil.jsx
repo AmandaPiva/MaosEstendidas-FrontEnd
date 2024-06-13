@@ -3,6 +3,7 @@ import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import CloseIcon from "@mui/icons-material/Close";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Logo from "../../../public/logo.png";
 
 function Perfil() {
   const role = localStorage.getItem("role");
@@ -11,8 +12,10 @@ function Perfil() {
   const [loading, setLoading] = useState(false);
   const [pessoa, setPessoa] = useState({});
   const [editar, setEditar] = useState(false);
+  const [alterarSenha, setAlterarSenha] = useState(false);
   const [imagem, setImagem] = useState(null); // Estado para armazenar a imagem selecionada
   const [imagemPreview, setImagemPreview] = useState(null);
+  const [senhaError, setSenhaError] = useState("");
 
   const handleValidaRole = () => {
     if (role === "DOADORA") {
@@ -45,6 +48,27 @@ function Perfil() {
         console.error("Erro ao buscar usuário pelo e-mail:", erro);
       } finally {
         setLoading(false);
+      }
+    }
+  };
+
+  const handleAlterarSenhaManual = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      location.href = "/Login";
+    } else {
+      try {
+        await axios.patch(
+          `http://localhost:8080/api/v1/pessoa/updateSenhaManual/${pessoa.idPessoa}`,
+          {
+            senhaPessoa: form.senhaPessoa,
+          }
+        );
+        console.log("Senha alterada com sucesso");
+        setAlterarSenha(false);
+      } catch (erro) {
+        console.log(erro);
+        alert("Ocorreu um erro ao editar a senha");
       }
     }
   };
@@ -112,34 +136,14 @@ function Perfil() {
     }
   };
 
-  const buscaImagemPeloIdPessoa = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      location.href = "/Login";
-    } else {
-      try {
-        await axios.get(
-          `http://localhost:8080/api/v1/pessoa/imagem/${pessoa.idPessoa}`,
-          {
-            responseType: "arraybuffer",
-          }
-        );
-        const base64Image = Buffer.from(response.data, "binary").toString(
-          "base64"
-        );
-        setImagem(`data:image/jpeg;base64,${base64Image}`);
-      } catch (erro) {
-        console.error("Erro ao buscar imagem:", erro);
-      }
-    }
-  };
-
   const [form, setForm] = useState({
     nomePessoa: "",
     emailPessoa: "",
     documentoPessoa: "",
     dataNascimentoPessoa: "",
     celular: "",
+    senhaPessoa: "",
+    confirmeSuaSenha: "",
   });
 
   const phoneMask = (value) => {
@@ -156,6 +160,13 @@ function Perfil() {
       ...prev,
       [name]: value,
     }));
+
+    //validando os campos de senha
+    if (name === "confirmeSuaSenha" && value !== form.senhaPessoa) {
+      setSenhaError("As senhas não coincidem");
+    } else {
+      setSenhaError("");
+    }
   };
 
   const handleChangeImagem = (event) => {
@@ -223,7 +234,7 @@ function Perfil() {
           >
             <img
               width={300}
-              src="/path/to/logo.png"
+              src={Logo}
               alt="logo"
               style={{
                 borderRadius: "500px",
@@ -281,32 +292,17 @@ function Perfil() {
               alignItems: "center", // Centraliza o conteúdo horizontalmente
             }}
           >
-            {/**FOTO DE PERFIL */}
-            {imagem ? (
-              <img
-                src={imagem}
-                alt="Imagem de Perfil"
-                style={{
-                  width: "150px",
-                  height: "150px",
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                  margin: "20px",
-                }}
-              />
-            ) : (
-              <img
-                src="/path/to/default-profile-picture.png" // Imagem padrão, caso não haja imagem
-                alt="Imagem de Perfil Padrão"
-                style={{
-                  width: "150px",
-                  height: "150px",
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                  margin: "20px",
-                }}
-              />
-            )}
+            {/* <img
+              src="" // Imagem padrão, caso não haja imagem
+              alt="Imagem de Perfil Padrão"
+              style={{
+                width: "150px",
+                height: "150px",
+                borderRadius: "50%",
+                objectFit: "cover",
+                margin: "20px",
+              }}
+            /> */}
 
             <Typography
               sx={{
@@ -334,30 +330,159 @@ function Perfil() {
               {roleDescricao}
             </Typography>
 
-            <Button
-              variant="contained"
-              onClick={() => {
-                setEditar(true);
-                setForm({
-                  nomePessoa: pessoa.nomePessoa,
-                  emailPessoa: pessoa.emailPessoa,
-                  documentoPessoa: pessoa.documentoPessoa,
-                  dataNascimentoPessoa: pessoa.dataNascimentoPessoa,
-                  celular: pessoa.celular,
-                });
-              }}
+            <Box
               sx={{
-                margin: "5vh auto 2vh",
-                width: "10vw",
-                backgroundColor: "#E64097",
-                "&:hover": {
-                  backgroundColor: "#04BFAF",
-                },
+                display: "flex",
+                flexDirection: "row",
               }}
             >
-              Editar
-            </Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  setEditar(true);
+                  setForm({
+                    nomePessoa: pessoa.nomePessoa,
+                    emailPessoa: pessoa.emailPessoa,
+                    documentoPessoa: pessoa.documentoPessoa,
+                    dataNascimentoPessoa: pessoa.dataNascimentoPessoa,
+                    celular: pessoa.celular,
+                  });
+                }}
+                sx={{
+                  margin: "5vh auto 2vh",
+                  width: "10vw",
+                  backgroundColor: "#E64097",
+                  "&:hover": {
+                    backgroundColor: "#04BFAF",
+                  },
+                }}
+              >
+                Editar Perfil
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  setAlterarSenha(true);
+                }}
+                sx={{
+                  margin: "5vh 10px 2vh",
+                  width: "10vw",
+                  backgroundColor: "#04BFAF",
+                  "&:hover": {
+                    backgroundColor: "#E64097",
+                  },
+                }}
+              >
+                Alterar Senha
+              </Button>
+            </Box>
           </Box>
+
+          {/*BOX CARD ALTERAR SENHA DIREITA */}
+          {alterarSenha && (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                width: "40vw",
+                height: "auto",
+                borderRadius: "50px",
+                boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
+                margin: "10px 80px",
+                padding: "2rem",
+                justifyContent: "center",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: "#E64097",
+                    fontFamily: "montserrat",
+                    fontSize: "30px",
+                    fontWeight: "600",
+                  }}
+                >
+                  Alterar Senha
+                </Typography>
+                <Button
+                  onClick={() => setAlterarSenha(false)}
+                  sx={{
+                    marginLeft: "auto",
+                  }}
+                >
+                  <CloseIcon
+                    sx={{
+                      color: "#E64097",
+                      fontSize: "40px",
+                    }}
+                  ></CloseIcon>
+                </Button>
+              </Box>
+
+              <Box
+                sx={{
+                  marginTop: "5vh",
+                  display: "flex",
+                  flexDirection: "column",
+                  margin: " 5vh auto",
+                }}
+              >
+                <TextField
+                  sx={{
+                    width: "30vw",
+                    backgroundColor: "#FFFFFF",
+                    margin: "1vh",
+                  }}
+                  name="senhaPessoa"
+                  value={form.senhaPessoa}
+                  onChange={handleChangeForm}
+                  id="outlined-basic"
+                  label="Insira nova senha"
+                  type="password"
+                  variant="outlined"
+                />
+                <TextField
+                  sx={{
+                    width: "30vw",
+                    backgroundColor: "#FFFFFF",
+                    margin: "1vh",
+                  }}
+                  name="confirmeSuaSenha"
+                  value={form.confirmeSuaSenha}
+                  onChange={handleChangeForm}
+                  error={senhaError !== ""}
+                  helperText={senhaError}
+                  id="outlined-basic"
+                  label="Confirme sua senha"
+                  type="password"
+                  variant="outlined"
+                />
+              </Box>
+
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Button
+                  variant="contained"
+                  onClick={handleAlterarSenhaManual}
+                  sx={{
+                    marginRight: "20px",
+                    backgroundColor: "#E64097",
+                    width: "10vw",
+                    margin: "auto",
+                    "&:hover": {
+                      backgroundColor: "#04BFAF",
+                    },
+                  }}
+                >
+                  Salvar senha
+                </Button>
+              </Box>
+            </Box>
+          )}
 
           {/*BOX CARD PERFIL DIREITA */}
           {editar && (
@@ -370,69 +495,87 @@ function Perfil() {
                 borderRadius: "50px",
                 boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
                 margin: "10px 80px",
-                padding: "20px",
+                padding: "2rem",
                 justifyContent: "center",
               }}
             >
-              <TextField
-                label="Nome"
-                name="nomePessoa"
-                value={form.nomePessoa}
-                onChange={handleChangeForm}
-                fullWidth
-                sx={{ marginBottom: "20px" }}
-              />
-
-              <TextField
-                label="Email"
-                name="emailPessoa"
-                value={form.emailPessoa}
-                onChange={handleChangeForm}
-                fullWidth
-                sx={{ marginBottom: "20px" }}
-              />
-
-              <TextField
-                label="Documento"
-                name="documentoPessoa"
-                value={form.documentoPessoa}
-                onChange={handleChangeForm}
-                fullWidth
-                sx={{ marginBottom: "20px" }}
-              />
-
-              <TextField
-                label="Data de Nascimento"
-                name="dataNascimentoPessoa"
-                value={form.dataNascimentoPessoa}
-                onChange={handleChangeForm}
-                fullWidth
-                sx={{ marginBottom: "20px" }}
-              />
-
-              <TextField
-                label="Celular"
-                name="celular"
-                value={phoneMask(form.celular)}
-                onChange={handleChangeForm}
-                fullWidth
-                sx={{ marginBottom: "20px" }}
-              />
-
-              <Button
-                variant="contained"
-                component="label"
+              <Box
                 sx={{
-                  marginBottom: "20px",
-                  backgroundColor: "#E64097",
-                  "&:hover": {
-                    backgroundColor: "#04BFAF",
-                  },
+                  display: "flex",
+                  flexDirection: "row",
                 }}
               >
-                Escolher Imagem
-                <input type="file" hidden onChange={handleChangeImagem} />
-              </Button>
+                <Typography
+                  sx={{
+                    color: "#E64097",
+                    fontFamily: "montserrat",
+                    fontSize: "30px",
+                    fontWeight: "600",
+                  }}
+                >
+                  Editar Perfil
+                </Typography>
+                <Button
+                  onClick={() => setEditar(false)}
+                  sx={{
+                    marginLeft: "auto",
+                  }}
+                >
+                  <CloseIcon
+                    sx={{
+                      color: "#E64097",
+                      fontSize: "40px",
+                    }}
+                  ></CloseIcon>
+                </Button>
+              </Box>
+
+              <Box sx={{ marginTop: "5vh" }}>
+                <TextField
+                  label="Nome"
+                  name="nomePessoa"
+                  value={form.nomePessoa}
+                  onChange={handleChangeForm}
+                  fullWidth
+                  sx={{ marginBottom: "20px" }}
+                />
+
+                <TextField
+                  label="Email"
+                  name="emailPessoa"
+                  value={form.emailPessoa}
+                  onChange={handleChangeForm}
+                  fullWidth
+                  sx={{ marginBottom: "20px" }}
+                />
+
+                <TextField
+                  label="Documento"
+                  name="documentoPessoa"
+                  value={form.documentoPessoa}
+                  onChange={handleChangeForm}
+                  fullWidth
+                  sx={{ marginBottom: "20px" }}
+                />
+
+                <TextField
+                  label="Data de Nascimento"
+                  name="dataNascimentoPessoa"
+                  value={form.dataNascimentoPessoa}
+                  onChange={handleChangeForm}
+                  fullWidth
+                  sx={{ marginBottom: "20px" }}
+                />
+
+                <TextField
+                  label="Celular"
+                  name="celular"
+                  value={phoneMask(form.celular)}
+                  onChange={handleChangeForm}
+                  fullWidth
+                  sx={{ marginBottom: "20px" }}
+                />
+              </Box>
 
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Button
@@ -441,24 +584,14 @@ function Perfil() {
                   sx={{
                     marginRight: "20px",
                     backgroundColor: "#E64097",
+                    width: "10vw",
+                    margin: "auto",
                     "&:hover": {
                       backgroundColor: "#04BFAF",
                     },
                   }}
                 >
                   Salvar
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={handleUploadImagem}
-                  sx={{
-                    backgroundColor: "#E64097",
-                    "&:hover": {
-                      backgroundColor: "#04BFAF",
-                    },
-                  }}
-                >
-                  Upload Imagem
                 </Button>
               </Box>
             </Box>
