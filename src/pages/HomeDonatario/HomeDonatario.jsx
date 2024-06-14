@@ -10,6 +10,7 @@ import Stack from "@mui/material/Stack";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
+import MuletaRequisicao from "../../../public/MuletaRequisicao.png";
 
 function HomeDonartario() {
   //hook como um array, pois vamos armazenar as requisições dentro de um array
@@ -296,141 +297,160 @@ function HomeDonartario() {
         Minhas requisições recentes
       </Typography>
 
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "30px",
-          marginLeft: "5vw",
-          marginTop: "5vh",
-        }}
-      >
-        {requisicoes.map((requisicao) => {
-          //Formatando a data em padrão brasileiro
-          const dataRequisicao = new Date(requisicao.dataRequisicao);
-          const formattedDate = `${dataRequisicao.getDate()}/${
-            dataRequisicao.getMonth() + 1
-          }/${dataRequisicao.getFullYear()}`;
+      {requisicoes.some(
+        (requisicao) => requisicao.statusRequisicao !== "ABERTA"
+      ) ? (
+        <img
+          width={300}
+          src={MuletaRequisicao}
+          alt="muleta"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            width: "400px",
+            height: "400px",
+            margin: "auto",
+          }}
+        />
+      ) : (
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "30px",
+            marginLeft: "5vw",
+            marginTop: "5vh",
+          }}
+        >
+          {requisicoes.map((requisicao) => {
+            // Formatando a data em padrão brasileiro
+            const dataRequisicao = new Date(requisicao.dataRequisicao);
+            const formattedDate = `${dataRequisicao.getDate()}/${
+              dataRequisicao.getMonth() + 1
+            }/${dataRequisicao.getFullYear()}`;
 
-          return (
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                borderRadius: "20px",
-                backgroundColor: "#FFFFFF",
-                boxShadow: "5px 0px  10px rgba(0, 0, 0, 0.3)",
-                height: "50vh",
-                width: "20vw",
-                alignItems: "center",
-                padding: "2rem",
-                marginLeft: "2vw",
-              }}
-            >
-              <Typography
+            return (
+              <Box
+                key={requisicao.idRequisicao}
                 sx={{
-                  fontSize: "24px",
-                  fontFamily: "montserrat",
-                  color: "#E64097",
-                  fontWeight: "600",
+                  display: "flex",
+                  flexDirection: "column",
+                  borderRadius: "20px",
+                  backgroundColor: "#FFFFFF",
+                  boxShadow: "5px 0px 10px rgba(0, 0, 0, 0.3)",
+                  height: "50vh",
+                  width: "20vw",
+                  alignItems: "center",
+                  padding: "2rem",
+                  marginLeft: "2vw",
                 }}
               >
-                {" "}
-                {requisicao.tituloRequisicao}
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: "20px",
-                  fontFamily: "montserrat",
-                  color: "#231F20",
-                  fontWeight: "500",
-                  margin: "5vh auto",
-                }}
-              >
-                {" "}
-                {requisicao.descricaoRequisicao}
-              </Typography>
-
-              <Box sx={{ display: "flex", flexDirection: "row" }}>
                 <Typography
-                  sx={{ fontFamily: "montserrat", marginRight: "15px" }}
+                  sx={{
+                    fontSize: "24px",
+                    fontFamily: "montserrat",
+                    color: "#E64097",
+                    fontWeight: "600",
+                  }}
                 >
-                  Criado em: {formattedDate}
+                  {requisicao.tituloRequisicao}
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: "20px",
+                    fontFamily: "montserrat",
+                    color: "#231F20",
+                    fontWeight: "500",
+                    margin: "5vh auto",
+                  }}
+                >
+                  {requisicao.descricaoRequisicao}
                 </Typography>
 
-                <Stack direction="row" spacing={1} sx={{ marginLeft: "auto" }}>
-                  {requisicao.statusRequisicao === "EM_ANDAMENTO" ? (
-                    /**AMARELO */
-                    <Chip
-                      sx={{
-                        backgroundColor: "#E5DF48",
-                        color: "#FFFFFF",
-                      }}
-                      label={requisicao.statusRequisicao}
-                    />
-                  ) : requisicao.statusRequisicao === "CONCLUIDA" ? (
-                    <>
-                      <Typography
-                        sx={{ fontFamily: "montserrat", marginRight: "10px" }}
-                      >
-                        Concluída em: {formattedDate}
-                      </Typography>
+                <Box sx={{ display: "flex", flexDirection: "row" }}>
+                  <Typography
+                    sx={{ fontFamily: "montserrat", marginRight: "15px" }}
+                  >
+                    Criado em: {formattedDate}
+                  </Typography>
 
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    sx={{ marginLeft: "auto" }}
+                  >
+                    {requisicao.statusRequisicao === "EM_ANDAMENTO" ? (
                       <Chip
                         sx={{
-                          backgroundColor: "#F03737",
+                          backgroundColor: "#E5DF48",
                           color: "#FFFFFF",
                         }}
                         label={requisicao.statusRequisicao}
                       />
-                    </>
-                  ) : (
-                    /**VERDE */
-                    <Chip
-                      sx={{
-                        backgroundColor: "#48E54E",
-                        color: "#FFFFFF",
-                      }}
-                      label={requisicao.statusRequisicao}
-                    />
-                  )}
-                </Stack>
-              </Box>
+                    ) : requisicao.statusRequisicao === "CONCLUIDA" ? (
+                      <>
+                        <Typography
+                          sx={{ fontFamily: "montserrat", marginRight: "10px" }}
+                        >
+                          Concluída em: {formattedDate}
+                        </Typography>
 
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  marginTop: "auto",
-                  marginLeft: "auto",
-                }}
-              >
-                <Button
-                  variant="contained"
-                  onClick={() => handleOpen(requisicao.idRequisicao)}
+                        <Chip
+                          sx={{
+                            backgroundColor: "#F03737",
+                            color: "#FFFFFF",
+                          }}
+                          label={requisicao.statusRequisicao}
+                        />
+                      </>
+                    ) : (
+                      <Chip
+                        sx={{
+                          backgroundColor: "#48E54E",
+                          color: "#FFFFFF",
+                        }}
+                        label={requisicao.statusRequisicao}
+                      />
+                    )}
+                  </Stack>
+                </Box>
+
+                <Box
                   sx={{
-                    backgroundColor: "#04BFAF",
-                    height: "40px",
-                    "&:hover": {
-                      backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
-                    },
+                    display: "flex",
+                    flexDirection: "row",
+                    marginTop: "auto",
+                    marginLeft: "auto",
                   }}
                 >
-                  Editar
-                </Button>
+                  <Button
+                    variant="contained"
+                    onClick={() => handleOpen(requisicao.idRequisicao)}
+                    sx={{
+                      backgroundColor: "#04BFAF",
+                      height: "40px",
+                      "&:hover": {
+                        backgroundColor: "#E64097", // Altere a cor desejada para o efeito hover
+                      },
+                    }}
+                  >
+                    Editar
+                  </Button>
 
-                <Button
-                  onClick={() =>
-                    handleExcluirRequisicao(requisicao.idRequisicao)
-                  }
-                >
-                  <DeleteIcon sx={{ fontSize: "40px", color: "#E64097" }} />
-                </Button>
+                  <Button
+                    onClick={() =>
+                      handleExcluirRequisicao(requisicao.idRequisicao)
+                    }
+                  >
+                    <DeleteIcon sx={{ fontSize: "40px", color: "#E64097" }} />
+                  </Button>
+                </Box>
               </Box>
-            </Box>
-          );
-        })}
-      </Box>
+            );
+          })}
+        </Box>
+      )}
     </>
   );
 }

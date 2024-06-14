@@ -13,6 +13,7 @@ import Modal from "@mui/material/Modal";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
+import Muletas from "../../../public/MuletaDoacao.png";
 
 function HomeDoador({ requisicoesInicial }) {
   const [requisicoes, setRequisicoes] = useState([]);
@@ -314,99 +315,114 @@ function HomeDoador({ requisicoesInicial }) {
         }}
       >
         {/**REQUISICOES */}
-        {filteredRequisicoes.map((requisicao) => {
-          return requisicao && requisicao.statusRequisicao === "ABERTA" ? (
-            <Box
-              key={requisicao.idRequisicao}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                borderRadius: "20px",
-                backgroundColor: "#FFFFFF",
-                boxShadow: "5px 0px 10px rgba(0, 0, 0, 0.3)",
-                height: "50vh",
-                width: "20vw",
-                alignItems: "center",
-                padding: "2rem",
-                marginLeft: "2vw",
-              }}
-            >
-              <Typography
+        {filteredRequisicoes.some(
+          (requisicao) => requisicao.statusRequisicao !== "ABERTA"
+        ) ? (
+          <img
+            width={300}
+            src={Muletas}
+            alt="muleta"
+            style={{
+              width: "400px",
+              height: "400px",
+              margin: "auto",
+            }}
+          />
+        ) : (
+          filteredRequisicoes.map((requisicao) => {
+            return requisicao && requisicao.statusRequisicao === "ABERTA" ? (
+              <Box
+                key={requisicao.idRequisicao}
                 sx={{
-                  fontSize: "24px",
-                  fontFamily: "montserrat",
-                  color: "#E64097",
-                  fontWeight: "600",
+                  display: "flex",
+                  flexDirection: "column",
+                  borderRadius: "20px",
+                  backgroundColor: "#FFFFFF",
+                  boxShadow: "5px 0px 10px rgba(0, 0, 0, 0.3)",
+                  height: "50vh",
+                  width: "20vw",
+                  alignItems: "center",
+                  padding: "2rem",
+                  marginLeft: "2vw",
                 }}
               >
-                {requisicao.pessoaDonataria.nomePessoa}
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: "24px",
-                  fontFamily: "montserrat",
-                  color: "#231F20",
-                  fontWeight: "500",
-                  marginTop: "5vh",
-                }}
-              >
-                {requisicao.tituloRequisicao}
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: "20px",
-                  fontFamily: "montserrat",
-                  color: "#231F20",
-                  fontWeight: "500",
-                  margin: "2vh auto",
-                }}
-              >
-                {requisicao.descricaoRequisicao}
-              </Typography>
-              <Typography
-                sx={{ fontFamily: "montserrat", marginRight: "15px" }}
-              >
-                {requisicao.pessoaDonataria.endereco.bairro} -
-                {requisicao.pessoaDonataria.endereco.cidade}/
-                {requisicao.pessoaDonataria.endereco.estado}
-              </Typography>
-
-              <Stack
-                direction="row"
-                spacing={1}
-                sx={{ marginLeft: "auto", marginTop: "5vh" }}
-              >
-                <Chip
+                <Typography
                   sx={{
-                    backgroundColor: "#48E54E",
-                    color: "#FFFFFF",
+                    fontSize: "24px",
+                    fontFamily: "montserrat",
+                    color: "#E64097",
+                    fontWeight: "600",
                   }}
-                  label={requisicao.statusRequisicao}
-                />
-              </Stack>
+                >
+                  {requisicao.pessoaDonataria.nomePessoa}
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: "24px",
+                    fontFamily: "montserrat",
+                    color: "#231F20",
+                    fontWeight: "500",
+                    marginTop: "5vh",
+                  }}
+                >
+                  {requisicao.tituloRequisicao}
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: "20px",
+                    fontFamily: "montserrat",
+                    color: "#231F20",
+                    fontWeight: "500",
+                    margin: "2vh auto",
+                  }}
+                >
+                  {requisicao.descricaoRequisicao}
+                </Typography>
+                <Typography
+                  sx={{ fontFamily: "montserrat", marginRight: "15px" }}
+                >
+                  {requisicao.pessoaDonataria.endereco.bairro} -
+                  {requisicao.pessoaDonataria.endereco.cidade}/
+                  {requisicao.pessoaDonataria.endereco.estado}
+                </Typography>
 
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: "#E64097",
-                  marginTop: "auto",
-                  height: "40px",
-                  "&:hover": {
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  sx={{ marginLeft: "auto", marginTop: "5vh" }}
+                >
+                  <Chip
+                    sx={{
+                      backgroundColor: "#48E54E",
+                      color: "#FFFFFF",
+                    }}
+                    label={requisicao.statusRequisicao}
+                  />
+                </Stack>
+
+                <Button
+                  variant="contained"
+                  sx={{
                     backgroundColor: "#E64097",
-                  },
-                }}
-                onClick={() => {
-                  handleCadastraDoacao(requisicao.idRequisicao);
-                  handleMudaStatusDaRequisicao(requisicao.idRequisicao);
-                  handleRemoveRequisicao(requisicao.idRequisicao);
-                  handleOpen(requisicao);
-                }}
-              >
-                Ajudar esta pessoa
-              </Button>
-            </Box>
-          ) : null;
-        })}
+                    marginTop: "auto",
+                    height: "40px",
+                    "&:hover": {
+                      backgroundColor: "#E64097",
+                    },
+                  }}
+                  onClick={() => {
+                    handleCadastraDoacao(requisicao.idRequisicao);
+                    handleMudaStatusDaRequisicao(requisicao.idRequisicao);
+                    handleRemoveRequisicao(requisicao.idRequisicao);
+                    handleOpen(requisicao);
+                  }}
+                >
+                  Ajudar esta pessoa
+                </Button>
+              </Box>
+            ) : null;
+          })
+        )}
       </Box>
     </>
   );

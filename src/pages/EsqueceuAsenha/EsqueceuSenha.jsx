@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import axios from "axios";
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
 
 function EsqueceuSenha() {
   //HOOKS
@@ -13,6 +15,9 @@ function EsqueceuSenha() {
     senha: "",
   });
   const [senha, setSenha] = useState("");
+  const [alerta, setAlerta] = useState(false);
+  const [alertaMensagem, setAlertaMensagem] = useState("");
+  const [alertaTipo, setAlertaTipo] = useState("");
 
   {
     /**FUNÇÃO QUE LEVA A SENHA AO EMAIL */
@@ -25,10 +30,14 @@ function EsqueceuSenha() {
       })
       .then((response) => {
         console.log(response.data);
+        handleAbreAlerta("success", "Email enviado com sucesso");
       })
       .catch((erro) => {
         console.log(erro);
-        alert("Ocorreu um erro ao enviar a senha para este e-mail");
+        handleAbreAlerta(
+          "error",
+          "Ocorreu um erro ao enviar a senha para o email"
+        );
       });
   };
 
@@ -53,21 +62,18 @@ function EsqueceuSenha() {
     }));
   };
 
-  const handleAtualizaSenha = async () => {
-    await axios
-      .patch(
-        `http://localhost:8080/api/v1/pessoa/updateSenha/${pessoa.email}`,
-        {
-          senhaPessoa: senha,
-        }
-      )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((erro) => {
-        console.error(erro);
-        alert("Ocorreu um erro ao enviar a nova senha");
-      });
+  //FUNÇÃO QUE ABRE O ALERTA
+  const handleAbreAlerta = (tipo, mensagem) => {
+    setAlertaMensagem(mensagem);
+    setAlertaTipo(tipo);
+    setAlerta(true);
+  };
+
+  //FUNÇÃO QUE ENIBE O ALERTA
+  const handleFechaAlerta = () => {
+    setAlerta(false);
+    setAlertaTipo("success");
+    setAlertaMensagem("");
   };
 
   const handleChangeForm = (event) => {
@@ -86,6 +92,22 @@ function EsqueceuSenha() {
   console.log(senha);
   return (
     <>
+      <Stack
+        sx={{ width: "100%" }}
+        open={alerta}
+        autoHideDuration={6000}
+        onClose={handleFechaAlerta}
+        spacing={2}
+      >
+        <Alert
+          onClose={handleFechaAlerta}
+          severity={alertaTipo}
+          sx={{ width: "100%" }}
+          variant="filled"
+        >
+          {alertaMensagem}
+        </Alert>
+      </Stack>
       <Box
         sx={{
           display: "flex",
