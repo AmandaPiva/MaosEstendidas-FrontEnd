@@ -127,26 +127,25 @@ function Header() {
           <Button onClick={() => handleOpen()} sx={{ color: "#FFFFFF" }}>
             Logout
           </Button>
-          {/* <Button
-            // onClick={() => {
-            //   openChatDialog();
-            // }}
-            sx={{ color: "#FFFFFF" }}
-          >
-            Chat
-          </Button>
-          */}
         </Box>
 
         {/**AVATAR */}
-        <Stack sx={{ padding: "10px" }} direction="column">
+        <Stack direction="column">
           <Button
             onClick={() => (location.href = "/Perfil")}
             sx={{
               marginRight: "10px",
             }}
           >
-            <Avatar src="/broken-image.jpg" />
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                marginRight: "54px",
+              }}
+            >
+              <Avatar src="/broken-image.jpg" />
+            </Box>
           </Button>
 
           <Typography
@@ -155,7 +154,7 @@ function Header() {
               color: "#FFFFFF",
               fontFamily: "montserrat",
               fontWeight: "400",
-              marginRight: "20px",
+              marginLeft: "5px",
             }}
           >
             Perfil

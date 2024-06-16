@@ -4,6 +4,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Logo from "../../../public/logo.png";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 
 function Perfil() {
   const role = localStorage.getItem("role");
@@ -16,6 +18,9 @@ function Perfil() {
   const [imagem, setImagem] = useState(null); // Estado para armazenar a imagem selecionada
   const [imagemPreview, setImagemPreview] = useState(null);
   const [senhaError, setSenhaError] = useState("");
+  const [alerta, setAlerta] = useState(false);
+  const [alertaMensagem, setAlertaMensagem] = useState("");
+  const [alertaTipo, setAlertaTipo] = useState("");
 
   const handleValidaRole = () => {
     if (role === "DOADORA") {
@@ -23,6 +28,20 @@ function Perfil() {
     } else if (role === "DONATARIA") {
       window.location.href = "/HomeDonatario";
     }
+  };
+
+  //FUNÇÃO QUE ABRE O ALERTA
+  const handleAbreAlerta = (tipo, mensagem) => {
+    setAlertaMensagem(mensagem);
+    setAlertaTipo(tipo);
+    setAlerta(true);
+  };
+
+  //FUNÇÃO QUE ENIBE O ALERTA
+  const handleFechaAlerta = () => {
+    setAlerta(false);
+    setAlertaTipo("success");
+    setAlertaMensagem("");
   };
 
   const handleBuscarPessoa = async () => {
@@ -64,11 +83,12 @@ function Perfil() {
             senhaPessoa: form.senhaPessoa,
           }
         );
-        console.log("Senha alterada com sucesso");
+        handleAbreAlerta("success", "Senha alterada com sucesso");
+
         setAlterarSenha(false);
       } catch (erro) {
         console.log(erro);
-        alert("Ocorreu um erro ao editar a senha");
+        handleAbreAlerta("error", "Ocorreu um erro ao editar a senha");
       }
     }
   };
@@ -97,41 +117,10 @@ function Perfil() {
         console.log("Resposta da pessoa PATCH:", response);
         handleBuscarPessoa();
         setLoading(false);
-        alert("Pessoa editada com sucesso");
+        handleAbreAlerta("success", "Pessoa editada com sucesso");
       } catch (erro) {
         console.log(erro);
-        alert("Ocorreu um erro ao editar essa pessoa");
-      }
-    }
-  };
-
-  const handleUploadImagem = async () => {
-    const formData = new FormData();
-    formData.append("imagem", imagem);
-
-    const token = localStorage.getItem("token");
-    if (!token) {
-      location.href = "/Login";
-    } else {
-      try {
-        const response = await axios.post(
-          `http://localhost:8080/api/v1/pessoa/${pessoa.idPessoa}/upload-imagem`,
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        console.log("Resposta da API de upload:", response);
-        setImagemPreview(response.data.urlImagem); // Atualiza a URL da imagem com a URL retornada pelo servidor
-        handleBuscarPessoa();
-        setLoading(false);
-        alert("Imagem de perfil atualizada com sucesso");
-      } catch (erro) {
-        console.log(erro);
-        alert("Ocorreu um erro ao fazer o upload da imagem");
+        handleAbreAlerta("error", "Ocorreu um erro ao editar essa pessoa");
       }
     }
   };
@@ -169,12 +158,6 @@ function Perfil() {
     }
   };
 
-  const handleChangeImagem = (event) => {
-    const file = event.target.files[0];
-    setImagem(file);
-    setImagemPreview(URL.createObjectURL(file)); // Atualiza a URL da imagem quando um arquivo é selecionado
-  };
-
   useEffect(() => {
     handleBuscarPessoa();
   }, []);
@@ -184,6 +167,22 @@ function Perfil() {
 
   return (
     <>
+      <Snackbar
+        sx={{ width: "100%" }}
+        open={alerta}
+        autoHideDuration={6000}
+        onClose={handleFechaAlerta}
+        spacing={2}
+      >
+        <Alert
+          onClose={handleFechaAlerta}
+          severity={alertaTipo}
+          sx={{ width: "30%" }}
+          variant="filled"
+        >
+          {alertaMensagem}
+        </Alert>
+      </Snackbar>
       {/*BOX PAGINA COMPLETA */}
       <Box
         sx={{

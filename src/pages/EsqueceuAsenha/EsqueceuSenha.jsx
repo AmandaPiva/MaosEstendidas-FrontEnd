@@ -89,7 +89,6 @@ function EsqueceuSenha() {
     handleGeraSenha(10);
   }, []);
 
-  console.log(senha);
   return (
     <>
       <Stack

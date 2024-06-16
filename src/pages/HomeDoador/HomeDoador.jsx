@@ -13,7 +13,7 @@ import Modal from "@mui/material/Modal";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import Muletas from "../../../public/MuletaDoacao.png";
+import MuletaRequisicao from "../../../public/MuletaRequisicao.png";
 
 function HomeDoador({ requisicoesInicial }) {
   const [requisicoes, setRequisicoes] = useState([]);
@@ -248,7 +248,7 @@ function HomeDoador({ requisicoesInicial }) {
           flexDirection: "column",
           width: "100vw",
           height: "60vh",
-          backgroundImage: `linear-gradient(to bottom, rgba(230, 64, 151, 0.8), rgba(230, 64, 151, 0)), url(${CriancasPcds})`,
+          backgroundImage: `linear-gradient(to bottom, rgba(93, 195, 186, 0.8), rgba(230, 64, 151, 0)), url(${CriancasPcds})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -320,7 +320,7 @@ function HomeDoador({ requisicoesInicial }) {
         ) ? (
           <img
             width={300}
-            src={Muletas}
+            src={MuletaRequisicao}
             alt="muleta"
             style={{
               width: "400px",

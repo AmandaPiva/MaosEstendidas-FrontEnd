@@ -13,6 +13,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Modal from "@mui/material/Modal";
 import ModalCadastroEndereco from "../../Components/modalCadastroEndereco";
 import Cadastro from "../Cadastro/Cadastro";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 
 function Endereco() {
   // Função para validar um CEP utilizando REGEX
@@ -73,12 +75,30 @@ function Endereco() {
   const [enderecoSalvo, setEnderecoSalvo] = useState(null);
   const [exibeCadastro, setExibeCadastro] = useState(false);
 
+  const [alerta, setAlerta] = useState(false);
+  const [alertaMensagem, setAlertaMensagem] = useState("");
+  const [alertaTipo, setAlertaTipo] = useState("");
+
   const handleSetForm = (event) => {
     const { name, value } = event.target;
     setForm((prev) => ({
       ...prev,
       [name]: value,
     }));
+  };
+
+  //FUNÇÃO QUE ABRE O ALERTA
+  const handleAbreAlerta = (tipo, mensagem) => {
+    setAlertaMensagem(mensagem);
+    setAlertaTipo(tipo);
+    setAlerta(true);
+  };
+
+  //FUNÇÃO QUE ENIBE O ALERTA
+  const handleFechaAlerta = () => {
+    setAlerta(false);
+    setAlertaTipo("success");
+    setAlertaMensagem("");
   };
 
   const handleChangeEstado = (event) => {
@@ -95,7 +115,10 @@ function Endereco() {
       form.cep == "" ||
       form.numero == ""
     ) {
-      alert("Os campos não foram preenchidos corretamente, revise-os");
+      handleAbreAlerta(
+        "error",
+        "Os campos não foram preenchidos corretamente, revise-os"
+      );
     } else {
       axios
         .post(`http://localhost:8080/api/v1/endereco`, {
@@ -110,17 +133,16 @@ function Endereco() {
           setLoading(false);
           setEnderecoSalvo(response.data);
 
-          alert("Endereço cadastrado com sucesso!");
+          handleAbreAlerta("success", "Endereço cadastrado com sucesso!");
           setExibeCadastro(true); // Exibe o componente Cadastro
         })
         .catch((erro) => {
           console.log(erro);
-          alert("Ocorreu um erro ao cadastrar endereço");
+          handleAbreAlerta("error", "Ocorreu um erro ao cadastrar endereço");
         });
     }
     setLoading(false);
   };
-  // console.log("Passou aqui", enderecoSalvo);
 
   {
     /**CRIA ENDEREÇO VIA CEP */
@@ -133,12 +155,16 @@ function Endereco() {
         setEnderecoSalvo(response.data);
 
         setLoading(false);
-        alert("Endereço cadastrado com sucesso!");
+
+        handleAbreAlerta("success", "Endereço cadastrado com sucesso!");
         setExibeCadastro(true); // Exibe o componente Cadastro
       })
       .catch((erro) => {
         console.log(erro);
-        alert("Ocorreu um erro ao cadastrar um endereço pelo CEP informado");
+        handleAbreAlerta(
+          "error",
+          "Ocorreu um erro ao cadastrar um endereço pelo CEP informado"
+        );
       });
     setLoading(false);
   };
@@ -172,6 +198,22 @@ function Endereco() {
   }
   return (
     <>
+      <Snackbar
+        sx={{ width: "100%" }}
+        open={alerta}
+        autoHideDuration={6000}
+        onClose={handleFechaAlerta}
+        spacing={2}
+      >
+        <Alert
+          onClose={handleFechaAlerta}
+          severity={alertaTipo}
+          sx={{ width: "30%" }}
+          variant="filled"
+        >
+          {alertaMensagem}
+        </Alert>
+      </Snackbar>
       {exibeCadastro == true ? (
         <Cadastro endereco={enderecoSalvo} />
       ) : (

@@ -11,6 +11,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import MuletaRequisicao from "../../../public/MuletaRequisicao.png";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 function HomeDonartario() {
   //hook como um array, pois vamos armazenar as requisições dentro de um array
@@ -18,6 +20,9 @@ function HomeDonartario() {
   const [loading, setLoading] = useState(false);
   const [idRequisicao, setIdRequisicao] = useState("");
   const [openModal, setOpenModal] = useState(false);
+  const [alerta, setAlerta] = useState(false);
+  const [alertaMensagem, setAlertaMensagem] = useState("");
+  const [alertaTipo, setAlertaTipo] = useState("");
 
   //funções abrir modal de editar requisição
   const handleOpen = (idRequisicao) => {
@@ -31,7 +36,6 @@ function HomeDonartario() {
         tituloRequisicao: selectedRequisicao.tituloRequisicao,
         descricaoRequisicao: selectedRequisicao.descricaoRequisicao,
       });
-      console.log("chegou aqui");
 
       setOpenModal(true);
     }
@@ -77,6 +81,7 @@ function HomeDonartario() {
         })
         .catch((erro) => {
           console.log(erro);
+
           alert("Não foi possível retornar as requisições deste usuário");
         });
     }
@@ -109,12 +114,16 @@ function HomeDonartario() {
 
           handleBuscaRequisicoesPelaPessoa();
           setLoading(false);
-          alert("Requisição editada com sucesso");
+          handleAbreAlerta("success", "Requisição editada com sucesso");
+
           handleClose();
         })
         .catch((erro) => {
           console.log(erro);
-          alert("Ocorreu um erro ao editar essa requisição");
+          handleAbreAlerta(
+            "error",
+            "Ocorreu um erro ao editar essa requisição"
+          );
         });
     }
   };
@@ -138,11 +147,14 @@ function HomeDonartario() {
         .then(() => {
           handleBuscaRequisicoesPelaPessoa();
           setLoading(false);
-          alert("Requisição excluida com sucesso");
+          handleAbreAlerta("success", "Requisição excluida com sucesso");
         })
         .catch((erro) => {
           console.log(erro);
-          alert("Ocorreu um erro ao remover uma requisição");
+          handleAbreAlerta(
+            "error",
+            "Ocorreu um erro ao remover uma requisição"
+          );
         });
     }
   };
@@ -151,6 +163,19 @@ function HomeDonartario() {
     handleBuscaRequisicoesPelaPessoa();
   }, []);
 
+  //FUNÇÃO QUE ABRE O ALERTA
+  const handleAbreAlerta = (tipo, mensagem) => {
+    setAlertaMensagem(mensagem);
+    setAlertaTipo(tipo);
+    setAlerta(true);
+  };
+
+  //FUNÇÃO QUE ENIBE O ALERTA
+  const handleFechaAlerta = () => {
+    setAlerta(false);
+    setAlertaTipo("success");
+    setAlertaMensagem("");
+  };
   const style = {
     position: "absolute",
     top: "25%",
@@ -164,6 +189,22 @@ function HomeDonartario() {
 
   return (
     <>
+      <Snackbar
+        sx={{ width: "100%" }}
+        open={alerta}
+        autoHideDuration={6000}
+        onClose={handleFechaAlerta}
+        spacing={2}
+      >
+        <Alert
+          onClose={handleFechaAlerta}
+          severity={alertaTipo}
+          sx={{ width: "30%" }}
+          variant="filled"
+        >
+          {alertaMensagem}
+        </Alert>
+      </Snackbar>
       {/**MODAL EDTAR REQUISIÇÃO */}
       <Modal
         open={openModal}
@@ -296,8 +337,8 @@ function HomeDonartario() {
       >
         Minhas requisições recentes
       </Typography>
-
-      {requisicoes.some(
+      {requisicoes.length === 0 ||
+      requisicoes.some(
         (requisicao) => requisicao.statusRequisicao !== "ABERTA"
       ) ? (
         <img

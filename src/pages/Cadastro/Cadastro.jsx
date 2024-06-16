@@ -1,6 +1,5 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
-
 import PessoasUnidas from "../../../public/pessoasUnidas.png";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -14,6 +13,8 @@ import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 
 function Cadastro(props) {
   // Acessando os dados do endereço
@@ -33,6 +34,10 @@ function Cadastro(props) {
   const [selectRole, setSelectRole] = useState("");
   const [tipoSelecionado, setSelecionado] = useState("");
   const [roles, setRoles] = useState([]);
+
+  const [alerta, setAlerta] = useState(false);
+  const [alertaMensagem, setAlertaMensagem] = useState("");
+  const [alertaTipo, setAlertaTipo] = useState("");
 
   const handleChange = (event) => {
     setRoles(event.target.value);
@@ -61,7 +66,10 @@ function Cadastro(props) {
       form.dataNascimentoPessoa == "" ||
       selectRole == ""
     ) {
-      alert("Os campos não foram preenchidos corretamente, revise-os");
+      handleAbreAlerta(
+        "error",
+        "Os campos não foram preenchidos corretamente, revise-os"
+      );
     } else {
       axios
         .post(`http://localhost:8080/api/v1/pessoa`, {
@@ -77,12 +85,13 @@ function Cadastro(props) {
         .then((response) => {
           setLoading(false);
           console.log(response.data);
-          alert("Usuário cadastrado com sucesso");
+          handleAbreAlerta("success", "Usuário cadastrado com sucesso");
+
           window.location.href = "/Login";
         })
         .catch((erro) => {
           console.error(erro);
-          alert("Ocorreu um erro ao cadastrar");
+          handleAbreAlerta("error", "Ocorreu um erro ao cadastrar");
         });
     }
     setLoading(false);
@@ -100,7 +109,7 @@ function Cadastro(props) {
       })
       .catch((erro) => {
         console.log(erro);
-        alert("Ocorreu um erro ao buscar a role");
+        handleAbreAlerta("error", "Ocorreu um erro ao buscar a role");
       });
 
     setLoading(false);
@@ -164,8 +173,19 @@ function Cadastro(props) {
     return cpf;
   };
 
-  //upload imagem
+  //FUNÇÃO QUE ABRE O ALERTA
+  const handleAbreAlerta = (tipo, mensagem) => {
+    setAlertaMensagem(mensagem);
+    setAlertaTipo(tipo);
+    setAlerta(true);
+  };
 
+  //FUNÇÃO QUE ENIBE O ALERTA
+  const handleFechaAlerta = () => {
+    setAlerta(false);
+    setAlertaTipo("success");
+    setAlertaMensagem("");
+  };
   //verificamos se o estado do hook loading está neste momento true
   if (loading && loading == true) {
     //pois se estiver, será renderizado na tela um circulo indicando que a página está carregando
@@ -189,9 +209,24 @@ function Cadastro(props) {
       </Box>
     );
   }
-  console.log(roles);
   return (
     <>
+      <Snackbar
+        sx={{ width: "100%" }}
+        open={alerta}
+        autoHideDuration={6000}
+        onClose={handleFechaAlerta}
+        spacing={2}
+      >
+        <Alert
+          onClose={handleFechaAlerta}
+          severity={alertaTipo}
+          sx={{ width: "30%" }}
+          variant="filled"
+        >
+          {alertaMensagem}
+        </Alert>
+      </Snackbar>
       <Box
         sx={{
           display: "flex",

@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import { useState } from "react";
 import Modal from "@mui/material/Modal";
-
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 import axios from "axios";
 
 function CadastroNecessidade() {
@@ -20,6 +21,10 @@ function CadastroNecessidade() {
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
+  const [alerta, setAlerta] = useState(false);
+  const [alertaMensagem, setAlertaMensagem] = useState("");
+  const [alertaTipo, setAlertaTipo] = useState("");
+
   //pegando o email da pessoa logada no navegador
   const email = localStorage.getItem("email");
 
@@ -30,12 +35,19 @@ function CadastroNecessidade() {
     setLoading(true);
 
     if (form.tituloRequisicao == "" || form.descricaoRequisicao == "") {
-      alert("Os campos não foram preenchidos corretamente, revise-os");
+      handleAbreAlerta(
+        "error",
+        "Os campos não foram preenchidos corretamente, revise-os"
+      );
     } else {
       const token = localStorage.getItem("token"); //pega o token gerado do Browser e armazena na variável token
 
       if (!token) {
-        alert("Token não encontrado --> Redirecionando a tela de Login");
+        handleAbreAlerta(
+          "error",
+          "Token não encontrado --> Redirecionando a tela de Login"
+        );
+
         location.href = "/Login";
       } else {
         axios
@@ -61,7 +73,10 @@ function CadastroNecessidade() {
           })
           .catch((erro) => {
             console.error(erro);
-            alert("Ocorreu um erro ao cadastrar Requisição");
+            handleAbreAlerta(
+              "error",
+              "Ocorreu um erro ao cadastrar Requisição"
+            );
           });
       }
       setLoading(false);
@@ -74,6 +89,20 @@ function CadastroNecessidade() {
       ...prev,
       [name]: value,
     }));
+  };
+
+  //FUNÇÃO QUE ABRE O ALERTA
+  const handleAbreAlerta = (tipo, mensagem) => {
+    setAlertaMensagem(mensagem);
+    setAlertaTipo(tipo);
+    setAlerta(true);
+  };
+
+  //FUNÇÃO QUE ENIBE O ALERTA
+  const handleFechaAlerta = () => {
+    setAlerta(false);
+    setAlertaTipo("success");
+    setAlertaMensagem("");
   };
 
   const style = {
@@ -89,6 +118,22 @@ function CadastroNecessidade() {
 
   return (
     <>
+      <Snackbar
+        sx={{ width: "100%" }}
+        open={alerta}
+        autoHideDuration={6000}
+        onClose={handleFechaAlerta}
+        spacing={2}
+      >
+        <Alert
+          onClose={handleFechaAlerta}
+          severity={alertaTipo}
+          sx={{ width: "30%" }}
+          variant="filled"
+        >
+          {alertaMensagem}
+        </Alert>
+      </Snackbar>
       {/**MODAL */}
       <Modal
         open={openModal}

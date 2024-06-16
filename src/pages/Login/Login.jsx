@@ -16,17 +16,22 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import Pesquisa from "../../../public/pesquisa.png";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 
 function Login() {
   //logica
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [alerta, setAlerta] = useState(false);
+  const [alertaMensagem, setAlertaMensagem] = useState("");
+  const [alertaTipo, setAlertaTipo] = useState("");
 
   const handleAutenticaLogin = () => {
     if (!email || email == "") {
-      alert("Email não informado");
+      handleAbreAlerta("error", "Email não informado");
     } else if (!senha || senha == "") {
-      alert("Senha não informada");
+      handleAbreAlerta("error", "Senha não informada");
     }
     //requisição da Api
     axios
@@ -48,13 +53,45 @@ function Login() {
       .catch((erro) => {
         localStorage.removeItem("token");
         console.log(erro);
-
-        alert("Ocorreu um erro ao fazer login, verifique email e senha");
+        handleAbreAlerta(
+          "error",
+          "Ocorreu um erro ao fazer login, verifique email e senha"
+        );
       });
+  };
+
+  //FUNÇÃO QUE ABRE O ALERTA
+  const handleAbreAlerta = (tipo, mensagem) => {
+    setAlertaMensagem(mensagem);
+    setAlertaTipo(tipo);
+    setAlerta(true);
+  };
+
+  //FUNÇÃO QUE ENIBE O ALERTA
+  const handleFechaAlerta = () => {
+    setAlerta(false);
+    setAlertaTipo("success");
+    setAlertaMensagem("");
   };
 
   return (
     <>
+      <Snackbar
+        sx={{ width: "100%" }}
+        open={alerta}
+        autoHideDuration={6000}
+        onClose={handleFechaAlerta}
+        spacing={2}
+      >
+        <Alert
+          onClose={handleFechaAlerta}
+          severity={alertaTipo}
+          sx={{ width: "30%" }}
+          variant="filled"
+        >
+          {alertaMensagem}
+        </Alert>
+      </Snackbar>
       <Box
         sx={{
           display: "flex",
